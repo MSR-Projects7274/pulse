@@ -1,0 +1,59 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Create Post | Pulse</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  </head>
+
+  <body>
+    <div class="navbar">
+      <a href="{% url 'home' %}" class="logo"> Pulse<span>.</span> </a>
+
+      <a href="{% url 'home' %}" class="button"> Back to Feed </a>
+    </div>
+
+    <div class="container">
+      {% if not user.is_authenticated %}
+      <script>
+        window.location.href = "{% url 'login' %}";
+      </script>
+      {% endif %}
+      <div class="post-card">
+        <h2>Create a new post</h2>
+
+        <p class="meta">Share something with the Pulse community</p>
+
+        <br />
+
+        <form method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+
+          <div style="margin-bottom: 15px">
+            {{ form.department.label_tag }}<br />
+            {{ form.department }}
+          </div>
+
+          <div style="margin-bottom: 15px">
+            {{ form.title.label_tag }}<br />
+            {{ form.title }}
+          </div>
+
+          <div style="margin-bottom: 15px">
+            {{ form.content.label_tag }}<br />
+            {{ form.content }}
+          </div>
+
+          <div style="margin-bottom: 15px">
+            {{ form.image.label_tag }}<br />
+            {{ form.image }}
+          </div>
+
+          <button type="submit" class="button">Publish</button>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

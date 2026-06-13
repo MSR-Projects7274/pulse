@@ -1,0 +1,48 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Edit Post - Pulse</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+<div class="navbar">
+    <a href="{% url 'home' %}" class="logo">
+        Pulse<span>.</span>
+    </a>
+</div>
+
+<div class="form-page">
+
+<div class="form-card">
+
+    <h1>Edit Post</h1>
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <div class="form-actions">
+            <button type="submit" class="button">
+                Save Changes
+            </button>
+
+            <a href="{% url 'post_detail' post.pk %}"
+               class="button secondary">
+                Cancel
+            </a>
+        </div>
+
+    </form>
+
+</div>
+
+
+</div>
+
+</body>
+</html>

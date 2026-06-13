@@ -1,0 +1,35 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title>Search Communities - Pulse</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  </head>
+
+  <body>
+    <div class="navbar">
+      <a href="{% url 'home' %}" class="logo"> Pulse<span>.</span> </a>
+    </div>
+
+    <div class="container">
+      
+      <h1>Community Search</h1>
+
+      {% for department in departments %}
+
+      <div class="post-card">
+        <a href="{% url 'department_posts' department.id %}">
+          {{ department.name }}
+        </a>
+      </div>
+
+      {% empty %}
+
+      <div class="post-card">No communities found.</div>
+
+      {% endfor %}
+    </div>
+  </body>
+</html>

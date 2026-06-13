@@ -1,0 +1,22 @@
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'css/auth.css' %}">
+
+<div class="auth-container">
+
+    <h1>Register</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <button type="submit">Create Account</button>
+    </form>
+
+    <p style="text-align:center; color:white; margin-top:10px;">
+        Already have an account?
+        <a href="{% url 'login' %}" style="color:#3b82f6;">Login</a>
+    </p>
+
+</div>

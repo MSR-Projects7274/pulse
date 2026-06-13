@@ -1,0 +1,110 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title>Pulse</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  </head>
+
+  <body>
+    <div class="navbar">
+      <a href="{% url 'home' %}" class="logo"> Pulse<span>.</span> </a>
+
+      <!-- COMMUNITY SEARCH -->
+      <form
+        method="GET"
+        action="{% url 'search_communities' %}"
+        class="community-search"
+      >
+        <input type="text" name="q" placeholder="Search communities..." />
+      </form>
+
+      <div class="nav-links">
+        {% if user.is_authenticated %}
+
+        <a href="{% url 'create_post' %}" class="button"> New Post </a>
+
+        <a href="{% url 'logout' %}" class="button secondary"> Log Out </a>
+
+        {% else %}
+
+        <a href="{% url 'login' %}" class="button"> Log In </a>
+
+        <a href="{% url 'register' %}" class="button secondary"> Register </a>
+
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="hero">
+      <h1>Pulse.</h1>
+      <p>Share ideas. Build projects. Create communities.</p>
+    </div>
+
+    {% if current_department %}
+
+    <div class="department-banner">
+      Viewing community:
+      <strong>{{ current_department.name }}</strong>
+
+      <a href="{% url 'home' %}" class="clear-filter"> View All </a>
+    </div>
+
+    {% endif %}
+
+    <div class="container">
+      {% for post in posts %}
+
+      <div class="post-card">
+        <!-- VOTE COLUMN -->
+        <div class="vote-column">
+          <a
+            href="{% url 'post_upvote' post.pk %}"
+            class="vote-arrow up {% if post.user_vote and post.user_vote.value == 1 %}active-up{% endif %}"
+          >
+          </a>
+
+          <div class="score">{{ post.score }}</div>
+
+          <a
+            href="{% url 'post_downvote' post.pk %}"
+            class="vote-arrow down {% if post.user_vote and post.user_vote.value == -1 %}active-down{% endif %}"
+          >
+          </a>
+        </div>
+
+        <!-- POST CONTENT -->
+        <div class="post-content">
+          <h2 class="post-title">
+            <a href="{% url 'post_detail' post.pk %}"> {{ post.title }} </a>
+          </h2>
+
+          <p class="post-text">{{ post.content|truncatewords:30 }}</p>
+
+          <div class="post-meta">
+            Posted by
+
+            <a href="{% url 'user_profile' post.author.username %}">
+              {{ post.author.username }}
+            </a>
+          </div>
+
+          <a
+            href="{% url 'department_posts' post.department.id %}"
+            class="department-tag"
+          >
+            {{ post.department.name }}
+          </a>
+        </div>
+      </div>
+
+      {% empty %}
+
+      <div class="post-card">No posts yet.</div>
+
+      {% endfor %}
+    </div>
+  </body>
+</html>
