@@ -1,205 +1,160 @@
-> ## ⚠️ Important Note
->
-> The first commit for this project is considerably larger than would typically be expected.
->
-> During the early stages of development, a widely reported Remote Code Execution (RCE) vulnerability affecting a tool used within the development workflow was publicly disclosed. As a precautionary measure, commits and asset uploads were temporarily delayed until guidance and updates relating to the issue became available.
->
-> Development of the project continued during this period; however, work was intentionally withheld from the repository until it was deemed appropriate to resume normal commit practices.
->
-> As a result, the initial commit contains a substantial amount of functionality and project assets that would ordinarily have been distributed across multiple smaller commits.
->
-> This approach was taken to prioritise security-conscious development practices and ensure the project repository remained unaffected during the period of uncertainty surrounding the reported vulnerability.
-
-# Pulse
-
+Pulse – Django Discussion Platform
+![Python](https://img.shields.io/badge/Python-3.12-blue)
+![Django](https://img.shields.io/badge/Django-5.0-green)
+![Status](https://img.shields.io/badge/Status-Complete-success)
+![Framework](https://img.shields.io/badge/Backend-Django%20MVT-lightgrey)
 ---
-
-## Project Overview
-
-Pulse is a Reddit-style discussion platform developed using Django. The application enables users to create posts, participate in discussions through comments, and engage with content shared by other members of the community.
-
-The project demonstrates the use of Django's Model-View-Template (MVT) architecture, user authentication, database management, and full CRUD functionality.
-
+⚠️ Important Note
+The first commit for this project is considerably larger than would typically be expected.
+During the early stages of development, a widely reported Remote Code Execution (RCE) vulnerability affecting a tool within the development ecosystem was disclosed. As a precautionary measure, commits and asset uploads were temporarily delayed until the situation stabilised and it was considered safe to resume normal repository activity.
+Development of the project itself continued during this time; however, changes were intentionally withheld from the repository to avoid committing work during a period of uncertainty.
+As a result, the initial commit contains a substantial portion of the project that would normally have been distributed across multiple incremental commits.
+This approach was taken to maintain a security-conscious and responsible development workflow.
 ---
-
-## Features
-
-### User Authentication
-
-* User registration
-* User login and logout
-* Authentication-protected actions
-* User account management
-
-### Posts
-
-* Create posts
-* View community posts
-* Edit existing posts
-* Delete posts
-* Dedicated post detail pages
-
-### Comments
-
-* Add comments to posts
-* Edit comments
-* Delete comments
-* Community discussion functionality
-
-### Security
-
-* Django authentication system
-* CSRF protection
-* Permission-based content management
-* Secure form handling and validation
-
+Table of Contents
+Overview
+Purpose
+Features
+Built With
+Project Structure
+Installation
+User Features
+Security
+Development Challenges
+Lessons Learned
+Future Improvements
+Credits
 ---
-
-## Technologies Used
-
-### Backend
-
-* Python
-* Django
-
-### Frontend
-
-* HTML5
-* CSS3
-* Django Templates
-
-### Database
-
-* SQLite
-
-### Version Control
-
-* Git
-* GitHub
-
+Overview
+Pulse is a Reddit-style discussion platform built using Django.
+It allows users to create posts, comment on content, and interact within a structured community environment.
+The project focuses on backend architecture, authentication systems, and full CRUD-based interaction between users and content.
 ---
-
-## Installation
-
-### Clone the Repository
-
-```bash
-git clone <repository-url>
-cd pulse
-```
-
-### Create a Virtual Environment
-
-```bash
-python -m venv venv
-```
-
-#### Windows
-
-```bash
-venv\Scripts\activate
-```
-
-#### macOS / Linux
-
-```bash
-source venv/bin/activate
-```
-
-### Install Dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
-### Apply Database Migrations
-
-```bash
-python manage.py migrate
-```
-
-### Create an Administrator Account (Optional)
-
-```bash
-python manage.py createsuperuser
-```
-
-### Run the Development Server
-
-```bash
-python manage.py runserver
-```
-
-Navigate to:
-
-```text
-http://127.0.0.1:8000/
-```
-
+Purpose
+This project was developed to:
+Practise Django MVT architecture
+Implement full user authentication flows
+Build a relational database-backed application
+Develop CRUD-based interaction systems
+Explore real-world forum-style application design
 ---
-
-## Project Structure
-
-```text
+Features
+User registration and authentication
+Secure login and logout system
+Create, edit, and delete posts
+Commenting system on posts
+User-owned content permissions
+Timestamp tracking for posts and comments
+Protected routes for authenticated users only
+Clean template-based UI structure
+---
+Built With
+Python – Core backend logic
+Django – Web framework (MVT architecture)
+HTML5 – Template structure
+CSS3 – Styling and layout
+SQLite – Development database
+Git & GitHub – Version control
+---
+Project Structure
+```
 pulse/
-│
 ├── accounts/
 ├── posts/
 ├── comments/
 ├── templates/
 ├── static/
-├── media/
-├── manage.py
 ├── db.sqlite3
+├── manage.py
 └── requirements.txt
 ```
-
 ---
-
-## Future Improvements
-
-Potential future enhancements include:
-
-* Upvote and downvote functionality
-* User profile customisation
-* Community creation and moderation tools
-* Search functionality
-* Post categories and tags
-* User notifications
-* Dark mode support
-* Enhanced media uploads
-
+Installation
+Clone Repository
+```bash
+git clone <repository-url>
+cd pulse
+```
+Create Virtual Environment
+```bash
+python -m venv venv
+```
+Activate Environment
+Windows
+```bash
+venv\Scripts\activate
+```
+macOS / Linux
+```bash
+source venv/bin/activate
+```
+Install Dependencies
+```bash
+pip install -r requirements.txt
+```
+Apply Migrations
+```bash
+python manage.py migrate
+```
+Create Superuser (Optional)
+```bash
+python manage.py createsuperuser
+```
+Run Server
+```bash
+python manage.py runserver
+```
+Open in your browser:
+```
+http://127.0.0.1:8000/
+```
 ---
-
-## Learning Outcomes
-
-This project demonstrates knowledge and practical application of:
-
-* Django project architecture
-* Model-View-Template (MVT) design
-* User authentication and authorisation
-* Database relationships
-* CRUD operations
-* Template inheritance
-* Static file management
-* Form validation
-* Git version control workflows
-
+User Features
+Accounts
+Register new users
+Login and logout system
+Session-based authentication
+Posts
+Create posts
+Edit and delete own posts
+View all community posts
+Individual post detail pages
+Comments
+Add comments to posts
+Edit and delete comments
+Threaded discussion support
 ---
-
-## Acknowledgements
-
-This project was developed for educational and portfolio purposes using:
-
-* Python
-* Django
-* HTML5
-* CSS3
-* Git
-* GitHub
-
+Security
+Django authentication system
+CSRF protection enabled
+Permission-based access control
+Secure form validation
+Route protection for authenticated users
 ---
-
-## License
-
-This project is provided for educational and portfolio purposes only.
+Development Challenges
+Handling Django URL routing conflicts in multi-app structure
+Resolving shell/model import issues during early database testing
+Managing template resolution errors across apps
+Ensuring correct app registration and migration order
+Debugging authentication flow inconsistencies
+---
+Lessons Learned
+Django project structure depends heavily on correct app configuration
+URL routing requires careful namespace management
+Model changes must be migrated carefully to avoid state mismatches
+Django shell is essential for backend debugging
+Authentication flows must be tested end-to-end early
+---
+Future Improvements
+User profiles with avatars
+Post categories and tagging system
+Notification system
+Rich text editor for posts
+Image uploads
+Moderation tools
+---
+Credits
+Django Documentation
+Python Software Foundation
+GitHub (version control)
+ChatGPT (debugging support, structure guidance, and development assistance)

@@ -8,13 +8,12 @@ from .models import Post, Comment
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ["department", "title", "content", "image"]
+        fields = ["department", "title", "content"]
 
         labels = {
             "department": "Channel",
             "title": "Title",
             "content": "Post",
-            "image": "Image"
         }
 
 
