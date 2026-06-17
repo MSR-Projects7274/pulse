@@ -5,7 +5,7 @@ from .models import Post, Comment, PostVote, CommentVote
 from .forms import PostForm, CommentForm
 from pulse.departments.models import Department
 from django.contrib.auth.models import User
-
+from django.db.models import Sum
 
 # =========================
 # HOME (FEED)
@@ -202,21 +202,35 @@ def post_detail(request, pk):
 def toggle_post_vote(request, pk, value):
     post = get_object_or_404(Post, pk=pk)
 
-    vote, created = PostVote.objects.get_or_create(
+    vote = PostVote.objects.filter(
         post=post,
-        user=request.user,
-        defaults={"value": value}
-    )
+        user=request.user
+    ).first()
 
-    if not created:
+    print("======")
+    print("USER:", request.user)
+    print("VALUE CLICKED:", value)
+    print("EXISTING:", vote)
+
+    if vote:
         if vote.value == value:
+            print("Deleting existing vote")
             vote.delete()
         else:
+            print("Changing vote")
             vote.value = value
             vote.save()
+    else:
+        print("Creating new vote")
+        PostVote.objects.create(
+            post=post,
+            user=request.user,
+            value=value
+        )
+
+    print("DB NOW:", PostVote.objects.filter(post=post))
 
     return redirect(request.META.get("HTTP_REFERER", "home"))
-
 
 # =========================
 # COMMENT VOTE
@@ -225,18 +239,23 @@ def toggle_post_vote(request, pk, value):
 def toggle_comment_vote(request, pk, value):
     comment = get_object_or_404(Comment, pk=pk)
 
-    vote, created = CommentVote.objects.get_or_create(
+    vote = CommentVote.objects.filter(
         comment=comment,
-        user=request.user,
-        defaults={"value": value}
-    )
+        user=request.user
+    ).first()
 
-    if not created:
+    if vote:
         if vote.value == value:
             vote.delete()
         else:
             vote.value = value
             vote.save()
+    else:
+        CommentVote.objects.create(
+            comment=comment,
+            user=request.user,
+            value=value
+        )
 
     return redirect(request.META.get("HTTP_REFERER", "home"))
 
@@ -359,11 +378,6 @@ def user_profile(request, username):
     comments = Comment.objects.filter(
         author=user_profile
     ).order_by("-created_at")
-
-    post_karma = sum(post.score() for post in posts)
-    comment_karma = sum(comment.score() for comment in comments)
-
-    total_karma = post_karma + comment_karma
 
     return render(
         request,

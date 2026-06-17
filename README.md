@@ -199,15 +199,16 @@ http://127.0.0.1:8000/
 | Authentication flow inconsistencies| Login/logout sessions behaved unpredictably across different views and redirects | Unified authentication flow, standardised middleware usage, and fixed redirect handling logic |
 
 </details>
+
 ---
 
 ## Lessons Learned
 
-Django project structure depends heavily on correct app configuration
-URL routing requires careful namespace management
-Model changes must be migrated carefully to avoid state mismatches
-Django shell is essential for backend debugging
-Authentication flows must be tested end-to-end early
+- Django project structure depends heavily on correct app configuration
+- URL routing requires careful namespace management
+- Model changes must be migrated carefully to avoid state mismatches
+- Django shell is essential for backend debugging
+- Authentication flows must be tested end-to-end early
 
 ---
 

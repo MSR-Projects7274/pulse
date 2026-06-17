@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from pulse.departments.models import Department
+from django.db.models import Sum
 
 
 # =========================
@@ -26,8 +27,11 @@ class Post(models.Model):
         return self.title
 
     # Post score (sum of votes)
+    @property
     def score(self):
-        return sum(v.value for v in self.votes.all())
+        return self.votes.aggregate(
+        total=Sum("value")
+    )["total"] or 0
 
 
 # =========================
@@ -51,8 +55,11 @@ class Comment(models.Model):
         return f"{self.author.username} on {self.post.title}"
 
     # Comment score (sum of votes)
+    @property
     def score(self):
-        return sum(v.value for v in self.votes.all())
+        return self.votes.aggregate(
+        total=Sum("value")
+    )["total"] or 0
 
 
 # =========================
