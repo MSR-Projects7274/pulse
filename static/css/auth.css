@@ -1,26 +1,46 @@
+/* =========================
+   AUTH PAGE
+========================= */
+
 body {
     margin: 0;
     font-family: Arial, sans-serif;
     background: linear-gradient(135deg, #0f172a, #1e293b);
-    height: 100vh;
+}
+
+/* Centering wrapper */
+.auth-page {
+    min-height: 100vh;
+
     display: flex;
     justify-content: center;
     align-items: center;
+
+    padding: 40px 20px;
 }
 
-/* Auth card */
-.auth-container {
-    background: rgba(17, 24, 39, 0.75);
+/* =========================
+   AUTH CARD
+========================= */
+
+.auth-card {
+    width: 500px;
+    max-width: 100%;
+
+    padding: 40px;
+
+    background: rgba(17, 24, 39, 0.9);
+
+    border: 1px solid rgba(79, 140, 255, 0.2);
+
+    border-radius: 18px;
+
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
 
-    border: 1px solid rgba(255, 255, 255, 0.08);
-
-    padding: 40px;
-    border-radius: 16px;
-    width: 350px;
-
-    box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+    box-shadow:
+        0 0 25px rgba(79, 140, 255, 0.08),
+        0 10px 30px rgba(0,0,0,0.4);
 
     color: white;
 
@@ -28,46 +48,68 @@ body {
 }
 
 /* Title */
-.auth-container h1 {
-    color: white;
+.auth-card h1 {
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
+    color: white;
 }
 
-/* Django form labels */
-.auth-container label {
+/* Labels */
+.auth-card label {
+    display: block;
+    margin-bottom: 8px;
     color: #cbd5e1;
 }
 
 /* Inputs */
-.auth-container input {
+.auth-card input {
     width: 100%;
-    padding: 10px;
-    margin: 8px 0;
-    border: none;
-    border-radius: 6px;
-    outline: none;
 
-    /* improved contrast */
+    padding: 14px;
+
+    margin-bottom: 18px;
+
+    border: 1px solid #374151;
+    border-radius: 10px;
+
     background: #1f2937;
     color: white;
+
+    font-size: 1rem;
+}
+
+.auth-card input:focus {
+    outline: none;
+
+    border-color: #4f8cff;
+
+    box-shadow: 0 0 10px rgba(79, 140, 255, 0.2);
 }
 
 /* Button */
-.auth-container button {
+.auth-card button {
     width: 100%;
-    padding: 10px;
-    margin-top: 15px;
-    background: #3b82f6;
-    color: white;
+
+    padding: 14px;
+
     border: none;
-    border-radius: 6px;
+    border-radius: 999px;
+
+    background: #4f8cff;
+    color: white;
+
+    font-size: 1rem;
+    font-weight: 600;
+
     cursor: pointer;
-    transition: 0.2s;
+
+    transition: 0.25s ease;
 }
 
-.auth-container button:hover {
-    background: #2563eb;
+.auth-card button:hover {
+    transform: translateY(-2px);
+
+    box-shadow: 0 0 20px rgba(79, 140, 255, 0.25);
 }
 
 /* Error message */
@@ -77,12 +119,104 @@ body {
     margin-bottom: 10px;
 }
 
-/* Links (login/register switch links) */
-.auth-container a {
-    color: #3b82f6;
+/* Links */
+.auth-card a {
+    color: #4f8cff;
     text-decoration: none;
 }
 
-.auth-container a:hover {
+.auth-card a:hover {
     text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+
+    .auth-page {
+        min-height: 100vh;
+        width: 100%;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        padding: 12px;   /* give breathing room */
+        box-sizing: border-box;
+    }
+
+    .auth-card {
+        width: 100%;
+        max-width: 100%;
+
+        margin: 0 auto;
+
+        padding: 26px 18px;
+
+        border-radius: 16px;
+    }
+}
+
+/* extra small phones */
+@media (max-width: 400px) {
+    .auth-card {
+        width: 94vw;
+        padding: 22px 14px;
+    }
+}
+
+
+/* MOBILE FIXES — applies to screens 600px and below */
+@media (max-width: 600px) {
+
+    /* Ensure the page scales properly */
+    body {
+        font-size: 1rem;
+        padding: 1rem;
+        margin: 0;
+    }
+
+    /* Prevent any container from forcing horizontal zoom-out */
+    .container,
+    .form-wrapper,
+    form {
+        width: 100%;
+        max-width: 100%;
+        padding: 0 1rem;
+        box-sizing: border-box;
+    }
+
+    /* Make labels readable */
+    label {
+        font-size: 1rem;
+        display: block;
+        margin-bottom: 0.5rem;
+    }
+
+    /* Make inputs scale to full width */
+    input,
+    select,
+    textarea {
+        width: 100%;
+        max-width: 100%;
+        font-size: 1rem;
+        padding: 0.75rem;
+        box-sizing: border-box;
+    }
+
+    /* Buttons should also scale */
+    button,
+    input[type="submit"] {
+        width: 100%;
+        padding: 0.9rem;
+        font-size: 1.1rem;
+        margin-top: 1rem;
+    }
+
+    /* Fix long text wrapping (e.g., password rules) */
+    p,
+    .helptext,
+    .errorlist {
+        font-size: 0.95rem;
+        line-height: 1.4;
+        word-wrap: break-word;
+    }
 }

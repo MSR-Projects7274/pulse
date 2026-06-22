@@ -100,7 +100,7 @@ pulse/
 Clone Repository
 
 ```bash
-git clone <repository-url>
+git clone <https://github.com/MSR-Projects7274/pulse>
 cd pulse
 ```
 
