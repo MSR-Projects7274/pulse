@@ -176,7 +176,7 @@ http://127.0.0.1:8000/
 - Threaded discussion support
 
 ---
-# User Stories – PULSE
+# User Stories
 
 ### New User / Visitor
 
@@ -261,6 +261,9 @@ http://127.0.0.1:8000/
 ---
 
 # User Story Validation (Screenshots)
+
+<details>
+<summary>Click to expand user story validation</summary>
 
 The following screenshots provide visual evidence that the key user stories identified for **PULSE** have been implemented successfully. The system is designed to support structured discussion, easy navigation, and clear user interaction flows.
 
@@ -357,6 +360,8 @@ As a user, I want a responsive interface so that I can use the platform on any d
 - Navigation remains usable across desktop and mobile views.
 
 ![Mobile view](assets/screenshots/mobile-view.png)
+
+</details>
 
 ---
 
