@@ -278,8 +278,8 @@ As a visitor, I want to register an account and understand the platform so that 
 - Registration form enforces username and password validation rules.  
 - Clean landing page introduces platform purpose and navigation options.
 
-![Registration page](assets/screenshots/register.png)
-![Landing page](assets/screenshots/landing.png)
+![Registration page](pulse/screenshots/register.png)
+![Landing page](pulse/screenshots/landing.png)
 
 ---
 
@@ -292,7 +292,7 @@ As a user, I want to log in, log out, and reset my password so that I can secure
 - Login system validates credentials and redirects users appropriately.  
 - Logout clears session securely.
 
-![Login page](assets/screenshots/login.png)
+![Login page](pulse/screenshots/login.png)
 
 ---
 
@@ -305,8 +305,8 @@ As a user, I want to create, edit, and delete posts so that I can manage my cont
 - Post creation form allows structured input for title and content.  
 - Edit and delete options are restricted to the post author only.
 
-![Create post page](assets/screenshots/create-post.png)
-![Post detail view](assets/screenshots/post-detail.png)
+![Create post page](pulse/screenshots/create-post.png)
+![Post detail view](pulse/screenshots/post-detail.png)
 
 ---
 
@@ -319,8 +319,8 @@ As a user, I want to browse posts and engage with comments so that I can partici
 - Posts are displayed in reverse chronological order.  
 - Comment system is visible under each post with timestamps and user attribution.
 
-![Post feed](assets/screenshots/post-feed.png)
-![Comments section](assets/screenshots/comments.png)
+![Post feed](pulse/screenshots/post-feed.png)
+![Comments section](pulse/screenshots/comments.png)
 
 ---
 
@@ -333,7 +333,7 @@ As a user, I want to search and filter posts so that I can find relevant discuss
 - Search functionality filters posts by keywords in title and content.  
 - Empty state messaging is displayed when no results are found.
 
-![Search results](assets/screenshots/search.png)
+![Search results](pulse/screenshots/search.png)
 
 ---
 
@@ -346,7 +346,7 @@ As a user, I want to view profiles so that I can explore user activity and contr
 - Profile pages display user posts and basic account information.  
 - Users can view other public profiles without accessing private data.
 
-![Profile page](assets/screenshots/profile.png)
+![Profile page](pulse/screenshots/profile.png)
 
 ---
 
@@ -359,11 +359,23 @@ As a user, I want a responsive interface so that I can use the platform on any d
 - Layout adapts dynamically to screen size.  
 - Navigation remains usable across desktop and mobile views.
 
-![Mobile view](assets/screenshots/mobile-view.png)
+![Mobile view](pulse/screenshots/mobile-view.png)
 
 </details>
 
 ---
+
+# Wireframes
+
+Initial layout planning focused on:
+
+- Clear header branding
+- Centralised game grid
+- Controlled UI spacing
+- Minimal navigation
+
+[View desktop wireframes](pulse/wireframes/desktop_designs.png)
+[View mobile wireframes](pulse/wireframes/mobile_designs.png)
 
 ## Security
 
