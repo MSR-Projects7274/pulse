@@ -27,7 +27,7 @@ This approach was taken to maintain a security-conscious and responsible develop
 - [Project Structure](#project-structure)
 - [Viewing the Site Locally](#viewing-the-site-locally)
 - [User Features](#user-features)
-- [User Stories](#user-stories--pulse)
+- [User Stories](#user-stories)
 - [User Story Mapping](#user-story-mapping)
 - [User Story Validation (Screenshots)](#user-story-validation-screenshots)
 - [Security](#security)
@@ -262,10 +262,10 @@ http://127.0.0.1:8000/
 
 # User Story Validation (Screenshots)
 
+The following screenshots provide visual evidence that the key user stories identified for this project have been implemented successfully. The system is designed to support structured discussion, easy navigation, and clear user interaction flows.
+
 <details>
 <summary>Click to expand user story validation</summary>
-
-The following screenshots provide visual evidence that the key user stories identified for **PULSE** have been implemented successfully. The system is designed to support structured discussion, easy navigation, and clear user interaction flows.
 
 ---
 
