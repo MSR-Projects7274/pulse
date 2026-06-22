@@ -2,8 +2,9 @@
 
 ![Python](https://img.shields.io/badge/Python-3.12-blue)
 ![Django](https://img.shields.io/badge/Django-5.0-green)
-![Status](https://img.shields.io/badge/Status-Complete-success)
 ![Framework](https://img.shields.io/badge/Backend-Django%20MVT-lightgrey)
+![Status](https://img.shields.io/badge/Status-Complete-success)
+![Website Screenshot]
 
 ---
 
@@ -19,18 +20,21 @@ This approach was taken to maintain a security-conscious and responsible develop
 
 ## Table of Contents
 
-- Overview
-- Purpose
-- Features
-- Built With
-- Project Structure
-- Installation
-- User Features
-- Security
-- Development Challenges
-- Lessons Learned
-- Future Improvements
-- Credits
+- [Overview](#overview)
+- [Purpose](#purpose)
+- [Features](#features)
+- [Built With](#built-with)
+- [Project Structure](#project-structure)
+- [Viewing the Site Locally](#viewing-the-site-locally)
+- [User Features](#user-features)
+- [User Stories](#user-stories--pulse)
+- [User Story Mapping](#user-story-mapping)
+- [User Story Validation (Screenshots)](#user-story-validation-screenshots)
+- [Security](#security)
+- [Development Challenges](#development-challenges)
+- [Lessons Learned](#lessons-learned)
+- [Future Improvements](#future-improvements)
+- [Credits](#credits)
 
 ---
 
@@ -172,23 +176,23 @@ http://127.0.0.1:8000/
 - Threaded discussion support
 
 ---
-# # User Stories – PULSE
+# User Stories – PULSE
 
-## New User / Visitor
+### New User / Visitor
 
 - As a visitor, I want to register an account so that I can participate in discussions.
 - As a visitor, I want to understand what the platform is about so that I know its purpose before signing up.
 
 ---
 
-## Authenticated User
+### Authenticated User
 
 - As a user, I want to log in so that I can access my account and interact with content.
 - As a user, I want to log out so that I can securely end my session.
 
 ---
 
-## Content Creator
+### Content Creator
 
 - As a user, I want to create a post so that I can share my thoughts with others.
 - As a user, I want to edit my posts so that I can correct or update my content.
@@ -196,7 +200,7 @@ http://127.0.0.1:8000/
 
 ---
 
-## Reader / Community Member
+### Reader / Community Member
 
 - As a user, I want to view a list of posts so that I can browse discussions.
 - As a user, I want to view a single post so that I can read full discussions in context.
@@ -206,7 +210,7 @@ http://127.0.0.1:8000/
 
 ---
 
-## Explorer / Discovery User
+### Explorer / Discovery User
 
 - As a user, I want to search posts so that I can find specific discussions quickly.
 - As a user, I want posts ordered by newest first so that I can see the latest activity.
@@ -214,28 +218,28 @@ http://127.0.0.1:8000/
 
 ---
 
-## Profile-Focused User
+### Profile-Focused User
 
 - As a user, I want to view my profile so that I can see my activity and contributions.
 - As a user, I want to view other users’ profiles so that I can explore their posts.
 
 ---
 
-## Mobile / Multi-Device User
+### Mobile / Multi-Device User
 
 - As a user, I want the interface to be responsive so that I can use the platform on any device.
 - As a user, I want navigation to be consistent so that I can move around the site easily.
 
 ---
 
-## Engagement-Oriented User
+### Engagement-Oriented User
 
 - As a user, I want to like posts so that I can show appreciation for content I enjoy.
 - As a user, I want posts to support better formatting so that I can structure my thoughts clearly.
 
 ---
 
-# # User Story Mapping
+# User Story Mapping
 
 | User Story | Implementation |
 |------------|---------------|
@@ -256,13 +260,13 @@ http://127.0.0.1:8000/
 
 ---
 
-# # User Story Validation (Screenshots)
+# User Story Validation (Screenshots)
 
 The following screenshots provide visual evidence that the key user stories identified for **PULSE** have been implemented successfully. The system is designed to support structured discussion, easy navigation, and clear user interaction flows.
 
 ---
 
-## New User / Visitor
+### New User / Visitor
 
 **User Need:**  
 As a visitor, I want to register an account and understand the platform so that I can decide to join the community.
@@ -276,7 +280,7 @@ As a visitor, I want to register an account and understand the platform so that 
 
 ---
 
-## Authenticated User
+### Authenticated User
 
 **User Need:**  
 As a user, I want to log in, log out, and reset my password so that I can securely manage my account access.
@@ -289,7 +293,7 @@ As a user, I want to log in, log out, and reset my password so that I can secure
 
 ---
 
-## Content Creator
+### Content Creator
 
 **User Need:**  
 As a user, I want to create, edit, and delete posts so that I can manage my content freely.
@@ -303,7 +307,7 @@ As a user, I want to create, edit, and delete posts so that I can manage my cont
 
 ---
 
-## Reader / Community Member
+### Reader / Community Member
 
 **User Need:**  
 As a user, I want to browse posts and engage with comments so that I can participate in discussions.
@@ -317,7 +321,7 @@ As a user, I want to browse posts and engage with comments so that I can partici
 
 ---
 
-## Explorer / Discovery User
+### Explorer / Discovery User
 
 **User Need:**  
 As a user, I want to search and filter posts so that I can find relevant discussions quickly.
@@ -330,7 +334,7 @@ As a user, I want to search and filter posts so that I can find relevant discuss
 
 ---
 
-## Profile-Focused User
+### Profile-Focused User
 
 **User Need:**  
 As a user, I want to view profiles so that I can explore user activity and contributions.
@@ -343,7 +347,7 @@ As a user, I want to view profiles so that I can explore user activity and contr
 
 ---
 
-## Mobile / Multi-Device User
+### Mobile / Multi-Device User
 
 **User Need:**  
 As a user, I want a responsive interface so that I can use the platform on any device.
