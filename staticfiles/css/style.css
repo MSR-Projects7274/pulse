@@ -23,7 +23,7 @@
     --muted: #94a3b8;
     --faint: #6b7280;
 
-    --accent: #4f8cff;
+    --accent: #4faaff;
 }
 
 /* =========================
@@ -194,7 +194,6 @@ h2 {
     flex: 1;
 }
 
-
 /* =========================
    LOGO
 ========================= */
@@ -281,10 +280,12 @@ h2 {
     color: var(--accent);
 }
 
-
-
 /* =========================
    BUTTONS
+========================= */
+
+/* =========================
+   BASE BUTTON
 ========================= */
 
 .button {
@@ -294,51 +295,80 @@ h2 {
 
     padding: 12px 22px;
 
-    background: rgba(79, 140, 255, 0.08);
-    border: 1px solid rgba(79, 140, 255, 0.25);
-
     border-radius: 999px;
 
-    color: #dbe8ff;
     text-decoration: none;
     font-weight: 600;
+    cursor: pointer;
 
     backdrop-filter: blur(10px);
 
-    transition: all 0.25s ease;
+    transition:
+        transform 0.25s ease,
+        background 0.25s ease,
+        border-color 0.25s ease,
+        box-shadow 0.25s ease;
 }
+
+/* Universal hover feel */
 
 .button:hover {
     transform: translateY(-2px);
-
-    background: rgba(79, 140, 255, 0.15);
-
-    border-color: rgba(79, 140, 255, 0.45);
-
-    box-shadow: 0 0 20px rgba(79, 140, 255, 0.15);
 }
 
 .button:active {
     transform: scale(0.97);
 }
 
-/* danger button */
 
-.danger {
-    background: #dc2626;
+/* =========================
+   PRIMARY BUTTON
+========================= */
+
+.button {
+    background: rgba(79, 140, 255, 0.08);
+    border: 1px solid rgba(79, 140, 255, 0.25);
+    color: #dbe8ff;
 }
 
-.danger:hover {
-    background: #b91c1c;
+.button:hover {
+    background: rgba(79, 140, 255, 0.15);
+    border-color: rgba(79, 140, 255, 0.45);
+    box-shadow: 0 0 20px rgba(79, 140, 255, 0.15);
 }
+
+
+/* =========================
+   SECONDARY BUTTON
+========================= */
 
 .secondary {
-    background: transparent;
-    border: 1px solid #3b82f6;
+    background: rgba(79, 140, 255, 0.08);
+    border: 1px solid rgba(79, 140, 255, 0.25);
+    color: #dbe8ff;
 }
 
 .secondary:hover {
-    background: #3b82f6;
+    background: rgba(59, 130, 246, 0.12);
+    border-color: #60a5fa;
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.15);
+}
+
+
+/* =========================
+   DANGER BUTTON
+========================= */
+
+.danger {
+    background: rgba(220, 38, 38, 0.12);
+    border: 1px solid rgba(220, 38, 38, 0.3);
+    color: #ffe2e2;
+}
+
+.danger:hover {
+    background: rgba(220, 38, 38, 0.2);
+    border-color: rgba(220, 38, 38, 0.5);
+    box-shadow: 0 0 20px rgba(220, 38, 38, 0.15);
 }
 
 /* =========================
@@ -350,6 +380,16 @@ h2 {
     max-width: 900px;
 
     margin: 40px auto;
+}
+
+/* =========================
+   MAIN PULSE
+========================= */
+span {
+    color: var(--accent);
+    text-shadow:
+        0 0 8px rgba(79, 140, 255, 0.5),
+        0 0 18px rgba(79, 140, 255, 0.25);
 }
 
 /* =========================

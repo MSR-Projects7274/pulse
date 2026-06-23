@@ -1,252 +1,179 @@
 {% load static %}
 
 <!DOCTYPE html>
-
 <html>
-
-<head>
+  <head>
     <title>{{ post.title }} - Pulse</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  </head>
 
-<body>
+  <body>
+    <div class="navbar">
+      <a href="{% url 'home' %}" class="logo"> Pulse<span>.</span> </a>
 
-<div class="navbar">
+      <!-- COMMUNITY SEARCH -->
+      <form
+        method="GET"
+        action="{% url 'search_communities' %}"
+        class="community-search"
+      >
+        <input type="text" name="q" placeholder="Search communities..." />
+      </form>
 
-    <a href="{% url 'home' %}" class="logo">
-        Pulse<span>.</span>
-    </a>
-
-    <!-- COMMUNITY SEARCH -->
-    <form method="GET"
-          action="{% url 'search_communities' %}"
-          class="community-search">
-
-        <input type="text"
-               name="q"
-               placeholder="Search communities...">
-
-    </form>
-
-    <div class="nav-links">
-
+      <div class="nav-links">
         {% if user.is_authenticated %}
 
-            <a href="{% url 'create_post' %}" class="button">
-                New Post
-            </a>
+        <a href="{% url 'create_post' %}" class="button"> New Post </a>
 
-            <a href="{% url 'logout' %}" class="button secondary">
-                Log Out
-            </a>
+        <a href="{% url 'logout' %}" class="button secondary"> Log Out </a>
 
         {% else %}
 
-            <a href="{% url 'login' %}" class="button">
-                Log In
-            </a>
+        <a href="{% url 'login' %}" class="button"> Log In </a>
 
-            <a href="{% url 'register' %}" class="button secondary">
-                Register
-            </a>
+        <a href="{% url 'register' %}" class="button secondary"> Register </a>
 
         {% endif %}
-
+      </div>
     </div>
 
-</div>
-
-
-<div class="container">
-
-    <!-- POST DETAIL -->
-    <div class="post-detail-card">
-
+    <div class="container">
+      <!-- POST DETAIL -->
+      <div class="post-detail-card">
         <!-- LEFT VOTE COLUMN -->
         <div class="vote-column">
+          <a
+            href="{% url 'post_upvote' post.pk %}"
+            class="vote-arrow up {% if user_post_vote and user_post_vote.value == 1 %}active-up{% endif %}"
+          >
+            ▲
+          </a>
 
-            <a href="{% url 'post_upvote' post.pk %}"
-               class="vote-arrow up {% if user_post_vote and user_post_vote.value == 1 %}active-up{% endif %}">
-                ▲
-            </a>
+          <div class="score">{{ post.score }}</div>
 
-            <div class="score">
-                {{ post.score }}
-            </div>
-
-            <a href="{% url 'post_downvote' post.pk %}"
-               class="vote-arrow down {% if user_post_vote and user_post_vote.value == -1 %}active-down{% endif %}">
-                ▼
-            </a>
-
+          <a
+            href="{% url 'post_downvote' post.pk %}"
+            class="vote-arrow down {% if user_post_vote and user_post_vote.value == -1 %}active-down{% endif %}"
+          >
+            ▼
+          </a>
         </div>
-
 
         <!-- RIGHT CONTENT -->
         <div class="post-content-wrap">
+          <h1 class="post-detail-title">{{ post.title }}</h1>
 
-            <h1 class="post-detail-title">
-                {{ post.title }}
-            </h1>
-
-            <div class="post-meta">
-
-                Posted by <strong>{{ post.author.username }}</strong>
-                · {{ post.created_at|date:"d M Y H:i" }}
-
-                {% if post.is_edited %}
-                    ·
-                    <span class="edited-label">
-                        edited {{ post.updated_at|date:"d M Y H:i" }}
-                    </span>
-                {% endif %}
-
-                <span class="department-tag">
-                    {{ post.department.name }}
-                </span>
-
-            </div>
-
-            <div class="post-detail-content">
-                {{ post.content }}
-            </div>
-
-
-            {% if user == post.author %}
-            <div class="post-actions">
-
-                <a href="{% url 'edit_post' post.pk %}"
-                   class="button">
-                    Edit Post
-                </a>
-
-                <a href="{% url 'delete_post' post.pk %}"
-                   class="button danger">
-                    Delete Post
-                </a>
-
-            </div>
+          <div class="post-meta">
+            Posted by <strong>{{ post.author.username }}</strong>
+            · {{ post.created_at|date:"d M Y H:i" }} {% if post.is_edited %} ·
+            <span class="edited-label">
+              edited {{ post.updated_at|date:"d M Y H:i" }}
+            </span>
             {% endif %}
 
+            <span class="department-tag"> {{ post.department.name }} </span>
+          </div>
+
+          <div class="post-detail-content">{{ post.content }}</div>
+
+          {% if user == post.author %}
+          <div class="post-actions">
+            <a href="{% url 'edit_post' post.pk %}" class="button">
+              Edit Post
+            </a>
+
+            <a href="{% url 'delete_post' post.pk %}" class="button danger">
+              Delete Post
+            </a>
+          </div>
+          {% endif %}
         </div>
+      </div>
 
-    </div>
-
-
-    <!-- COMMENTS SECTION -->
-    <div class="comments-section">
-
+      <!-- COMMENTS SECTION -->
+      <div class="comments-section">
         <h2>Comments</h2>
 
         {% if user.is_authenticated %}
 
         <form method="POST" class="comment-form">
+          {% csrf_token %} {{ form.content }}
 
-            {% csrf_token %}
-
-            {{ form.content }}
-
-            <button type="submit" class="button">
-                Comment
-            </button>
-
+          <button type="submit" class="button">Comment</button>
         </form>
 
         {% else %}
 
         <div class="login-notice">
-
-            Please
-            <a href="{% url 'login' %}">
-                log in
-            </a>
-            to comment.
-
+          Please
+          <a href="{% url 'login' %}"> log in </a>
+          to comment.
         </div>
 
         {% endif %}
-
 
         <!-- COMMENTS LIST -->
         {% for comment in comments %}
 
         <div class="comment">
+          <div class="comment-vote">
+            <a
+              href="{% url 'comment_upvote' comment.pk %}"
+              class="vote-arrow up {% if comment.user_vote and comment.user_vote.value == 1 %}active-up{% endif %}"
+            >
+              ▲
+            </a>
 
-            <div class="comment-vote">
+            <div class="score">{{ comment.score }}</div>
 
-                <a href="{% url 'comment_upvote' comment.pk %}"
-                   class="vote-arrow up {% if comment.user_vote and comment.user_vote.value == 1 %}active-up{% endif %}">
-                    ▲
-                </a>
+            <a
+              href="{% url 'comment_downvote' comment.pk %}"
+              class="vote-arrow down {% if comment.user_vote and comment.user_vote.value == -1 %}active-down{% endif %}"
+            >
+              ▼
+            </a>
+          </div>
 
-                <div class="score">
-                    {{ comment.score }}
-                </div>
-
-                <a href="{% url 'comment_downvote' comment.pk %}"
-                   class="vote-arrow down {% if comment.user_vote and comment.user_vote.value == -1 %}active-down{% endif %}">
-                    ▼
-                </a>
-
+          <div class="comment-body-wrap">
+            <div class="comment-meta">
+              <strong>{{ comment.author.username }}</strong>
+              · {{ comment.created_at|date:"d M Y H:i" }} {% if
+              comment.is_edited %} ·
+              <span class="edited-label">
+                edited {{ comment.updated_at|date:"d M Y H:i" }}
+              </span>
+              {% endif %}
             </div>
 
+            <div class="comment-text">{{ comment.content }}</div>
 
-            <div class="comment-body-wrap">
+            {% if user == comment.author %}
+            <div class="comment-actions">
+              <a
+                href="{% url 'edit_comment' comment.pk %}"
+                class="comment-action"
+              >
+                Edit
+              </a>
 
-                <div class="comment-meta">
-
-                    <strong>{{ comment.author.username }}</strong>
-                    · {{ comment.created_at|date:"d M Y H:i" }}
-
-                    {% if comment.is_edited %}
-                        ·
-                        <span class="edited-label">
-                            edited {{ comment.updated_at|date:"d M Y H:i" }}
-                        </span>
-                    {% endif %}
-
-                </div>
-
-
-                <div class="comment-text">
-                    {{ comment.content }}
-                </div>
-
-
-                {% if user == comment.author %}
-                <div class="comment-actions">
-
-                    <a href="{% url 'edit_comment' comment.pk %}"
-                       class="comment-action">
-                        Edit
-                    </a>
-
-                    <a href="{% url 'delete_comment' comment.pk %}"
-                       class="comment-action delete">
-                        Delete
-                    </a>
-
-                </div>
-                {% endif %}
-
+              <a
+                href="{% url 'delete_comment' comment.pk %}"
+                class="comment-action delete"
+              >
+                Delete
+              </a>
             </div>
-
+            {% endif %}
+          </div>
         </div>
 
         {% empty %}
 
-        <p class="no-comments">
-            No comments yet. Be the first!
-        </p>
+        <p class="no-comments">No comments yet. Be the first!</p>
 
         {% endfor %}
-
+      </div>
     </div>
-
-</div>
-
-
-</body>
-
+  </body>
 </html>

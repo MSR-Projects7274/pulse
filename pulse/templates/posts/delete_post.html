@@ -1,57 +1,39 @@
 {% load static %}
 
 <!DOCTYPE html>
-
 <html>
-<head>
+  <head>
     <title>Delete Post - Pulse</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
-<body>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  </head>
+  <body>
+    <div class="navbar">
+      <a href="{% url 'home' %}" class="logo"> Pulse<span>.</span> </a>
+    </div>
 
-<div class="navbar">
-    <a href="{% url 'home' %}" class="logo">
-        Pulse<span>.</span>
-    </a>
-</div>
+    <div class="form-page">
+      <div class="form-card danger-card">
+        <h1>Delete Post</h1>
 
-<div class="form-page">
+        <p class="delete-warning">
+          Are you sure you want to permanently delete:
+        </p>
 
-<div class="form-card danger-card">
+        <h2>"{{ post.title }}"</h2>
 
-    <h1>Delete Post</h1>
+        <form method="POST">
+          {% csrf_token %}
 
-    <p class="delete-warning">
-        Are you sure you want to permanently delete:
-    </p>
+          <div class="form-actions">
+            <button type="submit" class="button danger">Delete Forever</button>
 
-    <h2>
-        "{{ post.title }}"
-    </h2>
-
-    <form method="POST">
-        {% csrf_token %}
-
-        <div class="form-actions">
-
-            <button type="submit" class="button danger">
-                Delete Forever
-            </button>
-
-            <a href="{% url 'post_detail' post.pk %}"
-               class="button secondary">
-                Cancel
+            <a href="{% url 'post_detail' post.pk %}" class="button secondary">
+              Cancel
             </a>
-
-        </div>
-
-    </form>
-
-</div>
-
-
-</div>
-
-</body>
+          </div>
+        </form>
+      </div>
+    </div>
+  </body>
 </html>

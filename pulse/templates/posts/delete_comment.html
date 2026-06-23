@@ -2,54 +2,41 @@
 
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <title>Delete Comment - Pulse</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
-<body>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  </head>
+  <body>
+    <div class="navbar">
+      <a href="{% url 'home' %}" class="logo"> Pulse<span>.</span> </a>
+    </div>
 
-<div class="navbar">
-    <a href="{% url 'home' %}" class="logo">
-        Pulse<span>.</span>
-    </a>
-</div>
-
-<div class="form-page">
-
-    <div class="form-card danger-card">
-
+    <div class="form-page">
+      <div class="form-card danger-card">
         <h1>Delete Comment</h1>
 
         <p class="delete-warning">
-            Are you sure you want to permanently delete this comment?
+          Are you sure you want to permanently delete this comment?
         </p>
 
-        <blockquote style="color:#cbd5e1;">
-            {{ comment.content }}
-        </blockquote>
+        <blockquote style="color: #cbd5e1">{{ comment.content }}</blockquote>
 
         <form method="POST">
-            {% csrf_token %}
+          {% csrf_token %}
 
-            <div class="form-actions">
+          <div class="form-actions">
+            <button type="submit" class="button danger">Delete Forever</button>
 
-                <button type="submit" class="button danger">
-                    Delete Forever
-                </button>
-
-                <a href="{% url 'post_detail' comment.post.pk %}"
-                   class="button secondary">
-                    Cancel
-                </a>
-
-            </div>
-
+            <a
+              href="{% url 'post_detail' comment.post.pk %}"
+              class="button secondary"
+            >
+              Cancel
+            </a>
+          </div>
         </form>
-
+      </div>
     </div>
-
-</div>
-
-</body>
+  </body>
 </html>

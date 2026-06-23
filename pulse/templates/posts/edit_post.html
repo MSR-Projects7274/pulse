@@ -1,49 +1,33 @@
 {% load static %}
 
 <!DOCTYPE html>
-
 <html>
-<head>
+  <head>
     <title>Edit Post - Pulse</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
-<body>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  </head>
+  <body>
+    <div class="navbar">
+      <a href="{% url 'home' %}" class="logo"> Pulse<span>.</span> </a>
+    </div>
 
-<div class="navbar">
-    <a href="{% url 'home' %}" class="logo">
-        Pulse<span>.</span>
-    </a>
-</div>
+    <div class="form-page">
+      <div class="form-card">
+        <h1>Edit Post</h1>
 
-<div class="form-page">
+        <form method="POST" enctype="multipart/form-data">
+          {% csrf_token %} {{ form.as_p }}
 
-<div class="form-card">
+          <div class="form-actions">
+            <button type="submit" class="button">Save Changes</button>
 
-    <h1>Edit Post</h1>
-
-    <form method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-
-        {{ form.as_p }}
-
-        <div class="form-actions">
-            <button type="submit" class="button">
-                Save Changes
-            </button>
-
-            <a href="{% url 'post_detail' post.pk %}"
-               class="button secondary">
-                Cancel
+            <a href="{% url 'post_detail' post.pk %}" class="button secondary">
+              Cancel
             </a>
-        </div>
-
-    </form>
-
-</div>
-
-
-</div>
-
-</body>
+          </div>
+        </form>
+      </div>
+    </div>
+  </body>
 </html>

@@ -2,48 +2,35 @@
 
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <title>Edit Comment - Pulse</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
-<body>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  </head>
+  <body>
+    <div class="navbar">
+      <a href="{% url 'home' %}" class="logo"> Pulse<span>.</span> </a>
+    </div>
 
-<div class="navbar">
-    <a href="{% url 'home' %}" class="logo">
-        Pulse<span>.</span>
-    </a>
-</div>
-
-<div class="form-page">
-
-    <div class="form-card">
-
+    <div class="form-page">
+      <div class="form-card">
         <h1>Edit Comment</h1>
 
         <form method="POST">
-            {% csrf_token %}
+          {% csrf_token %} {{ form.as_p }}
 
-            {{ form.as_p }}
+          <div class="form-actions">
+            <button type="submit" class="button">Save Changes</button>
 
-            <div class="form-actions">
-
-                <button type="submit" class="button">
-                    Save Changes
-                </button>
-
-                <a href="{% url 'post_detail' comment.post.pk %}"
-                   class="button secondary">
-                    Cancel
-                </a>
-
-            </div>
-
+            <a
+              href="{% url 'post_detail' comment.post.pk %}"
+              class="button secondary"
+            >
+              Cancel
+            </a>
+          </div>
         </form>
-
+      </div>
     </div>
-
-</div>
-
-</body>
+  </body>
 </html>
