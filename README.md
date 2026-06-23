@@ -370,11 +370,11 @@ As a user, I want a responsive interface so that I can use the platform on any d
 Initial layout planning focused on:
 
 - Clear header branding
-- Centralised game grid
 - Controlled UI spacing
 - Minimal navigation
 
 [View desktop wireframes](pulse/wireframes/desktop_designs.png)
+
 [View mobile wireframes](pulse/wireframes/mobile_designs.png)
 
 ## Security

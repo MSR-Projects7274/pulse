@@ -168,42 +168,120 @@ h2 {
 ========================= */
 
 .navbar {
-    background: rgba(22, 27, 34, 0.85);
-    backdrop-filter: blur(12px);
-
     position: sticky;
     top: 0;
     z-index: 100;
 
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
+    gap: 30px;
 
-    padding: 20px 40px;
+    padding: 18px 40px;
+
+    background: rgba(22, 27, 34, 0.88);
+    backdrop-filter: blur(14px);
 
     border-bottom: 1px solid var(--border);
+
+    /* Creates balanced 3-column layout */
 }
 
+/* Equal spacing for all sections */
+.logo,
+.community-search,
+.nav-links {
+    flex: 1;
+}
+
+
+/* =========================
+   LOGO
+========================= */
+
 .logo {
-    font-size: 1.8rem;
-    font-weight: bold;
+    display: inline-flex;
+    align-items: center;
+
+    font-size: 1.75rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+
     text-decoration: none;
     color: var(--text);
 
-    display: inline-block;
+    transition: all 0.25s ease;
 }
 
 .logo span {
     color: var(--accent);
-
     text-shadow:
-        0 0 10px rgba(79, 140, 255, 0.6),
-        0 0 20px rgba(79, 140, 255, 0.3);
+        0 0 8px rgba(79, 140, 255, 0.5),
+        0 0 18px rgba(79, 140, 255, 0.25);
 }
 
 .logo:hover {
     color: var(--accent);
+    transform: translateY(-1px);
 }
+
+
+/* =========================
+   SEARCH BAR
+========================= */
+
+.community-search {
+    display: flex;
+    justify-content: center;
+}
+
+.community-search input {
+    width: 100%;
+    max-width: 360px;
+
+    padding: 10px 16px;
+
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+
+    color: var(--text);
+    font-size: 0.95rem;
+
+    outline: none;
+    transition: all 0.25s ease;
+}
+
+.community-search input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 12px rgba(79, 140, 255, 0.2);
+}
+
+
+/* =========================
+   NAV LINKS
+========================= */
+
+.nav-links {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 18px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: var(--text-muted);
+
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.nav-links a:hover {
+    color: var(--accent);
+}
+
+
 
 /* =========================
    BUTTONS
