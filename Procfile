@@ -1,1 +1,1 @@
-web: gunicorn pulse-forum-app.wsgi
+web: gunicorn pulse.wsgi
