@@ -4,7 +4,7 @@
 ![Django](https://img.shields.io/badge/Django-5.0-green)
 ![Framework](https://img.shields.io/badge/Backend-Django%20MVT-lightgrey)
 ![Status](https://img.shields.io/badge/Status-Complete-success)
-![Website Screenshot]
+![Website Screenshot](pulse/screenshots/landing.png)
 
 ---
 
