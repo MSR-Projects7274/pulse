@@ -286,7 +286,7 @@ As a visitor, I want to register an account and understand the platform so that 
 ### Authenticated User
 
 **User Need:**  
-As a user, I want to log in, log out, and reset my password so that I can securely manage my account access.
+As a user, I want to log in and log out so that I can securely manage my account access.
 
 **Evidence:**  
 - Login system validates credentials and redirects users appropriately.  
@@ -376,6 +376,8 @@ Initial layout planning focused on:
 [View desktop wireframes](pulse/wireframes/desktop_designs.png)
 
 [View mobile wireframes](pulse/wireframes/mobile_designs.png)
+
+---
 
 ## Security
 

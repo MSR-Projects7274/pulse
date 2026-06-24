@@ -144,8 +144,7 @@
           <div class="comment-body-wrap">
             <div class="comment-meta">
               <strong>{{ comment.author.username }}</strong>
-              · {{ comment.created_at|date:"d M Y H:i" }} {% if
-              comment.is_edited %} ·
+              · {{ comment.created_at|date:"d M Y H:i" }} {% if comment.is_edited %} ·
               <span class="edited-label">
                 edited {{ comment.updated_at|date:"d M Y H:i" }}
               </span>
