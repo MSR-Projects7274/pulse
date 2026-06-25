@@ -415,6 +415,7 @@ Initial layout planning focused on:
 - Model changes must be migrated carefully to avoid state mismatches
 - Django shell is essential for backend debugging
 - Authentication flows must be tested end-to-end early
+- Nu HTML checker will flag errors on Django-generated forms
 
 ---
 
