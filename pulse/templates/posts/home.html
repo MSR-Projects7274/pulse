@@ -103,6 +103,14 @@
             <a href="{% url 'post_detail' post.pk %}"> {{ post.title }} </a>
           </h2>
 
+          {% if post.image %}
+            <img
+              src="{{ post.image.url }}"
+              alt="Image for {{ post.title }}"
+              class="post-image"
+            />
+          {% endif %}
+
           <p class="post-text">{{ post.content|truncatewords:30 }}</p>
 
           <div class="post-meta">

@@ -95,6 +95,14 @@
             <span class="department-tag"> {{ post.department.name }} </span>
           </div>
 
+          {% if post.image %}
+            <img
+              src="{{ post.image.url }}"
+              alt="Image for {{ post.title }}"
+              class="post-detail-image"
+            />
+          {% endif %}
+
           <div class="post-detail-content">{{ post.content }}</div>
 
           {% if user == post.author %}
