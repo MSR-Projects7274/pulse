@@ -63,21 +63,27 @@
       <div class="post-detail-card">
         <!-- LEFT VOTE COLUMN -->
         <div class="vote-column">
-          <a
-            href="{% url 'post_upvote' post.pk %}"
-            class="vote-arrow up {% if user_post_vote and user_post_vote.value == 1 %}active-up{% endif %}"
-          >
-            ▲
-          </a>
+          <form method="post" action="{% url 'post_upvote' post.pk %}">
+            {% csrf_token %}
+            <button
+              type="submit"
+              class="vote-arrow up {% if user_post_vote and user_post_vote.value == 1 %}active-up{% endif %}"
+            >
+              ▲
+            </button>
+          </form>
 
           <div class="score">{{ post.score }}</div>
 
-          <a
-            href="{% url 'post_downvote' post.pk %}"
-            class="vote-arrow down {% if user_post_vote and user_post_vote.value == -1 %}active-down{% endif %}"
-          >
-            ▼
-          </a>
+          <form method="post" action="{% url 'post_downvote' post.pk %}">
+            {% csrf_token %}
+            <button
+              type="submit"
+              class="vote-arrow down {% if user_post_vote and user_post_vote.value == -1 %}active-down{% endif %}"
+            >
+              ▼
+            </button>
+          </form>
         </div>
 
         <!-- RIGHT CONTENT -->
@@ -146,21 +152,27 @@
 
         <div class="comment">
           <div class="comment-vote">
-            <a
-              href="{% url 'comment_upvote' comment.pk %}"
-              class="vote-arrow up {% if comment.user_vote and comment.user_vote.value == 1 %}active-up{% endif %}"
-            >
-              ▲
-            </a>
+            <form method="post" action="{% url 'comment_upvote' comment.pk %}">
+              {% csrf_token %}
+              <button
+                type="submit"
+                class="vote-arrow up {% if comment.user_vote and comment.user_vote.value == 1 %}active-up{% endif %}"
+              >
+                ▲
+              </button>
+            </form>
 
             <div class="score">{{ comment.score }}</div>
 
-            <a
-              href="{% url 'comment_downvote' comment.pk %}"
-              class="vote-arrow down {% if comment.user_vote and comment.user_vote.value == -1 %}active-down{% endif %}"
-            >
-              ▼
-            </a>
+            <form method="post" action="{% url 'comment_downvote' comment.pk %}">
+              {% csrf_token %}
+              <button
+                type="submit"
+                class="vote-arrow down {% if comment.user_vote and comment.user_vote.value == -1 %}active-down{% endif %}"
+              >
+                ▼
+              </button>
+            </form>
           </div>
 
           <div class="comment-body-wrap">

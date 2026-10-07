@@ -80,21 +80,27 @@
       <div class="post-card">
         <!-- VOTE COLUMN -->
         <div class="vote-column">
-          <a
-            href="{% url 'post_upvote' post.pk %}"
-            class="vote-arrow up {% if post.user_vote and post.user_vote.value == 1 %}active-up{% endif %}"
-          >
-            ▲
-          </a>
+          <form method="post" action="{% url 'post_upvote' post.pk %}">
+            {% csrf_token %}
+            <button
+              type="submit"
+              class="vote-arrow up {% if post.user_vote and post.user_vote.value == 1 %}active-up{% endif %}"
+            >
+              ▲
+            </button>
+          </form>
 
           <div class="score">{{ post.score }}</div>
 
-          <a
-            href="{% url 'post_downvote' post.pk %}"
-            class="vote-arrow down {% if post.user_vote and post.user_vote.value == -1 %}active-down{% endif %}"
-          >
-            ▼
-          </a>
+          <form method="post" action="{% url 'post_downvote' post.pk %}">
+            {% csrf_token %}
+            <button
+              type="submit"
+              class="vote-arrow down {% if post.user_vote and post.user_vote.value == -1 %}active-down{% endif %}"
+            >
+              ▼
+            </button>
+          </form>
         </div>
 
         <!-- POST CONTENT -->
