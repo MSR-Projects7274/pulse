@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 
-from django.contrib.auth import login, logout, authenticate
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login, logout
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.views.decorators.http import require_POST
 
 
@@ -29,30 +29,27 @@ def register_view(request):
 
 def login_view(request):
 
-    error = None
-
     if request.method == "POST":
-
-        username = request.POST.get("username")
-        password = request.POST.get("password")
-
-        user = authenticate(
+        form = AuthenticationForm(
             request,
-            username=username,
-            password=password
+            data=request.POST
         )
 
-        if user:
-            login(request, user)
+        if form.is_valid():
+            login(
+                request,
+                form.get_user()
+            )
             return redirect("home")
 
-        error = "Invalid username or password"
+    else:
+        form = AuthenticationForm(request)
 
     return render(
         request,
         "accounts/login.html",
         {
-            "error": error
+            "form": form
         }
     )
 
