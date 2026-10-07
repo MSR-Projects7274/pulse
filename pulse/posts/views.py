@@ -348,8 +348,13 @@ def delete_comment(request, pk):
 # =========================
 def department_posts(request, department_id):
 
+    department = get_object_or_404(
+        Department,
+        pk=department_id
+    )
+
     posts = Post.objects.filter(
-        department_id=department_id
+        department=department
     ).order_by("-created_at")
 
     user = request.user
@@ -363,16 +368,14 @@ def department_posts(request, department_id):
         else:
             post.user_vote = None
 
-    department = posts.first().department if posts.exists() else None
-
     return render(
-    request,
-    "posts/home.html",
-    {
-        "posts": posts,
-        "current_department": department
-    }
-)
+        request,
+        "posts/home.html",
+        {
+            "posts": posts,
+            "current_department": department
+        }
+    )
 
 # =========================
 # USER PROFILE
