@@ -8,6 +8,9 @@ from django.views.decorators.http import require_POST
 
 def register_view(request):
 
+    if request.user.is_authenticated:
+        return redirect("home")
+
     if request.method == "POST":
         form = UserCreationForm(request.POST)
 
@@ -29,6 +32,9 @@ def register_view(request):
 
 
 def login_view(request):
+
+    if request.user.is_authenticated:
+        return redirect("home")
 
     next_url = request.POST.get("next") or request.GET.get("next")
 
