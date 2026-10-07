@@ -31,8 +31,8 @@ class Post(models.Model):
     @property
     def score(self):
         return self.votes.aggregate(
-        total=Sum("value")
-    )["total"] or 0
+            total=Sum("value")
+        )["total"] or 0
 
 
 # =========================
@@ -59,25 +59,39 @@ class Comment(models.Model):
     @property
     def score(self):
         return self.votes.aggregate(
-        total=Sum("value")
-    )["total"] or 0
+            total=Sum("value")
+        )["total"] or 0
 
 
 # =========================
 # POST VOTES (up/down)
 # =========================
 class PostVote(models.Model):
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="votes")
+    post = models.ForeignKey(
+        Post,
+        on_delete=models.CASCADE,
+        related_name="votes"
+    )
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
-    value = models.SmallIntegerField()  # +1 or -1
+    value = models.SmallIntegerField(
+        choices=[
+            (-1, "Downvote"),
+            (1, "Upvote"),
+        ]
+    )
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-
     class Meta:
         unique_together = ("post", "user")
+        constraints = [
+            models.CheckConstraint(
+                condition=models.Q(value__in=[-1, 1]),
+                name="postvote_value_valid",
+            ),
+        ]
 
     def __str__(self):
         return f"{self.user.username} voted {self.value} on post {self.post.id}"
@@ -87,16 +101,34 @@ class PostVote(models.Model):
 # COMMENT VOTES (up/down)
 # =========================
 class CommentVote(models.Model):
-    comment = models.ForeignKey(Comment, on_delete=models.CASCADE, related_name="votes")
+    comment = models.ForeignKey(
+        Comment,
+        on_delete=models.CASCADE,
+        related_name="votes"
+    )
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
-    value = models.SmallIntegerField()  # +1 or -1
+    value = models.SmallIntegerField(
+        choices=[
+            (-1, "Downvote"),
+            (1, "Upvote"),
+        ]
+    )
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         unique_together = ("comment", "user")
+        constraints = [
+            models.CheckConstraint(
+                condition=models.Q(value__in=[-1, 1]),
+                name="commentvote_value_valid",
+            ),
+        ]
 
     def __str__(self):
-        return f"{self.user.username} voted {self.value} on comment {self.comment.id}"
+        return (
+            f"{self.user.username} voted "
+            f"{self.value} on comment {self.comment.id}"
+        )
