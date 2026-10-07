@@ -85,11 +85,14 @@ class PostVote(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        unique_together = ("post", "user")
         constraints = [
             models.CheckConstraint(
-                condition=models.Q(value__in=[-1, 1]),
+                condition=models.Q(value=-1) | models.Q(value=1),
                 name="postvote_value_valid",
+            ),
+            models.UniqueConstraint(
+                fields=["post", "user"],
+                name="unique_post_vote_per_user",
             ),
         ]
 
@@ -119,11 +122,14 @@ class CommentVote(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        unique_together = ("comment", "user")
         constraints = [
             models.CheckConstraint(
-                condition=models.Q(value__in=[-1, 1]),
+                condition=models.Q(value=-1) | models.Q(value=1),
                 name="commentvote_value_valid",
+            ),
+            models.UniqueConstraint(
+                fields=["comment", "user"],
+                name="unique_comment_vote_per_user",
             ),
         ]
 
