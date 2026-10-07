@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 from pulse.departments.models import Department
 from django.core.validators import RegexValidator
 from django.db.models import Sum
+from django.core.validators import FileExtensionValidator
+from pulse.posts.validators import validate_image_size
 
 non_whitespace_validator = RegexValidator(
     regex=r"\S",
@@ -32,7 +34,13 @@ class Post(models.Model):
     image = models.ImageField(
         upload_to="post_images/",
         blank=True,
-        null=True
+        null=True,
+        validators=[
+            FileExtensionValidator(
+                allowed_extensions=["jpg", "jpeg", "png", "webp"]
+            ),
+            validate_image_size,
+        ],
     )
 
     def __str__(self):
