@@ -7,6 +7,7 @@ from pulse.departments.models import Department
 from django.contrib.auth.models import User
 from django.db.models import Sum
 from django.views.decorators.http import require_POST
+from django.utils.http import url_has_allowed_host_and_scheme
 
 # =========================
 # HOME (FEED)
@@ -222,7 +223,16 @@ def toggle_post_vote(request, pk, value):
             value=value
         )
 
-    return redirect(request.META.get("HTTP_REFERER", "home"))
+    next_url = request.POST.get("next")
+
+    if next_url and url_has_allowed_host_and_scheme(
+        url=next_url,
+        allowed_hosts={request.get_host()},
+        require_https=request.is_secure(),
+    ):
+        return redirect(next_url)
+
+    return redirect("home")
 
 # =========================
 # COMMENT VOTE
@@ -250,7 +260,16 @@ def toggle_comment_vote(request, pk, value):
             value=value
         )
 
-    return redirect(request.META.get("HTTP_REFERER", "home"))
+    next_url = request.POST.get("next")
+
+    if next_url and url_has_allowed_host_and_scheme(
+        url=next_url,
+        allowed_hosts={request.get_host()},
+        require_https=request.is_secure(),
+    ):
+        return redirect(next_url)
+
+    return redirect("post_detail", pk=comment.post_id)
 
 # =========================
 # COMMENT EDIT
