@@ -8,6 +8,7 @@ from django.contrib.auth.models import User
 from django.db.models import Sum
 from django.views.decorators.http import require_POST
 from django.utils.http import url_has_allowed_host_and_scheme
+from django.core.exceptions import PermissionDenied
 
 # =========================
 # HOME (FEED)
@@ -85,7 +86,7 @@ def edit_post(request, pk):
 
     # Only the author can edit
     if post.author != request.user:
-        return redirect("home")
+        raise PermissionDenied
 
     if request.method == "POST":
         form = PostForm(
@@ -129,7 +130,7 @@ def delete_post(request, pk):
 
     # Only the author can delete
     if post.author != request.user:
-        return redirect("home")
+        raise PermissionDenied
 
     if request.method == "POST":
         post.delete()
@@ -280,7 +281,7 @@ def edit_comment(request, pk):
 
     # Only the author can edit
     if comment.author != request.user:
-        return redirect("home")
+        raise PermissionDenied
 
     if request.method == "POST":
         form = CommentForm(
@@ -323,7 +324,7 @@ def delete_comment(request, pk):
 
     # Only the author can delete
     if comment.author != request.user:
-        return redirect("home")
+        raise PermissionDenied
 
     post_pk = comment.post.pk
 
