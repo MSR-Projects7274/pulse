@@ -269,18 +269,23 @@ h2 {
     gap: 18px;
 }
 
-.nav-links a {
+.nav-links a,
+.nav-links button.button {
     text-decoration: none;
     color: var(--text-muted);
 
+    font-family: inherit;
+    font-size: inherit;
     font-weight: 500;
+    cursor: pointer;
+
     transition: all 0.2s ease;
 }
 
-.nav-links a:hover {
+.nav-links a:hover,
+.nav-links button.button:hover {
     color: var(--accent);
 }
-
 
 
 /* =========================

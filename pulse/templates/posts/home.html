@@ -46,7 +46,12 @@
 
         <a href="{% url 'create_post' %}" class="button"> New Post </a>
 
-        <a href="{% url 'logout' %}" class="button secondary"> Log Out </a>
+        <form method="post" action="{% url 'logout' %}">
+          {% csrf_token %}
+          <button type="submit" class="button secondary">
+            Log Out
+          </button>
+        </form>
 
         {% else %}
 
