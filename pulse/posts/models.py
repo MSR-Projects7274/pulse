@@ -74,7 +74,6 @@ class PostVote(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    is_edited = models.BooleanField(default=False)
 
 
     class Meta:
@@ -95,7 +94,6 @@ class CommentVote(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    is_edited = models.BooleanField(default=False)
 
     class Meta:
         unique_together = ("comment", "user")
