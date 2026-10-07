@@ -209,28 +209,18 @@ def toggle_post_vote(request, pk, value):
         user=request.user
     ).first()
 
-    print("======")
-    print("USER:", request.user)
-    print("VALUE CLICKED:", value)
-    print("EXISTING:", vote)
-
     if vote:
         if vote.value == value:
-            print("Deleting existing vote")
             vote.delete()
         else:
-            print("Changing vote")
             vote.value = value
             vote.save()
     else:
-        print("Creating new vote")
         PostVote.objects.create(
             post=post,
             user=request.user,
             value=value
         )
-
-    print("DB NOW:", PostVote.objects.filter(post=post))
 
     return redirect(request.META.get("HTTP_REFERER", "home"))
 
