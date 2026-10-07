@@ -1,7 +1,13 @@
 from django.db import models
 from django.contrib.auth.models import User
 from pulse.departments.models import Department
+from django.core.validators import RegexValidator
 from django.db.models import Sum
+
+non_whitespace_validator = RegexValidator(
+    regex=r"\S",
+    message="This field cannot contain only whitespace.",
+)
 
 
 # =========================
@@ -11,8 +17,13 @@ class Post(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
 
-    title = models.CharField(max_length=200)
-    content = models.TextField()
+    title = models.CharField(
+        max_length=200,
+        validators=[non_whitespace_validator],
+    )
+    content = models.TextField(
+        validators=[non_whitespace_validator],
+    )
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -46,7 +57,9 @@ class Comment(models.Model):
     )
 
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    content = models.TextField()
+    content = models.TextField(
+        validators=[non_whitespace_validator],
+    )
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
