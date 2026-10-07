@@ -6,6 +6,7 @@ from .forms import PostForm, CommentForm
 from pulse.departments.models import Department
 from django.contrib.auth.models import User
 from django.db.models import Sum
+from django.views.decorators.http import require_POST
 
 # =========================
 # HOME (FEED)
@@ -199,6 +200,7 @@ def post_detail(request, pk):
 # POST VOTE
 # =========================
 @login_required
+@require_POST
 def toggle_post_vote(request, pk, value):
     post = get_object_or_404(Post, pk=pk)
 
@@ -236,6 +238,7 @@ def toggle_post_vote(request, pk, value):
 # COMMENT VOTE
 # =========================
 @login_required
+@require_POST
 def toggle_comment_vote(request, pk, value):
     comment = get_object_or_404(Comment, pk=pk)
 

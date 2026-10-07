@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.forms import UserCreationForm
+from django.views.decorators.http import require_POST
 
 
 def register_view(request):
@@ -56,6 +57,7 @@ def login_view(request):
     )
 
 
+@require_POST
 def logout_view(request):
 
     logout(request)
