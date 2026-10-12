@@ -1,0 +1,37 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>404 | Pulse</title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/style.css' %}"
+    >
+</head>
+
+<body>
+    <main class="error-page">
+        <section class="error-card">
+            <div class="error-code">404</div>
+
+            <p class="error-kicker">NOT FOUND</p>
+
+            <h1>That page drifted out of range.</h1>
+
+            <p class="error-message">
+                The page you're looking for doesn't exist or may have moved.
+            </p>
+
+            <div class="error-actions">
+                <a href="{% url 'home' %}" class="button">
+                    Back to Pulse
+                </a>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
