@@ -51,24 +51,42 @@
         <form method="POST" enctype="multipart/form-data">
           {% csrf_token %}
 
+          {% if form.non_field_errors %}
+            {% for error in form.non_field_errors %}
+              <div class="error">{{ error }}</div>
+            {% endfor %}
+          {% endif %}
+
           <div style="margin-bottom: 15px">
             {{ form.department.label_tag }}<br />
             {{ form.department }}
+            {% for error in form.department.errors %}
+              <div class="error">{{ error }}</div>
+            {% endfor %}
           </div>
 
           <div style="margin-bottom: 15px">
             {{ form.title.label_tag }}<br />
             {{ form.title }}
+            {% for error in form.title.errors %}
+              <div class="error">{{ error }}</div>
+            {% endfor %}
           </div>
 
           <div style="margin-bottom: 15px">
             {{ form.content.label_tag }}<br />
             {{ form.content }}
+            {% for error in form.content.errors %}
+              <div class="error">{{ error }}</div>
+            {% endfor %}
           </div>
 
           <div style="margin-bottom: 15px">
             {{ form.image.label_tag }}<br />
             {{ form.image }}
+            {% for error in form.image.errors %}
+              <div class="error">{{ error }}</div>
+            {% endfor %}
           </div>
 
           <button type="submit" class="button">Publish</button>
