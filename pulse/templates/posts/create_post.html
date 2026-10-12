@@ -34,7 +34,7 @@
 
       <a href="{% url 'home' %}" class="button"> Back to Feed </a>
     </div>
-
+    {% include "includes/messages.html" %}
     <div class="container">
       {% if not user.is_authenticated %}
       <script>
