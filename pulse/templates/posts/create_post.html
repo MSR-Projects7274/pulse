@@ -36,11 +36,6 @@
     </div>
     {% include "includes/messages.html" %}
     <div class="container">
-      {% if not user.is_authenticated %}
-      <script>
-        window.location.href = "{% url 'login' %}";
-      </script>
-      {% endif %}
       <div class="post-card">
         <h2>Create a new post</h2>
 
