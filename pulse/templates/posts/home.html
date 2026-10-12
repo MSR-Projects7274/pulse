@@ -29,6 +29,7 @@
             <input type="hidden" name="next" value="{{ request.get_full_path }}">
             <button
               type="submit"
+              aria-label="Upvote post {{ post.title }}"
               class="vote-arrow up {% if post.user_vote and post.user_vote.value == 1 %}active-up{% endif %}"
             >
               ▲
@@ -42,6 +43,7 @@
             <input type="hidden" name="next" value="{{ request.get_full_path }}">
             <button
               type="submit"
+              aria-label="Downvote post {{ post.title }}"
               class="vote-arrow down {% if post.user_vote and post.user_vote.value == -1 %}active-down{% endif %}"
             >
               ▼
