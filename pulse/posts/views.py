@@ -198,6 +198,11 @@ def post_detail(request, pk):
             comment.author = user
             comment.save()
 
+            messages.success(
+                request,
+                "Comment added successfully."
+            )
+
             return redirect("post_detail", pk=post.pk)
 
     else:
@@ -311,6 +316,11 @@ def edit_comment(request, pk):
 
             edited_comment.save()
 
+            messages.success(
+                request,
+                "Comment updated successfully."
+            )
+
             return redirect(
                 "post_detail",
                 pk=comment.post.pk
@@ -343,6 +353,12 @@ def delete_comment(request, pk):
 
     if request.method == "POST":
         comment.delete()
+
+        messages.success(
+            request,
+            "Comment deleted successfully."
+        )
+
         return redirect(
             "post_detail",
             pk=post_pk
