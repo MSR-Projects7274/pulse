@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 from .models import Post, Comment, PostVote, CommentVote
 from .forms import PostForm, CommentForm
@@ -68,14 +69,23 @@ def create_post(request):
             post.author = request.user
             post.save()
 
+            messages.success(
+                request,
+                "Post created successfully."
+            )
+
             return redirect("home")
 
     else:
         form = PostForm()
 
-    return render(request, "posts/create_post.html", {
-        "form": form
-    })
+    return render(
+        request,
+        "posts/create_post.html",
+        {
+            "form": form
+        }
+    )
 
 # =========================
 # EDIT POST
@@ -103,6 +113,7 @@ def edit_post(request, pk):
             edited_post.is_edited = True
 
             edited_post.save()
+            messages.success(request, "Post updated successfully.")
 
             return redirect(
                 "post_detail",
@@ -134,6 +145,8 @@ def delete_post(request, pk):
 
     if request.method == "POST":
         post.delete()
+
+        messages.success(request, "Post deleted successfully.")
 
         return redirect("home")
 
