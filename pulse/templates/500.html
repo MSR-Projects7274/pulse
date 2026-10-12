@@ -1,0 +1,38 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>500 | Pulse</title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/style.css' %}"
+    >
+</head>
+
+<body>
+    <main class="error-page">
+        <section class="error-card">
+            <div class="error-code">500</div>
+
+            <p class="error-kicker">SIGNAL INTERRUPTED</p>
+
+            <h1>Something went off-frequency.</h1>
+
+            <p class="error-message">
+                Pulse hit an unexpected problem while loading this page.
+                Please try again in a moment.
+            </p>
+
+            <div class="error-actions">
+                <a href="/" class="button">
+                    Back to Pulse
+                </a>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
