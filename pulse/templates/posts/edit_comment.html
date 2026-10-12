@@ -8,7 +8,28 @@
         <h1>Edit Comment</h1>
 
         <form method="POST">
-          {% csrf_token %} {{ form.as_p }}
+          {% csrf_token %}
+
+        {% if form.non_field_errors %}
+          {% for error in form.non_field_errors %}
+            <div class="error">{{ error }}</div>
+          {% endfor %}
+        {% endif %}
+
+        {% for field in form %}
+          <div class="form-field">
+            {{ field.label_tag }}
+            {{ field }}
+
+            {% if field.help_text %}
+              <div class="helptext">{{ field.help_text|safe }}</div>
+            {% endif %}
+
+            {% for error in field.errors %}
+              <div class="error">{{ error }}</div>
+            {% endfor %}
+          </div>
+        {% endfor %}
 
           <div class="form-actions">
             <button type="submit" class="button">Save Changes</button>
