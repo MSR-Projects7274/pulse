@@ -411,6 +411,14 @@ textarea {
     min-height: 90px;
 }
 
+.create-post-field {
+    margin-bottom: 15px;
+}
+
+.comment-preview {
+    color: #cbd5e1;
+}
+
 /* =========================
    GLOBAL LINKS
 ========================= */

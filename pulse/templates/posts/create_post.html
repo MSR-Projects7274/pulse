@@ -20,7 +20,7 @@
             {% endfor %}
           {% endif %}
 
-          <div style="margin-bottom: 15px">
+          <div class="create-post-field">
             {{ form.department.label_tag }}<br />
             {{ form.department }}
             {% for error in form.department.errors %}
@@ -28,7 +28,7 @@
             {% endfor %}
           </div>
 
-          <div style="margin-bottom: 15px">
+          <div class="create-post-field">
             {{ form.title.label_tag }}<br />
             {{ form.title }}
             {% for error in form.title.errors %}
@@ -36,7 +36,7 @@
             {% endfor %}
           </div>
 
-          <div style="margin-bottom: 15px">
+          <div class="create-post-field">
             {{ form.content.label_tag }}<br />
             {{ form.content }}
             {% for error in form.content.errors %}
@@ -44,7 +44,7 @@
             {% endfor %}
           </div>
 
-          <div style="margin-bottom: 15px">
+          <div class="create-post-field">
             {{ form.image.label_tag }}<br />
             {{ form.image }}
             {% for error in form.image.errors %}

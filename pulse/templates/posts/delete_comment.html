@@ -11,7 +11,7 @@
           Are you sure you want to permanently delete this comment?
         </p>
 
-        <blockquote style="color: #cbd5e1">{{ comment.content }}</blockquote>
+        <blockquote class="comment-preview">{{ comment.content }}</blockquote>
 
         <form method="POST">
           {% csrf_token %}
