@@ -23,12 +23,24 @@
 
         <input type="hidden" name="next" value="{{ next|default:'' }}" />
 
-        <input type="text" name="username" placeholder="Username" />
+        <label for="id_username">Username</label>
+        <input
+          type="text"
+          name="username"
+          id="id_username"
+          placeholder="Username"
+        />
         {% for error in form.username.errors %}
           <div class="error">{{ error }}</div>
         {% endfor %}
 
-        <input type="password" name="password" placeholder="Password" />
+        <label for="id_password">Password</label>
+        <input
+          type="password"
+          name="password"
+          id="id_password"
+          placeholder="Password"
+        />
         {% for error in form.password.errors %}
           <div class="error">{{ error }}</div>
         {% endfor %}
