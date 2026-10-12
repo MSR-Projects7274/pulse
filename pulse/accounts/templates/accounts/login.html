@@ -44,7 +44,14 @@
         <input type="hidden" name="next" value="{{ next|default:'' }}" />
 
         <input type="text" name="username" placeholder="Username" />
+        {% for error in form.username.errors %}
+          <div class="error">{{ error }}</div>
+        {% endfor %}
+
         <input type="password" name="password" placeholder="Password" />
+        {% for error in form.password.errors %}
+          <div class="error">{{ error }}</div>
+        {% endfor %}
 
         <button type="submit">Login</button>
       </form>
