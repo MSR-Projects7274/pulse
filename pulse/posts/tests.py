@@ -307,3 +307,83 @@ class FreshUserViewTests(TestCase):
         self.assertFalse(
             Post.objects.filter(pk=post_pk).exists()
         )
+
+    def test_post_edit_permissions_for_owner_and_non_owner(self):
+        owner = User.objects.create_user(
+            username="editowner",
+            password="TestPass123!",
+        )
+        non_owner = User.objects.create_user(
+            username="editnonowner",
+            password="TestPass123!",
+        )
+        department = Department.objects.get(name="General")
+        post = Post.objects.create(
+            author=owner,
+            department=department,
+            title="Owner post",
+            content="Original content.",
+        )
+
+        self.client.force_login(owner)
+
+        owner_response = self.client.get(
+            reverse("edit_post", args=[post.pk])
+        )
+
+        self.assertEqual(owner_response.status_code, 200)
+
+        self.client.force_login(non_owner)
+
+        non_owner_response = self.client.post(
+            reverse("edit_post", args=[post.pk]),
+            {
+                "department": department.pk,
+                "title": "Unauthorized edit",
+                "content": "This should not be saved.",
+            },
+        )
+
+        self.assertEqual(non_owner_response.status_code, 403)
+
+        post.refresh_from_db()
+
+        self.assertEqual(post.title, "Owner post")
+        self.assertEqual(post.content, "Original content.")
+        self.assertFalse(post.is_edited)
+
+    def test_post_delete_permissions_for_owner_and_non_owner(self):
+        owner = User.objects.create_user(
+            username="deleteowner",
+            password="TestPass123!",
+        )
+        non_owner = User.objects.create_user(
+            username="deletenonowner",
+            password="TestPass123!",
+        )
+        department = Department.objects.get(name="General")
+        post = Post.objects.create(
+            author=owner,
+            department=department,
+            title="Protected post",
+            content="Only the owner can delete this.",
+        )
+
+        self.client.force_login(owner)
+
+        owner_response = self.client.get(
+            reverse("delete_post", args=[post.pk])
+        )
+
+        self.assertEqual(owner_response.status_code, 200)
+
+        self.client.force_login(non_owner)
+
+        non_owner_response = self.client.post(
+            reverse("delete_post", args=[post.pk])
+        )
+
+        self.assertEqual(non_owner_response.status_code, 403)
+        self.assertTrue(
+            Post.objects.filter(pk=post.pk).exists()
+        )
