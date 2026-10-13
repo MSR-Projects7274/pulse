@@ -107,6 +107,27 @@ class LoginTests(TestCase):
             response.context["form"].non_field_errors()
         )
 
+    def test_login_honours_next_redirect(self):
+        destination = reverse("create_post")
+
+        response = self.client.post(
+            reverse("login"),
+            {
+                "username": "loginuser",
+                "password": "StrongTestPass123!",
+                "next": destination,
+            },
+        )
+
+        self.assertRedirects(
+            response,
+            destination,
+        )
+        self.assertEqual(
+            int(self.client.session["_auth_user_id"]),
+            self.user.pk,
+        )
+
 class LogoutTests(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(
