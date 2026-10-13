@@ -3,6 +3,7 @@ from io import BytesIO
 
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.contrib.auth import get_user_model
+from django.db import IntegrityError, transaction
 from django.test import TestCase
 from django.urls import reverse
 
@@ -789,3 +790,64 @@ class FreshUserViewTests(TestCase):
             ).exists()
         )
         self.assertEqual(comment.score, 0)
+
+    def test_post_vote_rejects_value_outside_allowed_range(self):
+        user = User.objects.create_user(
+            username="invalidpostvoter",
+            password="TestPass123!",
+        )
+        department = Department.objects.get(name="General")
+        post = Post.objects.create(
+            author=user,
+            department=department,
+            title="Invalid post vote test",
+            content="Testing the post vote database constraint.",
+        )
+
+        with self.assertRaises(IntegrityError):
+            with transaction.atomic():
+                PostVote.objects.create(
+                    post=post,
+                    user=user,
+                    value=0,
+                )
+
+        self.assertFalse(
+            PostVote.objects.filter(
+                post=post,
+                user=user,
+            ).exists()
+        )
+
+    def test_comment_vote_rejects_value_outside_allowed_range(self):
+        user = User.objects.create_user(
+            username="invalidcommentvoter",
+            password="TestPass123!",
+        )
+        department = Department.objects.get(name="General")
+        post = Post.objects.create(
+            author=user,
+            department=department,
+            title="Invalid comment vote test",
+            content="Testing the comment vote database constraint.",
+        )
+        comment = Comment.objects.create(
+            post=post,
+            author=user,
+            content="Invalid vote target.",
+        )
+
+        with self.assertRaises(IntegrityError):
+            with transaction.atomic():
+                CommentVote.objects.create(
+                    comment=comment,
+                    user=user,
+                    value=42,
+                )
+
+        self.assertFalse(
+            CommentVote.objects.filter(
+                comment=comment,
+                user=user,
+            ).exists()
+        )
