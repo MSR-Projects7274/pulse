@@ -106,3 +106,39 @@ class LoginTests(TestCase):
         self.assertTrue(
             response.context["form"].non_field_errors()
         )
+
+class LogoutTests(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(
+            username="logoutuser",
+            password="StrongTestPass123!",
+        )
+
+    def test_logout_via_post(self):
+        self.client.force_login(self.user)
+
+        response = self.client.post(
+            reverse("logout")
+        )
+
+        self.assertRedirects(
+            response,
+            reverse("home"),
+        )
+        self.assertNotIn(
+            "_auth_user_id",
+            self.client.session,
+        )
+
+    def test_logout_via_get_is_rejected(self):
+        self.client.force_login(self.user)
+
+        response = self.client.get(
+            reverse("logout")
+        )
+
+        self.assertEqual(response.status_code, 405)
+        self.assertEqual(
+            int(self.client.session["_auth_user_id"]),
+            self.user.pk,
+        )
