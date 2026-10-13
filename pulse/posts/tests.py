@@ -4,7 +4,7 @@ from io import BytesIO
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.contrib.auth import get_user_model
 from django.db import IntegrityError, transaction
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from django.urls import reverse
 
 from pulse.departments.models import Department
@@ -991,3 +991,25 @@ class FreshUserViewTests(TestCase):
         self.assertContains(response, "Posts: 0")
         self.assertContains(response, "Comments: 0")
         self.assertContains(response, "No posts yet.")
+
+    @override_settings(DEBUG=False)
+    def test_custom_404_template_is_rendered(self):
+        response = self.client.get(
+            "/this-page-does-not-exist/"
+        )
+
+        self.assertEqual(response.status_code, 404)
+        self.assertTemplateUsed(
+            response,
+            "404.html",
+        )
+        self.assertContains(
+            response,
+            "That page drifted out of range.",
+            status_code=404,
+        )
+        self.assertContains(
+            response,
+            "Back to Pulse",
+            status_code=404,
+        )
