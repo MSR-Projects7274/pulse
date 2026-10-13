@@ -429,3 +429,71 @@ class FreshUserViewTests(TestCase):
         self.assertEqual(comment.author, user)
         self.assertEqual(comment.post, post)
         self.assertFalse(comment.is_edited)
+
+    def test_blank_comment_is_rejected(self):
+        user = User.objects.create_user(
+            username="blankcommenter",
+            password="TestPass123!",
+        )
+        department = Department.objects.get(name="General")
+        post = Post.objects.create(
+            author=user,
+            department=department,
+            title="Blank comment test",
+            content="Testing blank comment validation.",
+        )
+
+        self.client.force_login(user)
+
+        response = self.client.post(
+            reverse("post_detail", args=[post.pk]),
+            {
+                "content": "",
+            },
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(
+            response,
+            "posts/post_detail.html",
+        )
+        self.assertTrue(
+            response.context["form"].errors.get("content")
+        )
+        self.assertFalse(
+            Comment.objects.filter(post=post).exists()
+        )
+
+    def test_whitespace_only_comment_is_rejected(self):
+        user = User.objects.create_user(
+            username="whitespacecommenter",
+            password="TestPass123!",
+        )
+        department = Department.objects.get(name="General")
+        post = Post.objects.create(
+            author=user,
+            department=department,
+            title="Whitespace comment test",
+            content="Testing whitespace comment validation.",
+        )
+
+        self.client.force_login(user)
+
+        response = self.client.post(
+            reverse("post_detail", args=[post.pk]),
+            {
+                "content": "   ",
+            },
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(
+            response,
+            "posts/post_detail.html",
+        )
+        self.assertTrue(
+            response.context["form"].errors.get("content")
+        )
+        self.assertFalse(
+            Comment.objects.filter(post=post).exists()
+        )
