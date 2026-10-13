@@ -59,3 +59,50 @@ class RegistrationTests(TestCase):
             "password2",
             response.context["form"].errors,
         )
+
+class LoginTests(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(
+            username="loginuser",
+            password="StrongTestPass123!",
+        )
+
+    def test_login_success(self):
+        response = self.client.post(
+            reverse("login"),
+            {
+                "username": "loginuser",
+                "password": "StrongTestPass123!",
+            },
+        )
+
+        self.assertRedirects(
+            response,
+            reverse("home"),
+        )
+        self.assertEqual(
+            int(self.client.session["_auth_user_id"]),
+            self.user.pk,
+        )
+
+    def test_failed_login_is_rejected(self):
+        response = self.client.post(
+            reverse("login"),
+            {
+                "username": "loginuser",
+                "password": "WrongPassword123!",
+            },
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(
+            response,
+            "accounts/login.html",
+        )
+        self.assertNotIn(
+            "_auth_user_id",
+            self.client.session,
+        )
+        self.assertTrue(
+            response.context["form"].non_field_errors()
+        )
