@@ -944,3 +944,16 @@ class FreshUserViewTests(TestCase):
 
         self.assertContains(response, announcements.name)
         self.assertNotContains(response, other_post.title)
+
+    def test_invalid_community_id_returns_404(self):
+        highest_department = Department.objects.order_by("-pk").first()
+        invalid_id = highest_department.pk + 1000
+
+        response = self.client.get(
+            reverse(
+                "department_posts",
+                args=[invalid_id],
+            )
+        )
+
+        self.assertEqual(response.status_code, 404)
