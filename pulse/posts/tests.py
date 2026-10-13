@@ -283,3 +283,27 @@ class FreshUserViewTests(TestCase):
                         post.image.name
                     )
                 )
+    def test_post_can_be_deleted(self):
+        user = User.objects.create_user(
+            username="postdeleter",
+            password="TestPass123!",
+        )
+        department = Department.objects.get(name="General")
+        post = Post.objects.create(
+            author=user,
+            department=department,
+            title="Delete me",
+            content="This post should be deleted.",
+        )
+        post_pk = post.pk
+
+        self.client.force_login(user)
+
+        response = self.client.post(
+            reverse("delete_post", args=[post_pk])
+        )
+
+        self.assertRedirects(response, reverse("home"))
+        self.assertFalse(
+            Post.objects.filter(pk=post_pk).exists()
+        )
