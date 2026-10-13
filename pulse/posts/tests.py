@@ -160,3 +160,126 @@ class FreshUserViewTests(TestCase):
                         "post_images/"
                     )
                 )
+    def test_post_edit_preserves_and_replaces_image(self):
+        user = User.objects.create_user(
+            username="posteditor",
+            password="TestPass123!",
+        )
+        department = Department.objects.get(name="General")
+
+        initial_buffer = BytesIO()
+        Image.new("RGB", (10, 10)).save(
+            initial_buffer,
+            format="PNG",
+        )
+        initial_image = SimpleUploadedFile(
+            "original-image.png",
+            initial_buffer.getvalue(),
+            content_type="image/png",
+        )
+
+        replacement_buffer = BytesIO()
+        Image.new("RGB", (10, 10)).save(
+            replacement_buffer,
+            format="PNG",
+        )
+        replacement_image = SimpleUploadedFile(
+            "replacement-image.png",
+            replacement_buffer.getvalue(),
+            content_type="image/png",
+        )
+
+        self.client.force_login(user)
+
+        with tempfile.TemporaryDirectory() as media_root:
+            with self.settings(
+                MEDIA_ROOT=media_root,
+                STORAGES={
+                    "default": {
+                        "BACKEND": (
+                            "django.core.files.storage."
+                            "FileSystemStorage"
+                        ),
+                    },
+                    "staticfiles": {
+                        "BACKEND": (
+                            "django.contrib.staticfiles.storage."
+                            "StaticFilesStorage"
+                        ),
+                    },
+                },
+            ):
+                post = Post.objects.create(
+                    author=user,
+                    department=department,
+                    title="Original title",
+                    content="Original content.",
+                    image=initial_image,
+                )
+
+                original_image_name = post.image.name
+
+                response = self.client.post(
+                    reverse("edit_post", args=[post.pk]),
+                    {
+                        "department": department.pk,
+                        "title": "Edited title",
+                        "content": "Edited content.",
+                    },
+                )
+
+                self.assertRedirects(
+                    response,
+                    reverse("post_detail", args=[post.pk]),
+                )
+
+                post.refresh_from_db()
+
+                self.assertEqual(post.title, "Edited title")
+                self.assertEqual(post.content, "Edited content.")
+                self.assertEqual(
+                    post.image.name,
+                    original_image_name,
+                )
+                self.assertTrue(post.is_edited)
+                self.assertEqual(post.author, user)
+
+                response = self.client.post(
+                    reverse("edit_post", args=[post.pk]),
+                    {
+                        "department": department.pk,
+                        "title": "Edited title again",
+                        "content": "Edited again with a new image.",
+                        "image": replacement_image,
+                    },
+                )
+
+                self.assertRedirects(
+                    response,
+                    reverse("post_detail", args=[post.pk]),
+                )
+
+                post.refresh_from_db()
+
+                self.assertEqual(
+                    post.title,
+                    "Edited title again",
+                )
+                self.assertEqual(
+                    post.content,
+                    "Edited again with a new image.",
+                )
+                self.assertNotEqual(
+                    post.image.name,
+                    original_image_name,
+                )
+                self.assertTrue(
+                    post.image.name.startswith(
+                        "post_images/"
+                    )
+                )
+                self.assertTrue(
+                    post.image.storage.exists(
+                        post.image.name
+                    )
+                )
