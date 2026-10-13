@@ -906,3 +906,41 @@ class FreshUserViewTests(TestCase):
         self.assertContains(response, first_post.title)
         self.assertContains(response, second_post.title)
         self.assertNotContains(response, other_post.title)
+
+    def test_empty_community_page_displays_normally(self):
+        user = User.objects.create_user(
+            username="othercommunityposter",
+            password="TestPass123!",
+        )
+        general = Department.objects.get(name="General")
+        announcements = Department.objects.get(name="Announcements")
+
+        other_post = Post.objects.create(
+            author=user,
+            department=general,
+            title="General-only post",
+            content="This must not appear in the empty community.",
+        )
+
+        response = self.client.get(
+            reverse(
+                "department_posts",
+                args=[announcements.pk],
+            )
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(
+            response,
+            "posts/home.html",
+        )
+        self.assertEqual(
+            response.context["current_department"],
+            announcements,
+        )
+        self.assertFalse(
+            response.context["posts"].exists()
+        )
+
+        self.assertContains(response, announcements.name)
+        self.assertNotContains(response, other_post.title)
