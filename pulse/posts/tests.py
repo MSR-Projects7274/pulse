@@ -1,3 +1,7 @@
+import tempfile
+from io import BytesIO
+
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
@@ -5,6 +9,7 @@ from django.urls import reverse
 from pulse.departments.models import Department
 
 from .models import Post
+from PIL import Image
 
 
 User = get_user_model()
@@ -82,3 +87,76 @@ class FreshUserViewTests(TestCase):
                 content="Testing post creation from a brand-new account.",
             ).exists()
         )
+
+        created_post = Post.objects.get(
+            title="Fresh user created this"
+        )
+        self.assertFalse(created_post.image)
+
+    def test_fresh_user_can_create_post_with_image(self):
+        fresh_user = User.objects.create_user(
+            username="freshimagecreator",
+            password="TestPass123!",
+        )
+        department = Department.objects.get(name="General")
+
+        image_buffer = BytesIO()
+        Image.new("RGB", (10, 10)).save(
+            image_buffer,
+            format="PNG",
+        )
+        uploaded_image = SimpleUploadedFile(
+            "test-image.png",
+            image_buffer.getvalue(),
+            content_type="image/png",
+        )
+
+        self.client.force_login(fresh_user)
+
+        with tempfile.TemporaryDirectory() as media_root:
+            with self.settings(
+                MEDIA_ROOT=media_root,
+                STORAGES={
+                    "default": {
+                        "BACKEND": (
+                            "django.core.files.storage."
+                            "FileSystemStorage"
+                        ),
+                    },
+                    "staticfiles": {
+                        "BACKEND": (
+                            "django.contrib.staticfiles.storage."
+                            "StaticFilesStorage"
+                        ),
+                    },
+                },
+            ):
+                response = self.client.post(
+                    reverse("create_post"),
+                    {
+                        "department": department.pk,
+                        "title": "Post with image",
+                        "content": "Testing creation with an image.",
+                        "image": uploaded_image,
+                    },
+                )
+
+                self.assertRedirects(
+                    response,
+                    reverse("home"),
+                )
+
+                created_post = Post.objects.get(
+                    title="Post with image"
+                )
+
+                self.assertEqual(
+                    created_post.author,
+                    fresh_user,
+                )
+                self.assertTrue(created_post.image)
+                self.assertTrue(
+                    created_post.image.name.startswith(
+                        "post_images/"
+                    )
+                )
