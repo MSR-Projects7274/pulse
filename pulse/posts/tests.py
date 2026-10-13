@@ -387,3 +387,10 @@ class FreshUserViewTests(TestCase):
         self.assertTrue(
             Post.objects.filter(pk=post.pk).exists()
         )
+
+    def test_nonexistent_post_returns_404(self):
+        response = self.client.get(
+            reverse("post_detail", args=[999999])
+        )
+
+        self.assertEqual(response.status_code, 404)
