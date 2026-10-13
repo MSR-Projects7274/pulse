@@ -54,3 +54,31 @@ class FreshUserViewTests(TestCase):
         self.assertIsNone(response.context["user_post_vote"])
         self.assertFalse(post.votes.exists())
         self.assertFalse(post.comments.exists())
+
+    def test_fresh_user_can_create_post(self):
+        fresh_user = User.objects.create_user(
+            username="freshcreator",
+            password="TestPass123!",
+        )
+        department = Department.objects.get(name="General")
+
+        self.client.force_login(fresh_user)
+
+        response = self.client.post(
+            reverse("create_post"),
+            {
+                "department": department.pk,
+                "title": "Fresh user created this",
+                "content": "Testing post creation from a brand-new account.",
+            },
+        )
+
+        self.assertRedirects(response, reverse("home"))
+        self.assertTrue(
+            Post.objects.filter(
+                author=fresh_user,
+                department=department,
+                title="Fresh user created this",
+                content="Testing post creation from a brand-new account.",
+            ).exists()
+        )
