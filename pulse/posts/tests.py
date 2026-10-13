@@ -8,7 +8,7 @@ from django.urls import reverse
 
 from pulse.departments.models import Department
 
-from .models import Comment, Post
+from .models import Comment, CommentVote, Post, PostVote
 from PIL import Image
 
 
@@ -606,3 +606,186 @@ class FreshUserViewTests(TestCase):
         self.assertFalse(
             Comment.objects.filter(pk=comment.pk).exists()
         )
+
+    def test_post_vote_upvote_downvote_switch_and_remove(self):
+        user = User.objects.create_user(
+            username="postvoter",
+            password="TestPass123!",
+        )
+        department = Department.objects.get(name="General")
+        post = Post.objects.create(
+            author=user,
+            department=department,
+            title="Post vote test",
+            content="Testing the post voting state machine.",
+        )
+
+        self.client.force_login(user)
+
+        response = self.client.post(
+            reverse("post_upvote", args=[post.pk])
+        )
+
+        self.assertEqual(response.status_code, 302)
+
+        vote = PostVote.objects.get(
+            post=post,
+            user=user,
+        )
+
+        self.assertEqual(vote.value, 1)
+        self.assertEqual(post.score, 1)
+
+        response = self.client.post(
+            reverse("post_upvote", args=[post.pk])
+        )
+
+        self.assertEqual(response.status_code, 302)
+        self.assertFalse(
+            PostVote.objects.filter(
+                post=post,
+                user=user,
+            ).exists()
+        )
+        self.assertEqual(post.score, 0)
+
+        response = self.client.post(
+            reverse("post_downvote", args=[post.pk])
+        )
+
+        self.assertEqual(response.status_code, 302)
+
+        vote = PostVote.objects.get(
+            post=post,
+            user=user,
+        )
+        vote_pk = vote.pk
+
+        self.assertEqual(vote.value, -1)
+        self.assertEqual(post.score, -1)
+
+        response = self.client.post(
+            reverse("post_upvote", args=[post.pk])
+        )
+
+        self.assertEqual(response.status_code, 302)
+
+        vote.refresh_from_db()
+
+        self.assertEqual(vote.pk, vote_pk)
+        self.assertEqual(vote.value, 1)
+        self.assertEqual(post.score, 1)
+        self.assertEqual(
+            PostVote.objects.filter(
+                post=post,
+                user=user,
+            ).count(),
+            1,
+        )
+
+        response = self.client.post(
+            reverse("post_upvote", args=[post.pk])
+        )
+
+        self.assertEqual(response.status_code, 302)
+        self.assertFalse(
+            PostVote.objects.filter(
+                post=post,
+                user=user,
+            ).exists()
+        )
+        self.assertEqual(post.score, 0)
+
+    def test_comment_vote_upvote_downvote_switch_and_remove(self):
+        user = User.objects.create_user(
+            username="commentvoter",
+            password="TestPass123!",
+        )
+        department = Department.objects.get(name="General")
+        post = Post.objects.create(
+            author=user,
+            department=department,
+            title="Comment vote test",
+            content="Testing comment voting.",
+        )
+        comment = Comment.objects.create(
+            post=post,
+            author=user,
+            content="Vote on this comment.",
+        )
+
+        self.client.force_login(user)
+
+        response = self.client.post(
+            reverse("comment_upvote", args=[comment.pk])
+        )
+
+        self.assertEqual(response.status_code, 302)
+
+        vote = CommentVote.objects.get(
+            comment=comment,
+            user=user,
+        )
+
+        self.assertEqual(vote.value, 1)
+        self.assertEqual(comment.score, 1)
+
+        response = self.client.post(
+            reverse("comment_upvote", args=[comment.pk])
+        )
+
+        self.assertEqual(response.status_code, 302)
+        self.assertFalse(
+            CommentVote.objects.filter(
+                comment=comment,
+                user=user,
+            ).exists()
+        )
+        self.assertEqual(comment.score, 0)
+
+        response = self.client.post(
+            reverse("comment_downvote", args=[comment.pk])
+        )
+
+        self.assertEqual(response.status_code, 302)
+
+        vote = CommentVote.objects.get(
+            comment=comment,
+            user=user,
+        )
+        vote_pk = vote.pk
+
+        self.assertEqual(vote.value, -1)
+        self.assertEqual(comment.score, -1)
+
+        response = self.client.post(
+            reverse("comment_upvote", args=[comment.pk])
+        )
+
+        self.assertEqual(response.status_code, 302)
+
+        vote.refresh_from_db()
+
+        self.assertEqual(vote.pk, vote_pk)
+        self.assertEqual(vote.value, 1)
+        self.assertEqual(comment.score, 1)
+        self.assertEqual(
+            CommentVote.objects.filter(
+                comment=comment,
+                user=user,
+            ).count(),
+            1,
+        )
+
+        response = self.client.post(
+            reverse("comment_upvote", args=[comment.pk])
+        )
+
+        self.assertEqual(response.status_code, 302)
+        self.assertFalse(
+            CommentVote.objects.filter(
+                comment=comment,
+                user=user,
+            ).exists()
+        )
+        self.assertEqual(comment.score, 0)
