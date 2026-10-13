@@ -1,3 +1,61 @@
+from django.contrib.auth import get_user_model
 from django.test import TestCase
+from django.urls import reverse
 
-# Create your tests here.
+
+User = get_user_model()
+
+
+class RegistrationTests(TestCase):
+    def test_registration_success(self):
+        response = self.client.post(
+            reverse("register"),
+            {
+                "username": "newaccount",
+                "password1": "StrongTestPass123!",
+                "password2": "StrongTestPass123!",
+            },
+        )
+
+        self.assertRedirects(
+            response,
+            reverse("home"),
+        )
+        self.assertTrue(
+            User.objects.filter(
+                username="newaccount"
+            ).exists()
+        )
+
+        created_user = User.objects.get(
+            username="newaccount"
+        )
+        self.assertEqual(
+            int(self.client.session["_auth_user_id"]),
+            created_user.pk,
+        )
+
+    def test_invalid_registration_is_rejected(self):
+        response = self.client.post(
+            reverse("register"),
+            {
+                "username": "invalidaccount",
+                "password1": "StrongTestPass123!",
+                "password2": "DifferentTestPass123!",
+            },
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(
+            response,
+            "accounts/register.html",
+        )
+        self.assertFalse(
+            User.objects.filter(
+                username="invalidaccount"
+            ).exists()
+        )
+        self.assertIn(
+            "password2",
+            response.context["form"].errors,
+        )
