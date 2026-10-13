@@ -497,3 +497,112 @@ class FreshUserViewTests(TestCase):
         self.assertFalse(
             Comment.objects.filter(post=post).exists()
         )
+
+    def test_comment_edit_permissions_for_owner_and_non_owner(self):
+        owner = User.objects.create_user(
+            username="commenteditowner",
+            password="TestPass123!",
+        )
+        non_owner = User.objects.create_user(
+            username="commenteditnonowner",
+            password="TestPass123!",
+        )
+        department = Department.objects.get(name="General")
+        post = Post.objects.create(
+            author=owner,
+            department=department,
+            title="Comment edit permission test",
+            content="Testing comment ownership.",
+        )
+        comment = Comment.objects.create(
+            post=post,
+            author=owner,
+            content="Original comment.",
+        )
+
+        self.client.force_login(non_owner)
+
+        non_owner_response = self.client.post(
+            reverse("edit_comment", args=[comment.pk]),
+            {
+                "content": "Unauthorized edit.",
+            },
+        )
+
+        self.assertEqual(non_owner_response.status_code, 403)
+
+        comment.refresh_from_db()
+
+        self.assertEqual(comment.content, "Original comment.")
+        self.assertFalse(comment.is_edited)
+
+        self.client.force_login(owner)
+
+        owner_response = self.client.post(
+            reverse("edit_comment", args=[comment.pk]),
+            {
+                "content": "Owner edited this comment.",
+            },
+        )
+
+        self.assertRedirects(
+            owner_response,
+            reverse("post_detail", args=[post.pk]),
+        )
+
+        comment.refresh_from_db()
+
+        self.assertEqual(
+            comment.content,
+            "Owner edited this comment.",
+        )
+        self.assertTrue(comment.is_edited)
+        self.assertEqual(comment.author, owner)
+        self.assertEqual(comment.post, post)
+
+    def test_comment_delete_permissions_for_owner_and_non_owner(self):
+        owner = User.objects.create_user(
+            username="commentdeleteowner",
+            password="TestPass123!",
+        )
+        non_owner = User.objects.create_user(
+            username="commentdeletenonowner",
+            password="TestPass123!",
+        )
+        department = Department.objects.get(name="General")
+        post = Post.objects.create(
+            author=owner,
+            department=department,
+            title="Comment delete permission test",
+            content="Testing comment deletion ownership.",
+        )
+        comment = Comment.objects.create(
+            post=post,
+            author=owner,
+            content="Protected comment.",
+        )
+
+        self.client.force_login(non_owner)
+
+        non_owner_response = self.client.post(
+            reverse("delete_comment", args=[comment.pk])
+        )
+
+        self.assertEqual(non_owner_response.status_code, 403)
+        self.assertTrue(
+            Comment.objects.filter(pk=comment.pk).exists()
+        )
+
+        self.client.force_login(owner)
+
+        owner_response = self.client.post(
+            reverse("delete_comment", args=[comment.pk])
+        )
+
+        self.assertRedirects(
+            owner_response,
+            reverse("post_detail", args=[post.pk]),
+        )
+        self.assertFalse(
+            Comment.objects.filter(pk=comment.pk).exists()
+        )
