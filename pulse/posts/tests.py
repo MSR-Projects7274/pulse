@@ -1013,3 +1013,43 @@ class FreshUserViewTests(TestCase):
             "Back to Pulse",
             status_code=404,
         )
+
+    @override_settings(DEBUG=False)
+    def test_permission_failure_renders_custom_403(self):
+        owner = User.objects.create_user(
+            username="permissionowner",
+            password="TestPass123!",
+        )
+        non_owner = User.objects.create_user(
+            username="permissionnonowner",
+            password="TestPass123!",
+        )
+        department = Department.objects.get(name="General")
+        post = Post.objects.create(
+            author=owner,
+            department=department,
+            title="Protected permission test",
+            content="Only the owner should edit this.",
+        )
+
+        self.client.force_login(non_owner)
+
+        response = self.client.get(
+            reverse("edit_post", args=[post.pk])
+        )
+
+        self.assertEqual(response.status_code, 403)
+        self.assertTemplateUsed(
+            response,
+            "403.html",
+        )
+        self.assertContains(
+            response,
+            "This one isn't yours to change.",
+            status_code=403,
+        )
+        self.assertContains(
+            response,
+            "Back to Pulse",
+            status_code=403,
+        )
