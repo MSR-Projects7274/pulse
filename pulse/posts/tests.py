@@ -8,7 +8,7 @@ from django.urls import reverse
 
 from pulse.departments.models import Department
 
-from .models import Post
+from .models import Comment, Post
 from PIL import Image
 
 
@@ -394,3 +394,38 @@ class FreshUserViewTests(TestCase):
         )
 
         self.assertEqual(response.status_code, 404)
+
+    def test_authenticated_user_can_create_comment(self):
+        user = User.objects.create_user(
+            username="commentcreator",
+            password="TestPass123!",
+        )
+        department = Department.objects.get(name="General")
+        post = Post.objects.create(
+            author=user,
+            department=department,
+            title="Comment test post",
+            content="A post waiting for a comment.",
+        )
+
+        self.client.force_login(user)
+
+        response = self.client.post(
+            reverse("post_detail", args=[post.pk]),
+            {
+                "content": "This is a test comment.",
+            },
+        )
+
+        self.assertRedirects(
+            response,
+            reverse("post_detail", args=[post.pk]),
+        )
+
+        comment = Comment.objects.get(
+            content="This is a test comment."
+        )
+
+        self.assertEqual(comment.author, user)
+        self.assertEqual(comment.post, post)
+        self.assertFalse(comment.is_edited)
