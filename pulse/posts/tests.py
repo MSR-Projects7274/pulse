@@ -851,3 +851,58 @@ class FreshUserViewTests(TestCase):
                 user=user,
             ).exists()
         )
+
+    def test_community_page_displays_its_posts(self):
+        user = User.objects.create_user(
+            username="communityposter",
+            password="TestPass123!",
+        )
+        general = Department.objects.get(name="General")
+        development = Department.objects.get(name="Development")
+
+        first_post = Post.objects.create(
+            author=user,
+            department=general,
+            title="First General post",
+            content="First community test post.",
+        )
+        second_post = Post.objects.create(
+            author=user,
+            department=general,
+            title="Second General post",
+            content="Second community test post.",
+        )
+        other_post = Post.objects.create(
+            author=user,
+            department=development,
+            title="Development-only post",
+            content="This belongs to another community.",
+        )
+
+        response = self.client.get(
+            reverse(
+                "department_posts",
+                args=[general.pk],
+            )
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(
+            response,
+            "posts/home.html",
+        )
+        self.assertEqual(
+            response.context["current_department"],
+            general,
+        )
+
+        posts = list(response.context["posts"])
+
+        self.assertEqual(len(posts), 2)
+        self.assertIn(first_post, posts)
+        self.assertIn(second_post, posts)
+        self.assertNotIn(other_post, posts)
+
+        self.assertContains(response, first_post.title)
+        self.assertContains(response, second_post.title)
+        self.assertNotContains(response, other_post.title)
