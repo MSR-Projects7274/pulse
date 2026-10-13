@@ -957,3 +957,37 @@ class FreshUserViewTests(TestCase):
         )
 
         self.assertEqual(response.status_code, 404)
+
+    def test_profile_with_zero_posts_and_comments(self):
+        user = User.objects.create_user(
+            username="emptyprofile",
+            password="TestPass123!",
+        )
+
+        response = self.client.get(
+            reverse(
+                "user_profile",
+                args=[user.username],
+            )
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(
+            response,
+            "posts/profile.html",
+        )
+        self.assertEqual(
+            response.context["profile_user"],
+            user,
+        )
+        self.assertFalse(
+            response.context["posts"].exists()
+        )
+        self.assertFalse(
+            response.context["comments"].exists()
+        )
+
+        self.assertContains(response, user.username)
+        self.assertContains(response, "Posts: 0")
+        self.assertContains(response, "Comments: 0")
+        self.assertContains(response, "No posts yet.")
