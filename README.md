@@ -295,6 +295,150 @@ The project uses `CompressedManifestStaticFilesStorage`, allowing Django's colle
 
 The source static assets remain in the project's `static` directory, while the generated `staticfiles` directory is created during deployment and is not treated as source code.
 
+### Reproducing the Heroku Deployment
+
+The following process can be used to reproduce the Pulse production deployment on Heroku.
+
+#### 1. Prepare the Repository
+
+Clone the repository and move into the project directory.
+
+```bash
+git clone <repository-url>
+cd pulse
+```
+
+Install the project dependencies from `requirements.txt`.
+
+```bash
+pip install -r requirements.txt
+```
+
+The repository contains a root-level `.python-version` file specifying the Python 3.14 runtime line.
+
+#### 2. Log In to Heroku
+
+Authenticate with the Heroku CLI.
+
+```bash
+heroku login
+```
+
+#### 3. Create or Select a Heroku Application
+
+A new Heroku application can be created with:
+
+```bash
+heroku create <app-name>
+```
+
+If an application already exists, its name can be supplied to subsequent Heroku commands using the `--app` option.
+
+#### 4. Configure the Heroku Stack and Buildpack
+
+Pulse is deployed using the **Heroku-24** stack and the official Heroku Python buildpack.
+
+```bash
+heroku stack:set heroku-24 --app <app-name>
+heroku buildpacks:set heroku/python --app <app-name>
+```
+
+#### 5. Configure Environment Variables
+
+Configure the deployment environment using Heroku Config Vars.
+
+The required or supported variable names are:
+
+```text
+SECRET_KEY
+DEBUG
+ALLOWED_HOSTS
+CSRF_TRUSTED_ORIGINS
+DATABASE_URL
+AWS_ACCESS_KEY_ID
+AWS_SECRET_ACCESS_KEY
+AWS_STORAGE_BUCKET_NAME
+AWS_S3_REGION_NAME
+```
+
+The real values must be supplied through Heroku or another secure environment configuration mechanism. They must not be committed to the repository.
+
+`DATABASE_URL` must point to the production PostgreSQL database.
+
+The AWS variables provide access to the Amazon S3 bucket used for persistent uploaded media.
+
+Production should run with Django debug mode disabled.
+
+#### 6. Deploy the Application
+
+Ensure the Heroku Git remote is available, then deploy the application.
+
+```bash
+git push heroku main
+```
+
+For deployments made through another connected Git provider, deploy the required branch through that provider's Heroku integration instead.
+
+#### 7. Database Migrations
+
+Pulse defines a Heroku release process in the root-level `Procfile`:
+
+```text
+release: python manage.py migrate --noinput
+```
+
+This applies outstanding Django migrations as part of the Heroku release process before the new web release becomes active.
+
+The web process is also defined in the `Procfile`:
+
+```text
+web: gunicorn pulse.wsgi
+```
+
+Gunicorn therefore starts the Django WSGI application when the deployed web dyno launches.
+
+Migration state can also be inspected manually when required:
+
+```bash
+heroku run python manage.py showmigrations --app <app-name>
+```
+
+#### 8. Static File Collection
+
+Pulse uses WhiteNoise and `CompressedManifestStaticFilesStorage` for production static files.
+
+Source static assets are read from the project's `static` directory and collected into `staticfiles`.
+
+Static collection has not been disabled through the `DISABLE_COLLECTSTATIC` Heroku configuration variable.
+
+The production configuration has also been checked directly using:
+
+```bash
+heroku run python manage.py collectstatic --noinput --dry-run --app <app-name>
+```
+
+The live verification completed successfully and recognised the existing collected static assets.
+
+#### 9. Verify the Deployment
+
+After deployment:
+
+1. Open the live application.
+2. Confirm that the home page and static assets load correctly.
+3. Confirm that authentication works.
+4. Verify post and comment CRUD behaviour.
+5. Verify that uploaded images are served from persistent S3 storage.
+6. Confirm that production database data persists across a dyno restart.
+7. Review Heroku logs for unexpected application errors.
+
+Heroku logs can be viewed with:
+
+```bash
+heroku logs --tail --app <app-name>
+```
+
+Detailed production verification evidence is maintained in `TESTING.md`.
+
 ### Deployment Verification
 
 Deployment testing is performed against the live Heroku application rather than relying only on the local development server.
@@ -302,8 +446,6 @@ Deployment testing is performed against the live Heroku application rather than 
 The remediation testing includes production CRUD checks, authentication and permission behaviour, uploaded-media persistence, static assets, error handling and persistence following a Heroku dyno restart.
 
 Detailed testing evidence is maintained in `TESTING.md`.
-
-Further subsections in this deployment documentation cover the production database, external media storage, required environment variables, Python runtime configuration and the complete Heroku deployment procedure.
 
 </details>
 
