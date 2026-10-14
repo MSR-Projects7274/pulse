@@ -118,7 +118,10 @@ class PostVote(models.Model):
         ]
 
     def __str__(self):
-        return f"{self.user.username} voted {self.value} on post {self.post.id}"
+        return (
+            f"{self.user.username} voted {self.value} "
+            f"on post {self.post.id}"
+        )
 
 
 # =========================

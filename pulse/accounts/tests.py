@@ -60,6 +60,7 @@ class RegistrationTests(TestCase):
             response.context["form"].errors,
         )
 
+
 class LoginTests(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(
@@ -127,6 +128,7 @@ class LoginTests(TestCase):
             int(self.client.session["_auth_user_id"]),
             self.user.pk,
         )
+
 
 class LogoutTests(TestCase):
     def setUp(self):

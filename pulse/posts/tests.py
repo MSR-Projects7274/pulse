@@ -30,7 +30,6 @@ class FreshUserViewTests(TestCase):
         self.assertTemplateUsed(response, "posts/home.html")
         self.assertFalse(response.context["posts"].exists())
 
-
     def test_fresh_user_can_open_post_detail_without_vote_history(self):
         fresh_user = User.objects.create_user(
             username="freshdetailuser",
@@ -161,6 +160,7 @@ class FreshUserViewTests(TestCase):
                         "post_images/"
                     )
                 )
+
     def test_post_edit_preserves_and_replaces_image(self):
         user = User.objects.create_user(
             username="posteditor",
@@ -284,6 +284,7 @@ class FreshUserViewTests(TestCase):
                         post.image.name
                     )
                 )
+
     def test_post_can_be_deleted(self):
         user = User.objects.create_user(
             username="postdeleter",

@@ -31,7 +31,7 @@ Pulse is tested at several levels so that both individual application behaviour 
 | Production smoke testing | Confirms that the deployed application and its critical user flows work after deployment. | Checklist already established; final execution evidence will be recorded during the final audit. |
 | Manual functional testing | Verifies real user actions and their resulting application/database behaviour. | Production testing log already contains completed tests. |
 | Automated testing | Verifies application logic and regression-sensitive behaviour through Django's test framework. | 32 automated tests passed successfully with no failures or Django system-check issues. |
-| Validation | Checks HTML, CSS and Python quality using appropriate validation and linting tools. | W3C HTML and CSS validation completed successfully; Python validation is documented in the following audit stage. |
+| Validation | Checks HTML, CSS and Python quality using appropriate validation and linting tools. | W3C HTML and CSS validation and Flake8 Python validation completed successfully. |
 | Responsive and browser testing | Verifies layout and interaction behaviour across representative viewport sizes and browsers. | Detailed evidence will be documented during the final testing audit. |
 | Production CRUD testing | Confirms that create, read, update and delete operations behave correctly against the deployed application. | Existing production evidence will be consolidated into a dedicated section. |
 | Authentication and permissions | Verifies account flows, protected actions and ownership restrictions. | Existing production evidence will be consolidated into a dedicated section. |
@@ -182,7 +182,44 @@ static/css/style.css: No errors
 static/css/auth.css: No errors
 ```
 
-Python validation is documented separately below as the next validation stage.
+### Python - Flake8
+
+The Pulse Python source was checked using **Flake8 7.4.1**.
+
+The project-wide validation command was:
+
+```bash
+python -m flake8 manage.py pulse --exclude=.venv,*/migrations/*,staticfiles
+```
+
+The initial validation run identified **42 findings**. These were code-quality and formatting issues rather than application-logic failures, including unused imports, missing end-of-file newlines, blank-line spacing and lines exceeding the configured 79-character limit.
+
+The cleanup included:
+
+- removing unused imports;
+- removing unused Django scaffold files that contained no application code;
+- correcting blank-line spacing between classes, methods and top-level view sections;
+- adding missing end-of-file newlines;
+- wrapping long URL declarations and strings without changing their values or behaviour;
+- removing an unused `Sum` import from the post views.
+
+After the cleanup, the same Flake8 command completed with **no output**, confirming that no Flake8 findings remained in the checked Python source.
+
+The complete Django automated test suite was then run again to ensure that the formatting and cleanup changes had not altered application behaviour:
+
+```bash
+python manage.py test
+```
+
+The regression run completed successfully:
+
+```text
+Ran 32 tests in 29.735s
+
+OK
+```
+
+**Result: Flake8 passed with no remaining findings and all 32 automated tests continued to pass.**
 
 ## Responsive and Browser Testing
 

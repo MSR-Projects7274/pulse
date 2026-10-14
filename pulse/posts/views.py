@@ -6,10 +6,11 @@ from .models import Post, Comment, PostVote, CommentVote
 from .forms import PostForm, CommentForm
 from pulse.departments.models import Department
 from django.contrib.auth.models import User
-from django.db.models import Q, Sum
+from django.db.models import Q
 from django.views.decorators.http import require_POST
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.core.exceptions import PermissionDenied
+
 
 # =========================
 # HOME (FEED)
@@ -31,6 +32,7 @@ def home(request):
     return render(request, "posts/home.html", {
         "posts": posts
     })
+
 
 # =========================
 # COMMUNITY SEARCH
@@ -60,6 +62,7 @@ def search_communities(request):
             "query": query,
         }
     )
+
 
 # =========================
 # CREATE POST
@@ -92,6 +95,7 @@ def create_post(request):
             "form": form
         }
     )
+
 
 # =========================
 # EDIT POST
@@ -138,6 +142,7 @@ def edit_post(request, pk):
         }
     )
 
+
 # =========================
 # DELETE POST
 # =========================
@@ -163,6 +168,7 @@ def delete_post(request, pk):
             "post": post
         }
     )
+
 
 # =========================
 # POST DETAIL + COMMENTS
@@ -259,6 +265,7 @@ def toggle_post_vote(request, pk, value):
 
     return redirect("home")
 
+
 # =========================
 # COMMENT VOTE
 # =========================
@@ -295,6 +302,7 @@ def toggle_comment_vote(request, pk, value):
         return redirect(next_url)
 
     return redirect("post_detail", pk=comment.post_id)
+
 
 # =========================
 # COMMENT EDIT
@@ -344,6 +352,7 @@ def edit_comment(request, pk):
         }
     )
 
+
 # =========================
 # COMMENT DELETION
 # =========================
@@ -378,6 +387,7 @@ def delete_comment(request, pk):
         }
     )
 
+
 # =========================
 # DEPARTMENT PAGE
 # =========================
@@ -411,6 +421,7 @@ def department_posts(request, department_id):
             "current_department": department
         }
     )
+
 
 # =========================
 # USER PROFILE
