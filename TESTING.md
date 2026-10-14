@@ -31,7 +31,7 @@ Pulse is tested at several levels so that both individual application behaviour 
 | Production smoke testing | Confirms that the deployed application and its critical user flows work after deployment. | Checklist already established; final execution evidence will be recorded during the final audit. |
 | Manual functional testing | Verifies real user actions and their resulting application/database behaviour. | Production testing log already contains completed tests. |
 | Automated testing | Verifies application logic and regression-sensitive behaviour through Django's test framework. | 32 automated tests passed successfully with no failures or Django system-check issues. |
-| Validation | Checks HTML, CSS and Python quality using appropriate validation and linting tools. | W3C HTML validation completed successfully; CSS and Python validation are documented in the following audit stages. |
+| Validation | Checks HTML, CSS and Python quality using appropriate validation and linting tools. | W3C HTML and CSS validation completed successfully; Python validation is documented in the following audit stage. |
 | Responsive and browser testing | Verifies layout and interaction behaviour across representative viewport sizes and browsers. | Detailed evidence will be documented during the final testing audit. |
 | Production CRUD testing | Confirms that create, read, update and delete operations behave correctly against the deployed application. | Existing production evidence will be consolidated into a dedicated section. |
 | Authentication and permissions | Verifies account flows, protected actions and ownership restrictions. | Existing production evidence will be consolidated into a dedicated section. |
@@ -166,7 +166,23 @@ The custom 404 page was validated using its rendered source because validating t
 
 Following the correction and revalidation, the representative rendered HTML pages completed validation with **no remaining HTML errors or warnings**.
 
-CSS and Python validation are documented separately below as those validation stages are completed.
+### CSS - W3C CSS Validation Service
+
+Both custom Pulse stylesheets were checked using the **W3C CSS Validation Service**:
+
+- `static/css/style.css`
+- `static/css/auth.css`
+
+Both stylesheets completed validation successfully with **no CSS errors**.
+
+**Result:**
+
+```text
+static/css/style.css: No errors
+static/css/auth.css: No errors
+```
+
+Python validation is documented separately below as the next validation stage.
 
 ## Responsive and Browser Testing
 
