@@ -26,6 +26,7 @@ This approach was taken to maintain a security-conscious and responsible develop
 - [Built With](#built-with)
 - [Project Structure](#project-structure)
 - [Viewing the Site Locally](#viewing-the-site-locally)
+- [Deployment](#deployment)
 - [User Features](#user-features)
 - [User Stories](#user-stories)
 - [User Story Mapping](#user-story-mapping)
@@ -176,6 +177,27 @@ Open in your browser:
 ```
 http://127.0.0.1:8000/
 ```
+
+---
+
+## Deployment
+
+<details>
+<summary><strong>Click to expand deployment information</strong></summary>
+
+<br>
+
+Pulse is deployed using Heroku.
+
+**Live site:** [Pulse](https://pulse-forum-app-8e032ffcfcb8.herokuapp.com/)
+
+The application uses the Heroku Python buildpack and runs on the **Heroku-24 stack**.
+
+The production deployment has been tested directly on Heroku during the remediation process. Production verification and manual testing evidence are documented separately in `TESTING.md`.
+
+Further deployment configuration, database, media storage, static-file handling and deployment reproduction details are documented below as part of the final deployment audit.
+
+</details>
 
 ---
 
