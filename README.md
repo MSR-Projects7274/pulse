@@ -82,6 +82,7 @@ This project was developed to:
 - **CSS3** – Styling and layout
 - **PostgreSQL** – Production relational database
 - **SQLite** – Local development fallback database
+- **Amazon S3** – Persistent uploaded media storage
 
 ---
 
@@ -237,6 +238,20 @@ The PostgreSQL connection string itself is treated as a secret and is not commit
 When `DATABASE_URL` is not present, Pulse falls back to a local SQLite database. This allows the application to be run locally without connecting development commands or test data to the live production database.
 
 PostgreSQL support is provided through the project's `psycopg` dependencies.
+
+### Production Media Storage
+
+Pulse uses Amazon S3 for persistent uploaded media storage.
+
+User-uploaded post images are stored through Django's storage system using `django-storages` and Boto3. The application's default storage backend is configured as `storages.backends.s3.S3Storage`, and the active storage backend has been verified directly on the live Heroku deployment.
+
+Post images are uploaded through the `Post.image` field into the `post_images/` storage path.
+
+Amazon S3 is used because files stored directly on Heroku's application filesystem are not suitable for persistent user uploads. Storing uploaded media externally allows images to remain available independently of dyno restarts and application rebuilds.
+
+The S3 configuration uses Signature Version 4 and virtual-hosted addressing. Uploaded files are not overwritten automatically when another file uses the same name.
+
+Media-storage credentials and bucket configuration are supplied through environment variables rather than being committed to the repository. The required environment-variable names are documented separately in the deployment configuration section.
 
 ### Static File Handling
 
