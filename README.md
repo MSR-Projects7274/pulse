@@ -235,7 +235,6 @@ http://127.0.0.1:8000/
 ### Engagement-Oriented User
 
 - As a user, I want to upvote or downvote posts so that I can express my reaction to content.
-- As a user, I want posts to support better formatting so that I can structure my thoughts clearly.
 
 ---
 
