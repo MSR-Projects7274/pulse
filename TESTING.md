@@ -6,6 +6,22 @@ Testing is recorded separately from the main README so that individual test case
 
 User-story validation screenshots remain in `README.md`. They demonstrate implementation of the planned user experience but are kept separate from functional testing evidence.
 
+## Testing Contents
+
+- [Testing Strategy](#testing-strategy)
+- [Production Smoke Test Checklist](#production-smoke-test-checklist)
+- [Manual Testing Log](#manual-testing-log)
+- [Automated Testing](#automated-testing)
+- [Validation](#validation)
+- [Responsive and Browser Testing](#responsive-and-browser-testing)
+- [Production CRUD Testing](#production-crud-testing)
+- [Authentication and Permissions Testing](#authentication-and-permissions-testing)
+- [Error Page Testing](#error-page-testing)
+- [Bugs Found and Fixed](#bugs-found-and-fixed)
+- [Known Bugs](#known-bugs)
+
+---
+
 ## Testing Strategy
 
 Pulse is tested at several levels so that both individual application behaviour and the deployed production system can be verified.
@@ -21,20 +37,6 @@ Pulse is tested at several levels so that both individual application behaviour 
 | Authentication and permissions | Verifies account flows, protected actions and ownership restrictions. | Existing production evidence will be consolidated into a dedicated section. |
 | Error handling | Verifies custom error pages and graceful handling of invalid or forbidden requests. | Existing evidence will be consolidated into a dedicated section. |
 | Bug tracking | Records significant bugs found, their fixes and any known remaining issues. | Final evidence will be added after the testing audit is complete. |
-
-## Testing Contents
-
-- [Testing Strategy](#testing-strategy)
-- [Production Smoke Test Checklist](#production-smoke-test-checklist)
-- [Manual Testing Log](#manual-testing-log)
-- [Automated Testing](#automated-testing)
-- [Validation](#validation)
-- [Responsive and Browser Testing](#responsive-and-browser-testing)
-- [Production CRUD Testing](#production-crud-testing)
-- [Authentication and Permissions Testing](#authentication-and-permissions-testing)
-- [Error Page Testing](#error-page-testing)
-- [Bugs Found and Fixed](#bugs-found-and-fixed)
-- [Known Bugs](#known-bugs)
 
 ---
 
