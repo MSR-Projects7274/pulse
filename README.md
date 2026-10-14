@@ -195,7 +195,42 @@ The application uses the Heroku Python buildpack and runs on the **Heroku-24 sta
 
 The production deployment has been tested directly on Heroku during the remediation process. Production verification and manual testing evidence are documented separately in `TESTING.md`.
 
-Further deployment configuration, database, media storage, static-file handling and deployment reproduction details are documented below as part of the final deployment audit.
+### Heroku Application Processes
+
+Pulse uses a root-level `Procfile` to define the processes required by Heroku.
+
+```text
+release: python manage.py migrate --noinput
+web: gunicorn pulse.wsgi
+```
+
+The `release` process applies outstanding Django database migrations automatically when a new release is deployed.
+
+The `web` process starts the application using Gunicorn and serves the Django WSGI application defined by `pulse.wsgi`.
+
+### Production Dependencies
+
+Production dependencies are installed from `requirements.txt` during the Heroku build.
+
+These include the Django framework, Gunicorn production server, PostgreSQL database support, WhiteNoise static-file handling and the packages required for persistent external media storage.
+
+### Static File Handling
+
+WhiteNoise is included directly after Django's security middleware and is used to serve collected production static files.
+
+The project uses `CompressedManifestStaticFilesStorage`, allowing Django's collected static assets to be compressed and versioned for production use.
+
+The source static assets remain in the project's `static` directory, while the generated `staticfiles` directory is created during deployment and is not treated as source code.
+
+### Deployment Verification
+
+Deployment testing is performed against the live Heroku application rather than relying only on the local development server.
+
+The remediation testing includes production CRUD checks, authentication and permission behaviour, uploaded-media persistence, static assets, error handling and persistence following a Heroku dyno restart.
+
+Detailed testing evidence is maintained in `TESTING.md`.
+
+Further subsections in this deployment documentation cover the production database, external media storage, required environment variables, Python runtime configuration and the complete Heroku deployment procedure.
 
 </details>
 
