@@ -6,7 +6,7 @@ from .models import Post, Comment, PostVote, CommentVote
 from .forms import PostForm, CommentForm
 from pulse.departments.models import Department
 from django.contrib.auth.models import User
-from django.db.models import Sum
+from django.db.models import Q, Sum
 from django.views.decorators.http import require_POST
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.core.exceptions import PermissionDenied
@@ -36,22 +36,28 @@ def home(request):
 # COMMUNITY SEARCH
 # =========================
 def search_communities(request):
+    query = request.GET.get("q", "").strip()
 
-    query = request.GET.get("q")
-
-    departments = []
+    departments = Department.objects.none()
+    posts = Post.objects.none()
 
     if query:
         departments = Department.objects.filter(
             name__icontains=query
         )
 
+        posts = Post.objects.filter(
+            Q(title__icontains=query)
+            | Q(content__icontains=query)
+        ).order_by("-created_at")
+
     return render(
         request,
         "posts/community_search.html",
         {
             "departments": departments,
-            "query": query
+            "posts": posts,
+            "query": query,
         }
     )
 

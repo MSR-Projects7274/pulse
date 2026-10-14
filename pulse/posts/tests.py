@@ -1053,3 +1053,71 @@ class FreshUserViewTests(TestCase):
             "Back to Pulse",
             status_code=403,
         )
+
+    def test_search_finds_posts_and_communities(self):
+        user = User.objects.create_user(
+            username="searchtester",
+            password="TestPass123!",
+        )
+        general = Department.objects.get(name="General")
+        development = Department.objects.get(name="Development")
+
+        title_post = Post.objects.create(
+            author=user,
+            department=general,
+            title="Nebula project update",
+            content="A normal body without the content search term.",
+        )
+        content_post = Post.objects.create(
+            author=user,
+            department=development,
+            title="Ordinary development post",
+            content="This post contains the unique quasar keyword.",
+        )
+
+        title_response = self.client.get(
+            reverse("search_communities"),
+            {"q": "Nebula"},
+        )
+
+        self.assertEqual(title_response.status_code, 200)
+        self.assertTemplateUsed(
+            title_response,
+            "posts/community_search.html",
+        )
+        self.assertIn(
+            title_post,
+            title_response.context["posts"],
+        )
+        self.assertNotIn(
+            content_post,
+            title_response.context["posts"],
+        )
+
+        content_response = self.client.get(
+            reverse("search_communities"),
+            {"q": "quasar"},
+        )
+
+        self.assertIn(
+            content_post,
+            content_response.context["posts"],
+        )
+        self.assertNotIn(
+            title_post,
+            content_response.context["posts"],
+        )
+
+        community_response = self.client.get(
+            reverse("search_communities"),
+            {"q": "General"},
+        )
+
+        self.assertIn(
+            general,
+            community_response.context["departments"],
+        )
+        self.assertNotIn(
+            development,
+            community_response.context["departments"],
+        )

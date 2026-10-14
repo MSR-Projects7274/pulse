@@ -1,23 +1,59 @@
 {% extends "base.html" %}
 
-{% block title %}Search Communities - Pulse{% endblock %}
+{% block title %}Search - Pulse{% endblock %}
 
 {% block content %}
-    <div class="container">
-      <h1>Community Search</h1>
+<div class="container">
+  <h1>Search</h1>
 
-      {% for department in departments %}
+  {% if query %}
+    <p class="meta">Results for "{{ query }}"</p>
 
+    <h2>Communities</h2>
+
+    {% for department in departments %}
       <div class="post-card">
         <a href="{% url 'department_posts' department.id %}">
           {{ department.name }}
         </a>
       </div>
-
-      {% empty %}
-
+    {% empty %}
       <div class="post-card">No communities found.</div>
+    {% endfor %}
 
-      {% endfor %}
+    <h2>Posts</h2>
+
+    {% for post in posts %}
+      <div class="post-card">
+        <div class="post-content">
+          <h3 class="post-title">
+            <a href="{% url 'post_detail' post.pk %}">
+              {{ post.title }}
+            </a>
+          </h3>
+
+          <p>{{ post.content|truncatewords:30 }}</p>
+
+          <div class="post-meta">
+            Posted by
+            <a href="{% url 'user_profile' post.author.username %}">
+              {{ post.author.username }}
+            </a>
+            ·
+            <a href="{% url 'department_posts' post.department.id %}">
+              {{ post.department.name }}
+            </a>
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      <div class="post-card">No posts found.</div>
+    {% endfor %}
+
+  {% else %}
+    <div class="post-card">
+      Enter a search term to find posts and communities.
     </div>
+  {% endif %}
+</div>
 {% endblock %}
