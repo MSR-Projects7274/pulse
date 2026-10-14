@@ -25,6 +25,7 @@ This approach was taken to maintain a security-conscious and responsible develop
 - [Features](#features)
 - [Built With](#built-with)
 - [Project Structure](#project-structure)
+- [Database Schema](#database-schema)
 - [Viewing the Site Locally](#viewing-the-site-locally)
 - [Deployment](#deployment)
 - [User Features](#user-features)
@@ -119,6 +120,138 @@ The main areas of the project include:
 - **Screenshots and wireframes**
 
   Contains the visual documentation used to demonstrate the application's interface, responsive layouts and original design planning.
+
+---
+
+## Database Schema
+
+Pulse uses Django's ORM to manage a relational data model centred on users, departments, posts, comments and voting.
+
+The production application uses PostgreSQL, while SQLite is available as the local development fallback. The same Django models and migrations define the schema in both environments.
+
+Pulse uses Django's built-in authentication `User` model rather than defining a custom user model.
+
+### Model Relationships
+
+```mermaid
+erDiagram
+    USER ||--o{ POST : authors
+    USER ||--o{ COMMENT : authors
+    USER ||--o{ POST_VOTE : casts
+    USER ||--o{ COMMENT_VOTE : casts
+
+    DEPARTMENT ||--o{ POST : contains
+
+    POST ||--o{ COMMENT : receives
+    POST ||--o{ POST_VOTE : receives
+
+    COMMENT ||--o{ COMMENT_VOTE : receives
+```
+
+The principal relationships are:
+
+- One **User** can author many posts.
+- One **User** can author many comments.
+- One **Department** can contain many posts.
+- One **Post** can contain many comments.
+- One **Post** can receive many post votes.
+- One **Comment** can receive many comment votes.
+- One **User** can vote on many posts and comments, but database constraints allow only one vote from that user on each individual post or comment.
+
+Foreign-key relationships use Django's cascading deletion behaviour. Deleting a parent record therefore removes dependent records where the model relationship specifies `on_delete=models.CASCADE`.
+
+### Department
+
+The `Department` model groups posts into areas of discussion.
+
+| Field | Type | Purpose |
+| --- | --- | --- |
+| `id` | Auto-generated primary key | Uniquely identifies the department. |
+| `name` | `CharField(100)` | Department name. |
+| `description` | `TextField` | Describes the department. |
+| `created_at` | `DateTimeField` | Records when the department was created. |
+
+A department can be linked to many posts.
+
+### Post
+
+The `Post` model represents the primary discussion content on Pulse.
+
+| Field | Type | Purpose |
+| --- | --- | --- |
+| `id` | Auto-generated primary key | Uniquely identifies the post. |
+| `author` | `ForeignKey(User)` | Identifies the user who created the post. |
+| `department` | `ForeignKey(Department)` | Associates the post with a department. |
+| `title` | `CharField(200)` | Stores the post title. Whitespace-only values are rejected. |
+| `content` | `TextField` | Stores the post body. Whitespace-only values are rejected. |
+| `created_at` | `DateTimeField` | Records when the post was created. |
+| `updated_at` | `DateTimeField` | Records the latest model update. |
+| `is_edited` | `BooleanField` | Records whether the post has been edited. |
+| `image` | `ImageField` | Optional uploaded image stored under `post_images/`. |
+
+Uploaded post images are restricted by file-extension and file-size validation.
+
+The displayed post score is calculated from related `PostVote` records rather than stored as a separate database field.
+
+### Comment
+
+The `Comment` model stores replies attached to posts.
+
+| Field | Type | Purpose |
+| --- | --- | --- |
+| `id` | Auto-generated primary key | Uniquely identifies the comment. |
+| `post` | `ForeignKey(Post)` | Identifies the post that owns the comment. |
+| `author` | `ForeignKey(User)` | Identifies the user who created the comment. |
+| `content` | `TextField` | Stores the comment body. Whitespace-only values are rejected. |
+| `created_at` | `DateTimeField` | Records when the comment was created. |
+| `updated_at` | `DateTimeField` | Records the latest model update. |
+| `is_edited` | `BooleanField` | Records whether the comment has been edited. |
+
+The displayed comment score is calculated from related `CommentVote` records rather than stored as a separate database field.
+
+### PostVote
+
+The `PostVote` model records an authenticated user's vote on a post.
+
+| Field | Type | Purpose |
+| --- | --- | --- |
+| `id` | Auto-generated primary key | Uniquely identifies the vote. |
+| `post` | `ForeignKey(Post)` | Identifies the post being voted on. |
+| `user` | `ForeignKey(User)` | Identifies the user casting the vote. |
+| `value` | `SmallIntegerField` | Stores either `1` for an upvote or `-1` for a downvote. |
+| `created_at` | `DateTimeField` | Records when the vote was created. |
+| `updated_at` | `DateTimeField` | Records when the vote was last changed. |
+
+Database constraints enforce that:
+
+- `value` can only be `1` or `-1`.
+- each user can have only one vote record for a particular post.
+
+This allows an existing vote to be changed or removed without allowing duplicate votes from the same user.
+
+### CommentVote
+
+The `CommentVote` model provides the equivalent voting structure for comments.
+
+| Field | Type | Purpose |
+| --- | --- | --- |
+| `id` | Auto-generated primary key | Uniquely identifies the vote. |
+| `comment` | `ForeignKey(Comment)` | Identifies the comment being voted on. |
+| `user` | `ForeignKey(User)` | Identifies the user casting the vote. |
+| `value` | `SmallIntegerField` | Stores either `1` for an upvote or `-1` for a downvote. |
+| `created_at` | `DateTimeField` | Records when the vote was created. |
+| `updated_at` | `DateTimeField` | Records when the vote was last changed. |
+
+Database constraints enforce that:
+
+- `value` can only be `1` or `-1`.
+- each user can have only one vote record for a particular comment.
+
+### Django User Model
+
+Pulse uses Django's built-in authentication `User` model.
+
+The application does not maintain a separate custom profile database model. User relationships are established directly from posts, comments and vote records to Django's authenticated user records.
 
 ---
 
