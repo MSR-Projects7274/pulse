@@ -34,7 +34,7 @@ Pulse is tested at several levels so that both individual application behaviour 
 | Validation | Checks HTML, CSS and Python quality using appropriate validation and linting tools. | W3C HTML and CSS validation and Flake8 Python validation completed successfully. |
 | Responsive and browser testing | Verifies layout and interaction behaviour across representative viewport sizes and browsers. | Responsive testing passed across six representative viewport sizes and Firefox, Chrome and Edge. |
 | Production CRUD testing | Confirms that create, read, update and delete operations behave correctly against the deployed application. | Live production CRUD testing passed for posts, comments and voting data, with persistence also verified after a dyno restart. |
-| Authentication and permissions | Verifies account flows, protected actions and ownership restrictions. | Existing production evidence will be consolidated into a dedicated section. |
+| Authentication and permissions | Verifies account flows, protected actions and ownership restrictions. | Production authentication and ownership checks passed, supported by automated regression tests for login, logout and owner/non-owner permissions. |
 | Error handling | Verifies custom error pages and graceful handling of invalid or forbidden requests. | Existing evidence will be consolidated into a dedicated section. |
 | Bug tracking | Records significant bugs found, their fixes and any known remaining issues. | Final evidence will be added after the testing audit is complete. |
 
@@ -298,7 +298,56 @@ These checks demonstrate that application actions were not merely producing the 
 
 ## Authentication and Permissions Testing
 
-Dedicated authentication, ownership and permission evidence is documented during the final testing audit.
+Authentication and ownership permissions were verified through both **manual production testing** and the Django automated test suite.
+
+### Production Authentication Testing
+
+The following authentication flows were manually verified against the live Heroku deployment:
+
+| Test | Expected Result | Result |
+| --- | --- | --- |
+| Register a new account | Account is created successfully and Pulse becomes accessible. | Pass |
+| Log out of an authenticated session | The authenticated session ends successfully. | Pass |
+| Log back in using the registered account | Authentication succeeds and the application loads normally. | Pass |
+
+These checks confirmed that account creation and the normal login/logout lifecycle function correctly in production.
+
+### Ownership and Permission Testing
+
+Production permission testing was carried out using content owned by a different user.
+
+| Test | Expected Result | Result |
+| --- | --- | --- |
+| Attempt to edit another user's post | Access is denied. | Pass |
+| Attempt to edit another user's comment | Access is denied. | Pass |
+
+Both unauthorized edit attempts were rejected using Pulse's branded **403 Forbidden** response rather than allowing modification of another user's content.
+
+### Automated Authentication and Permission Coverage
+
+The Django test suite provides additional regression coverage for authentication and ownership rules.
+
+Automated authentication tests cover:
+
+- successful account registration;
+- rejection of invalid registration data;
+- successful login;
+- rejection of incorrect login credentials;
+- preservation of a valid `next` redirect during login;
+- successful logout through POST;
+- rejection of logout through GET.
+
+Automated permission tests also cover:
+
+- post editing by the owner and rejection of non-owner editing;
+- post deletion by the owner and rejection of non-owner deletion;
+- comment editing by the owner and rejection of non-owner editing;
+- comment deletion by the owner and rejection of non-owner deletion;
+- rendering of the custom 403 page when a permission check fails.
+
+These tests form part of the **32-test Django suite**, which completed successfully with no failures.
+
+**Result: Authentication flows and ownership restrictions are verified through production testing and automated regression coverage, with unauthorized modification of another user's content correctly denied.**
 
 ## Error Page Testing
 
