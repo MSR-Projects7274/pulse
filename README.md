@@ -244,10 +244,10 @@ http://127.0.0.1:8000/
 | User registration | Django auth + custom signup form |
 | Login/logout system | Django authentication views |
 | Create post | Post model + create view |
-| Edit post | UpdateView with author permissions |
-| Delete post | DeleteView with confirmation |
-| Post feed | ListView ordered by newest |
-| Single post view | DetailView with comments |
+| Edit post | Function-based edit_post view with author permissions |
+| Delete post | Function-based delete_post view with confirmation |
+| Post feed | Function-based home view ordered by newest |
+| Single post view | Function-based post_detail view with comments |
 | Comments system | Comment model linked to Post |
 | Delete comments | Owner-restricted delete logic |
 | Search posts | Query-based filtering (title/content) |
