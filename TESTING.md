@@ -30,7 +30,7 @@ Pulse is tested at several levels so that both individual application behaviour 
 | --- | --- | --- |
 | Production smoke testing | Confirms that the deployed application and its critical user flows work after deployment. | Checklist already established; final execution evidence will be recorded during the final audit. |
 | Manual functional testing | Verifies real user actions and their resulting application/database behaviour. | Production testing log already contains completed tests. |
-| Automated testing | Verifies application logic and regression-sensitive behaviour through Django's test framework. | Detailed results will be documented during the final testing audit. |
+| Automated testing | Verifies application logic and regression-sensitive behaviour through Django's test framework. | 32 automated tests passed successfully with no failures or Django system-check issues. |
 | Validation | Checks HTML, CSS and Python quality using appropriate validation and linting tools. | Detailed results will be documented during the final testing audit. |
 | Responsive and browser testing | Verifies layout and interaction behaviour across representative viewport sizes and browsers. | Detailed evidence will be documented during the final testing audit. |
 | Production CRUD testing | Confirms that create, read, update and delete operations behave correctly against the deployed application. | Existing production evidence will be consolidated into a dedicated section. |
@@ -87,7 +87,55 @@ The following manual tests record production verification completed against the 
 
 ## Automated Testing
 
-Detailed automated test execution and results are documented during the final testing audit.
+Pulse includes automated tests built using Django's `TestCase` framework. The test suite covers core authentication, content, permissions, voting, validation and error-handling behaviour so that changes to the application can be checked for regressions.
+
+The automated tests are located in:
+
+- `pulse/accounts/tests.py`
+- `pulse/departments/tests.py`
+- `pulse/posts/tests.py`
+
+The complete automated test suite is run from the project root with:
+
+```bash
+python manage.py test
+```
+
+### Test Result
+
+The final automated test run completed successfully:
+
+```text
+Found 32 test(s).
+System check identified no issues (0 silenced).
+................................
+----------------------------------------------------------------------
+Ran 32 tests in 28.472s
+
+OK
+```
+
+**Result: 32 tests passed, with no test failures or Django system-check issues.**
+
+The automated suite includes coverage for:
+
+- successful and unsuccessful user registration;
+- successful and failed login;
+- login redirect behaviour;
+- POST-based logout and rejection of GET logout requests;
+- homepage and post-detail access for new users;
+- post creation, including image uploads;
+- post editing, image preservation and replacement;
+- post deletion and ownership permissions;
+- comment creation, editing, deletion and validation;
+- post and comment voting, including switching and removing votes;
+- rejection of invalid vote values;
+- community pages and invalid community handling;
+- user profiles with no existing activity;
+- custom 403 and 404 responses;
+- search across posts and communities.
+
+Automated testing complements the manual production checks documented elsewhere in this file. The automated suite verifies repeatable application behaviour in Django's isolated test environment, while production testing confirms the same broader application behaves correctly after deployment.
 
 ## Validation
 
