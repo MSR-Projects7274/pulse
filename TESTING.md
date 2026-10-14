@@ -480,5 +480,3 @@ Production infrastructure was also brought into alignment with the repository by
 **Result: The major production, template, media, security and deployment-parity defects identified during remediation have been corrected and verified through automated and production testing.**
 
 ## Known Bugs
-
-Any issues remaining after final testing are documented here.
