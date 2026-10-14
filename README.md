@@ -80,7 +80,8 @@ This project was developed to:
 - **Django** – Web framework (MVT architecture)
 - **HTML5** – Template structure
 - **CSS3** – Styling and layout
-- **SQLite** – Development database
+- **PostgreSQL** – Production relational database
+- **SQLite** – Local development fallback database
 
 ---
 
@@ -213,6 +214,29 @@ The `web` process starts the application using Gunicorn and serves the Django WS
 Production dependencies are installed from `requirements.txt` during the Heroku build.
 
 These include the Django framework, Gunicorn production server, PostgreSQL database support, WhiteNoise static-file handling and the packages required for persistent external media storage.
+
+### Production Database
+
+Pulse uses PostgreSQL as its production relational database.
+
+The live Heroku deployment was verified through Django's active database connection and reported PostgreSQL as both the database vendor and backend engine.
+
+Production database configuration is supplied through the `DATABASE_URL` environment variable. When this variable is available, Django uses `dj-database-url` to parse the connection string and configure the default database connection.
+
+```python
+DATABASE_URL = os.environ.get('DATABASE_URL')
+
+if DATABASE_URL:
+    DATABASES = {
+        'default': dj_database_url.parse(DATABASE_URL)
+    }
+```
+
+The PostgreSQL connection string itself is treated as a secret and is not committed to the repository.
+
+When `DATABASE_URL` is not present, Pulse falls back to a local SQLite database. This allows the application to be run locally without connecting development commands or test data to the live production database.
+
+PostgreSQL support is provided through the project's `psycopg` dependencies.
 
 ### Static File Handling
 
