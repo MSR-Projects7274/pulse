@@ -1,5 +1,43 @@
 # Pulse Testing
 
+This document contains the detailed testing evidence for Pulse.
+
+Testing is recorded separately from the main README so that individual test cases, validation evidence and production checks can be documented in enough detail without obscuring the project's general documentation.
+
+User-story validation screenshots remain in `README.md`. They demonstrate implementation of the planned user experience but are kept separate from functional testing evidence.
+
+## Testing Strategy
+
+Pulse is tested at several levels so that both individual application behaviour and the deployed production system can be verified.
+
+| Testing Area | Purpose | Evidence Status |
+| --- | --- | --- |
+| Production smoke testing | Confirms that the deployed application and its critical user flows work after deployment. | Checklist already established; final execution evidence will be recorded during the final audit. |
+| Manual functional testing | Verifies real user actions and their resulting application/database behaviour. | Production testing log already contains completed tests. |
+| Automated testing | Verifies application logic and regression-sensitive behaviour through Django's test framework. | Detailed results will be documented during the final testing audit. |
+| Validation | Checks HTML, CSS and Python quality using appropriate validation and linting tools. | Detailed results will be documented during the final testing audit. |
+| Responsive and browser testing | Verifies layout and interaction behaviour across representative viewport sizes and browsers. | Detailed evidence will be documented during the final testing audit. |
+| Production CRUD testing | Confirms that create, read, update and delete operations behave correctly against the deployed application. | Existing production evidence will be consolidated into a dedicated section. |
+| Authentication and permissions | Verifies account flows, protected actions and ownership restrictions. | Existing production evidence will be consolidated into a dedicated section. |
+| Error handling | Verifies custom error pages and graceful handling of invalid or forbidden requests. | Existing evidence will be consolidated into a dedicated section. |
+| Bug tracking | Records significant bugs found, their fixes and any known remaining issues. | Final evidence will be added after the testing audit is complete. |
+
+## Testing Contents
+
+- [Testing Strategy](#testing-strategy)
+- [Production Smoke Test Checklist](#production-smoke-test-checklist)
+- [Manual Testing Log](#manual-testing-log)
+- [Automated Testing](#automated-testing)
+- [Validation](#validation)
+- [Responsive and Browser Testing](#responsive-and-browser-testing)
+- [Production CRUD Testing](#production-crud-testing)
+- [Authentication and Permissions Testing](#authentication-and-permissions-testing)
+- [Error Page Testing](#error-page-testing)
+- [Bugs Found and Fixed](#bugs-found-and-fixed)
+- [Known Bugs](#known-bugs)
+
+---
+
 ## Production Smoke Test Checklist
 
 This checklist is used to verify the deployed Pulse application on Heroku after deployment.
@@ -44,3 +82,35 @@ The following manual tests record production verification completed against the 
 | MT-10 | As a user, invalid URLs fail gracefully. | Live application available. | Visit a deliberately nonexistent URL. | Branded 404 page is displayed instead of a server error. | Custom Pulse 404 page displayed correctly. | Pass | Heroku Production |
 | MT-11 | As a user, I receive current production assets rather than stale cached files. | Private browser window with DevTools open and cache disabled. | Navigate through homepage, post detail, create post, profile, community, 403 and 404 pages. | Pages and static assets load correctly with no unexpected errors. | All checked pages loaded normally with no unexpected console or network errors. | Pass | Heroku Production, Private Window, Cache Disabled |
 | MT-12 | As a user, my data survives a Heroku dyno restart. | Production account and persistence-test post already exist. | Restart all Heroku dynos, then reload and inspect existing data and image media. | User data, posts and uploaded media remain available. | Account, existing content and uploaded image all survived the restart. | Pass | Heroku Production |
+
+## Automated Testing
+
+Detailed automated test execution and results are documented during the final testing audit.
+
+## Validation
+
+HTML, CSS and Python validation evidence is documented during the final testing audit.
+
+## Responsive and Browser Testing
+
+Responsive-layout and browser compatibility evidence is documented during the final testing audit.
+
+## Production CRUD Testing
+
+Dedicated production CRUD evidence is documented during the final testing audit.
+
+## Authentication and Permissions Testing
+
+Dedicated authentication, ownership and permission evidence is documented during the final testing audit.
+
+## Error Page Testing
+
+Custom 403, 404 and 500 error-page evidence is documented during the final testing audit.
+
+## Bugs Found and Fixed
+
+Significant bugs identified and resolved during development and remediation are documented during the final testing audit.
+
+## Known Bugs
+
+Any issues remaining after final testing are documented here.

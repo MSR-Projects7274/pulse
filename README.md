@@ -32,6 +32,8 @@ This approach was taken to maintain a security-conscious and responsible develop
 - [User Stories](#user-stories)
 - [User Story Mapping](#user-story-mapping)
 - [User Story Validation (Screenshots)](#user-story-validation-screenshots)
+- [Wireframes](#wireframes)
+- [Testing](#testing)
 - [Security](#security)
 - [Development Challenges](#development-challenges)
 - [Lessons Learned](#lessons-learned)
@@ -799,6 +801,33 @@ Initial layout planning focused on:
 [View desktop wireframes](pulse/wireframes/desktop_designs.png)
 
 [View mobile wireframes](pulse/wireframes/mobile_designs.png)
+
+---
+
+## Testing
+
+Pulse uses a combination of manual, production, automated, validation, responsive and security-focused testing to verify the application.
+
+Detailed testing evidence is maintained separately in [`TESTING.md`](TESTING.md) so that the README can describe the project clearly without becoming dominated by individual test cases and validation records.
+
+The testing documentation is organised to cover:
+
+- production smoke testing against the live Heroku deployment;
+- manual functional testing of the application's main user flows;
+- automated Django test coverage;
+- HTML, CSS and Python validation;
+- responsive and browser testing;
+- production CRUD verification;
+- authentication and permission testing;
+- custom error-page testing;
+- bugs found and fixed during development and remediation;
+- any known bugs remaining after final testing.
+
+The existing production testing record already includes live verification of registration, authentication, post and comment CRUD, voting, profile access, permission handling, custom 404 behaviour, static assets and persistence following a Heroku dyno restart.
+
+User-story validation is documented separately in its own section. Its screenshots demonstrate that the planned functionality was implemented, while `TESTING.md` records whether that functionality behaves correctly under specific test conditions.
+
+For the complete testing record, see **[TESTING.md](TESTING.md)**.
 
 ---
 
