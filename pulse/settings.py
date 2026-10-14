@@ -53,7 +53,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'pulse.users',
     'pulse.posts',
     'pulse.departments',
     'pulse.accounts',

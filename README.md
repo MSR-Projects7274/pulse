@@ -101,10 +101,6 @@ The main areas of the project include:
 
   Responsible for authentication-related functionality, including user registration, login and logout behaviour.
 
-- **Users**
-
-  Contains the project's users application, which is currently separate from the authentication functionality provided by the Accounts app.
-
 - **Pulse**
 
   Contains the main Django project configuration, including settings, project-level URL routing, ASGI and WSGI configuration.
