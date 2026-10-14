@@ -878,7 +878,6 @@ Potential future improvements include:
 - User profiles with avatars
 - Notification system
 - Rich text editor for posts
-- Image uploads
 - Moderation tools
 
 ---
