@@ -173,7 +173,6 @@ http://127.0.0.1:8000/
 - Comments
 - Add comments to posts
 - Edit and delete comments
-- Threaded discussion support
 
 ---
 # User Stories
