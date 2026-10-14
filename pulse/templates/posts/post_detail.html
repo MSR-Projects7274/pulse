@@ -40,7 +40,12 @@
           <h1 class="post-detail-title">{{ post.title }}</h1>
 
           <div class="post-meta">
-            Posted by <strong>{{ post.author.username }}</strong>
+            Posted by
+            <strong>
+              <a href="{% url 'user_profile' post.author.username %}">
+                {{ post.author.username }}
+              </a>
+            </strong>
             · {{ post.created_at|date:"d M Y H:i" }} {% if post.is_edited %} ·
             <span class="edited-label">
               edited {{ post.updated_at|date:"d M Y H:i" }}
@@ -142,7 +147,11 @@
 
           <div class="comment-body-wrap">
             <div class="comment-meta">
-              <strong>{{ comment.author.username }}</strong>
+              <strong>
+                <a href="{% url 'user_profile' comment.author.username %}">
+                  {{ comment.author.username }}
+                </a>
+              </strong>
               · {{ comment.created_at|date:"d M Y H:i" }}
               {% if comment.is_edited %}
                 ·
