@@ -253,6 +253,26 @@ The S3 configuration uses Signature Version 4 and virtual-hosted addressing. Upl
 
 Media-storage credentials and bucket configuration are supplied through environment variables rather than being committed to the repository. The required environment-variable names are documented separately in the deployment configuration section.
 
+### Environment Variables
+
+Pulse uses environment variables for deployment-specific configuration and sensitive credentials.
+
+Secret or environment-specific values are not committed to the repository. The repository includes `.env.example` to document the variable names required or supported by the application without exposing their real values.
+
+| Variable | Purpose |
+| --- | --- |
+| `SECRET_KEY` | Django cryptographic secret used for security-sensitive application operations. |
+| `DEBUG` | Controls Django debug mode. Production should run with debug mode disabled. |
+| `ALLOWED_HOSTS` | Defines the hostnames Django is permitted to serve. |
+| `CSRF_TRUSTED_ORIGINS` | Defines trusted origins for Django CSRF protection in the deployed application. |
+| `DATABASE_URL` | Provides the production PostgreSQL connection string. When absent, Pulse falls back to local SQLite. |
+| `AWS_ACCESS_KEY_ID` | AWS credential used by Boto3 to access the configured S3 storage. |
+| `AWS_SECRET_ACCESS_KEY` | AWS secret credential used by Boto3 to access the configured S3 storage. |
+| `AWS_STORAGE_BUCKET_NAME` | Identifies the Amazon S3 bucket used for uploaded media. |
+| `AWS_S3_REGION_NAME` | Identifies the AWS region containing the configured S3 bucket. |
+
+The real values for these variables must be configured separately in the local environment or through Heroku Config Vars. They must not be copied into the README, committed to Git, or included in screenshots or testing evidence.
+
 ### Static File Handling
 
 WhiteNoise is included directly after Django's security middleware and is used to serve collected production static files.
