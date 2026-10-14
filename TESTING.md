@@ -32,7 +32,7 @@ Pulse is tested at several levels so that both individual application behaviour 
 | Manual functional testing | Verifies real user actions and their resulting application/database behaviour. | Production testing log already contains completed tests. |
 | Automated testing | Verifies application logic and regression-sensitive behaviour through Django's test framework. | 32 automated tests passed successfully with no failures or Django system-check issues. |
 | Validation | Checks HTML, CSS and Python quality using appropriate validation and linting tools. | W3C HTML and CSS validation and Flake8 Python validation completed successfully. |
-| Responsive and browser testing | Verifies layout and interaction behaviour across representative viewport sizes and browsers. | Detailed evidence will be documented during the final testing audit. |
+| Responsive and browser testing | Verifies layout and interaction behaviour across representative viewport sizes and browsers. | Responsive testing passed across six representative viewport sizes and Firefox, Chrome and Edge. |
 | Production CRUD testing | Confirms that create, read, update and delete operations behave correctly against the deployed application. | Existing production evidence will be consolidated into a dedicated section. |
 | Authentication and permissions | Verifies account flows, protected actions and ownership restrictions. | Existing production evidence will be consolidated into a dedicated section. |
 | Error handling | Verifies custom error pages and graceful handling of invalid or forbidden requests. | Existing evidence will be consolidated into a dedicated section. |
@@ -223,7 +223,57 @@ OK
 
 ## Responsive and Browser Testing
 
-Responsive-layout and browser compatibility evidence is documented during the final testing audit.
+Manual responsive and cross-browser testing was completed against the **live Heroku deployment**.
+
+Responsive behaviour was checked using representative desktop, tablet and mobile viewport sizes. The testing focused on ensuring that navigation, content, forms and interactive controls remained usable without clipping, overlapping or unintended horizontal scrolling.
+
+### Responsive Viewport Testing
+
+| Viewport | Representative Device Type | Result |
+| --- | --- | --- |
+| 1440 × 900 | Desktop | Pass |
+| 1024 × 768 | Laptop / small desktop | Pass |
+| 768 × 1024 | Tablet | Pass |
+| 425 × 915 | Large mobile | Pass |
+| 375 × 667 | Mobile | Pass |
+| 320 × 568 | Small mobile | Pass |
+
+The responsive checks covered representative pages and user flows including:
+
+- homepage / post feed;
+- post detail;
+- create post;
+- community search;
+- user profile;
+- login;
+- registration;
+- custom 404 page.
+
+Across the tested viewport sizes:
+
+- navigation remained accessible and usable;
+- page content remained readable without unintended horizontal scrolling;
+- post and profile content remained within their containers;
+- forms and form controls fitted within the available viewport;
+- buttons and voting controls remained accessible;
+- images scaled within their containers;
+- content did not overlap or become clipped;
+- authentication and search pages remained usable;
+- the custom error page continued to display correctly.
+
+### Browser Testing
+
+The deployed application was also manually checked using the current desktop versions of:
+
+| Browser | Result |
+| --- | --- |
+| Mozilla Firefox | Pass |
+| Google Chrome | Pass |
+| Microsoft Edge | Pass |
+
+The main navigation, post feed, post detail, forms, profile pages and interactive controls behaved consistently across the tested browsers.
+
+**Result: Responsive and cross-browser testing completed successfully with no layout-breaking or browser-specific issues identified during the test pass.**
 
 ## Production CRUD Testing
 
