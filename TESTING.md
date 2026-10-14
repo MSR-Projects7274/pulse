@@ -36,7 +36,7 @@ Pulse is tested at several levels so that both individual application behaviour 
 | Production CRUD testing | Confirms that create, read, update and delete operations behave correctly against the deployed application. | Live production CRUD testing passed for posts, comments and voting data, with persistence also verified after a dyno restart. |
 | Authentication and permissions | Verifies account flows, protected actions and ownership restrictions. | Production authentication and ownership checks passed, supported by automated regression tests for login, logout and owner/non-owner permissions. |
 | Error handling | Verifies custom error pages and graceful handling of invalid or forbidden requests. | Custom 403, 404 and 500 responses were verified successfully with production-style error handling. |
-| Bug tracking | Records significant bugs found, their fixes and any known remaining issues. | Final evidence will be added after the testing audit is complete. |
+| Bug tracking | Records significant bugs found, their fixes and any known remaining issues. | Major production, template, media, security and deployment-parity defects are documented with their fixes and verification evidence. |
 
 ---
 
@@ -423,7 +423,61 @@ The test was performed by calling Django's error handler directly rather than de
 
 ## Bugs Found and Fixed
 
-Significant bugs identified and resolved during development and remediation are documented during the final testing audit.
+The remediation process identified several significant issues affecting production reliability, security and deployment parity.
+
+The table below records the major bugs found, the corrective work completed and the evidence used to verify the repair.
+
+| Issue | Problem Identified | Fix Applied | Verification | Status |
+| --- | --- | --- | --- | --- |
+| Production HTTP 500 failures | The assessed deployment produced HTTP 500 errors during normal application use. Because the original production traceback was not available during remediation, no single historical cause has been asserted without evidence. Several concrete defects capable of causing production failures were identified and corrected as part of the repair. | Known template, configuration, database, media and deployment-parity defects were corrected. Production logging and testing were also strengthened so unexpected failures can be diagnosed rather than inferred. | Fresh production testing covered registration, authentication, post and comment CRUD, voting, profiles, static assets and error handling. The tested production pages loaded without unexpected 500 responses. | Resolved |
+| Broken post-detail template syntax | `post_detail.html` contained a malformed Django `{% if %}` block split incorrectly across lines. This could raise a `TemplateSyntaxError` when the post-detail template was rendered. | The template condition was corrected to valid Django template syntax. | Post-detail behaviour is covered by the automated Django suite and was exercised successfully during live production testing. | Resolved |
+| Image upload, editing and persistence | `PostForm` originally omitted the model's `image` field even though the templates attempted to expose image functionality. Uploaded images also required persistent storage because Heroku's application filesystem is not suitable for permanent user media. | The image field was added to `PostForm`, image rendering was implemented, image-edit behaviour was corrected, and Amazon S3 was configured as the persistent media backend through `django-storages`. | Automated tests cover image-post creation and preserving/replacing images during editing. A production image post and its uploaded media also remained available after a Heroku dyno restart. | Resolved |
+| Sensitive configuration stored in source | The assessed project contained a hardcoded Django `SECRET_KEY` and did not have effective repository-level secret exclusion. Deployment-specific configuration was mixed directly into application settings. | `SECRET_KEY` now comes from an environment variable. `DEBUG`, `ALLOWED_HOSTS`, `CSRF_TRUSTED_ORIGINS`, database configuration and S3 configuration are also environment-driven where appropriate. A root `.gitignore` and `.env.example` document the expected configuration without containing real secret values. | Current settings reference environment variables rather than a literal Django secret, and the required deployment variable names are documented without exposing their values. | Resolved |
+| Development and production deployment mismatch | The assessed repository did not provide reliable production parity. Notable problems included SQLite-oriented production configuration, non-persistent local media assumptions and deployment configuration that did not consistently describe the environment actually running on Heroku. | Production now uses PostgreSQL through `DATABASE_URL`, Amazon S3 for persistent uploaded media, WhiteNoise for collected static files, a root `.python-version` for the Python runtime, and a Heroku `Procfile` with automatic release-phase migrations. Deployment dependencies and environment variables are documented and aligned with the current application. | PostgreSQL was verified on the deployed application, the active S3 storage backend was checked directly, uploaded data and media survived a dyno restart, migrations were confirmed, and production static-file collection completed successfully. | Resolved |
+
+### Production 500 Investigation
+
+The original production 500 response was treated as a production-reliability issue rather than being assigned a speculative root cause.
+
+During remediation, concrete defects were identified that could cause production failures, including malformed Django template syntax and differences between the repository's configuration and the deployed environment.
+
+After the identified issues were corrected, the live Heroku application was exercised through its main user flows. No unexpected 500 responses were observed during the recorded production testing.
+
+### Image Upload and Edit Repair
+
+The original `PostForm` exposed only the department, title and content fields even though the `Post` model also supported an image.
+
+The form was updated to include the image field, while the create and edit forms continued to use multipart form submission.
+
+The repaired application supports:
+
+- creating a post with an image;
+- displaying the uploaded image;
+- editing a post without unintentionally removing its existing image;
+- replacing an existing image;
+- storing production uploads outside the Heroku dyno filesystem;
+- retaining uploaded media across dyno restarts.
+
+Production media is now stored using Amazon S3.
+
+### Configuration and Deployment Repair
+
+Deployment-specific configuration was moved out of source code wherever sensitive or environment-dependent values are involved.
+
+The application currently expects configuration such as:
+
+- `SECRET_KEY`;
+- `DEBUG`;
+- `ALLOWED_HOSTS`;
+- `CSRF_TRUSTED_ORIGINS`;
+- `DATABASE_URL`;
+- AWS storage credentials and bucket configuration.
+
+Real values are supplied through the deployment environment rather than being committed to the repository.
+
+Production infrastructure was also brought into alignment with the repository by using PostgreSQL for persistent relational data, S3 for uploaded media, WhiteNoise for static files and release-phase migrations on Heroku.
+
+**Result: The major production, template, media, security and deployment-parity defects identified during remediation have been corrected and verified through automated and production testing.**
 
 ## Known Bugs
 
