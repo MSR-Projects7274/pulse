@@ -254,7 +254,7 @@ http://127.0.0.1:8000/
 | Profile pages | User-based post filtering |
 | Responsive UI | CSS media queries / flex/grid |
 | Navigation system | Base template navbar |
-| Voting system | Many-to-many user-post relation |
+| Voting system | PostVote and CommentVote models track user votes |
 
 ---
 
