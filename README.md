@@ -3,7 +3,7 @@
 ![Python](https://img.shields.io/badge/Python-3.14.0-blue)
 ![Django](https://img.shields.io/badge/Django-6.0.5-green)
 ![Framework](https://img.shields.io/badge/Backend-Django%20MVT-lightgrey)
-![Status](https://img.shields.io/badge/Status-Complete-success)
+![Status](https://img.shields.io/badge/Status-Remediation-orange)
 ![Website Screenshot](pulse/screenshots/landing.png)
 
 ---
