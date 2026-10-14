@@ -273,6 +273,20 @@ Secret or environment-specific values are not committed to the repository. The r
 
 The real values for these variables must be configured separately in the local environment or through Heroku Config Vars. They must not be copied into the README, committed to Git, or included in screenshots or testing evidence.
 
+### Python Runtime
+
+Pulse includes a root-level `.python-version` file to define the Python runtime line used by the project.
+
+```text
+3.14
+```
+
+The `.python-version` file is tracked in the repository so that the required Python version is visible to both local development tooling and the deployment environment.
+
+The local development environment was verified using Python **3.14.0**.
+
+The live Heroku deployment was also verified directly and currently runs Python **3.14.8**. The project therefore targets the Python **3.14** runtime line rather than documenting a specific patch release as identical across all environments.
+
 ### Static File Handling
 
 WhiteNoise is included directly after Django's security middleware and is used to serve collected production static files.
