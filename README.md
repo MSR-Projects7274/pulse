@@ -884,6 +884,6 @@ Potential future improvements include:
 
 ## Credits
 
-- **Favicons:** [Favicon.io](Favicon.io)
+- **Favicons:** [Favicon.io](https://favicon.io/)
 - **Bug fixes and advice:** ChatGPT provided guidance, code extracts and troubleshooting support
 - **Favicon Design:** [Perchance.org](https://perchance.org/ai-text-to-image-generator)
