@@ -35,7 +35,7 @@ Pulse is tested at several levels so that both individual application behaviour 
 | Responsive and browser testing | Verifies layout and interaction behaviour across representative viewport sizes and browsers. | Responsive testing passed across six representative viewport sizes and Firefox, Chrome and Edge. |
 | Production CRUD testing | Confirms that create, read, update and delete operations behave correctly against the deployed application. | Live production CRUD testing passed for posts, comments and voting data, with persistence also verified after a dyno restart. |
 | Authentication and permissions | Verifies account flows, protected actions and ownership restrictions. | Production authentication and ownership checks passed, supported by automated regression tests for login, logout and owner/non-owner permissions. |
-| Error handling | Verifies custom error pages and graceful handling of invalid or forbidden requests. | Existing evidence will be consolidated into a dedicated section. |
+| Error handling | Verifies custom error pages and graceful handling of invalid or forbidden requests. | Custom 403, 404 and 500 responses were verified successfully with production-style error handling. |
 | Bug tracking | Records significant bugs found, their fixes and any known remaining issues. | Final evidence will be added after the testing audit is complete. |
 
 ---
@@ -351,7 +351,75 @@ These tests form part of the **32-test Django suite**, which completed successfu
 
 ## Error Page Testing
 
-Custom 403, 404 and 500 error-page evidence is documented during the final testing audit.
+Pulse provides custom **403 Forbidden**, **404 Not Found** and **500 Internal Server Error** pages so that failures are handled consistently with the rest of the application rather than exposing Django's default error responses.
+
+Error handling was tested with `DEBUG=False`, because Django only uses the custom production-style error pages when debug mode is disabled.
+
+### 403 Forbidden
+
+Ownership permission failures were tested both automatically and against the live Heroku deployment.
+
+An authenticated user attempted to edit a post and comment owned by another user. Both requests were rejected and displayed Pulse's branded `403.html` page rather than permitting the unauthorized modification.
+
+The automated test suite also verifies that a real non-owner post-edit permission failure:
+
+- returns HTTP `403`;
+- renders `403.html`;
+- displays the custom Pulse error content;
+- provides a route back to the application.
+
+**Result: Pass**
+
+### 404 Not Found
+
+The custom 404 response was verified using both automated testing and the live Heroku deployment.
+
+A deliberately nonexistent production URL displayed the branded Pulse 404 page instead of producing a server error.
+
+The automated test runs with `DEBUG=False` and verifies that an unmatched URL:
+
+- returns HTTP `404`;
+- renders `404.html`;
+- displays the custom Pulse error content;
+- provides a route back to the application.
+
+Invalid application resources are also covered by automated tests, including nonexistent posts and invalid community IDs.
+
+**Result: Pass**
+
+### 500 Internal Server Error
+
+The custom `500.html` template was verified directly through Django's standard server-error handler with `DEBUG=False`.
+
+The verification command used was:
+
+```powershell
+python manage.py shell -c "from django.test import RequestFactory, override_settings; from django.views.defaults import server_error; ctx=override_settings(DEBUG=False); ctx.enable(); response=server_error(RequestFactory().get('/')); body=response.content.decode(); print('Status:', response.status_code); print('Custom heading:', 'Something went off-frequency.' in body); print('Back link:', 'Back to Pulse' in body); ctx.disable()"
+```
+
+The handler returned:
+
+```text
+Status: 500
+Custom heading: True
+Back link: True
+```
+
+This confirms that Django's production-style server-error handler successfully renders the custom Pulse 500 page with the expected HTTP status and branded content.
+
+The test was performed by calling Django's error handler directly rather than deliberately introducing an exception into the live Heroku application.
+
+**Result: Pass**
+
+### Error Handling Result
+
+| Error | Verification | Result |
+| --- | --- | --- |
+| 403 Forbidden | Automated permission test and live production non-owner permission checks | Pass |
+| 404 Not Found | Automated `DEBUG=False` test and live production invalid-URL check | Pass |
+| 500 Internal Server Error | Django `server_error` handler invoked with `DEBUG=False` and custom template content verified | Pass |
+
+**Result: Custom 403, 404 and 500 error handling has been verified successfully.**
 
 ## Bugs Found and Fixed
 
