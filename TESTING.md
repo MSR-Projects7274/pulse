@@ -33,7 +33,7 @@ Pulse is tested at several levels so that both individual application behaviour 
 | Automated testing | Verifies application logic and regression-sensitive behaviour through Django's test framework. | 32 automated tests passed successfully with no failures or Django system-check issues. |
 | Validation | Checks HTML, CSS and Python quality using appropriate validation and linting tools. | W3C HTML and CSS validation and Flake8 Python validation completed successfully. |
 | Responsive and browser testing | Verifies layout and interaction behaviour across representative viewport sizes and browsers. | Responsive testing passed across six representative viewport sizes and Firefox, Chrome and Edge. |
-| Production CRUD testing | Confirms that create, read, update and delete operations behave correctly against the deployed application. | Existing production evidence will be consolidated into a dedicated section. |
+| Production CRUD testing | Confirms that create, read, update and delete operations behave correctly against the deployed application. | Live production CRUD testing passed for posts, comments and voting data, with persistence also verified after a dyno restart. |
 | Authentication and permissions | Verifies account flows, protected actions and ownership restrictions. | Existing production evidence will be consolidated into a dedicated section. |
 | Error handling | Verifies custom error pages and graceful handling of invalid or forbidden requests. | Existing evidence will be consolidated into a dedicated section. |
 | Bug tracking | Records significant bugs found, their fixes and any known remaining issues. | Final evidence will be added after the testing audit is complete. |
@@ -277,7 +277,24 @@ The main navigation, post feed, post detail, forms, profile pages and interactiv
 
 ## Production CRUD Testing
 
-Dedicated production CRUD evidence is documented during the final testing audit.
+CRUD behaviour was manually verified against the **live Heroku production deployment** during remediation.
+
+Testing was carried out through the normal user interface while the resulting database state was also checked using Django Admin or the production Django shell where appropriate.
+
+| Data / Feature | Create | Read | Update | Delete | Result |
+| --- | --- | --- | --- | --- | --- |
+| Posts | Post successfully created through the UI and persisted to the production database. | Created post appeared correctly in the application and Django Admin. | Edited post content was reflected in both the application and database record. | Owned post was deleted successfully and the database row was removed. | Pass |
+| Comments | Comment successfully created on an existing post. | Comment appeared correctly beneath the associated post and in Django Admin. | Edited comment content was reflected correctly. | Owned comment was removed successfully and disappeared from Django Admin. | Pass |
+| Post votes | Upvoting created the expected `PostVote` state. | Existing vote state was confirmed through the production Django shell and reflected in the interface. | Switching from upvote to downvote updated the existing vote rather than creating a duplicate. | Toggling the active vote off removed the vote row completely. | Pass |
+| Comment votes | Upvoting created the expected `CommentVote` state. | Existing comment-vote state was confirmed through the production Django shell and reflected in the interface. | Switching vote direction updated the existing vote state. | Toggling the active vote off removed the vote row. | Pass |
+
+Production image-post creation was also verified. Uploaded post media remained available after a Heroku dyno restart, confirming that the post record and its externally stored media persisted correctly.
+
+A separate production persistence check restarted the Heroku dynos and confirmed that the test account, existing posts and uploaded media remained available afterwards.
+
+These checks demonstrate that application actions were not merely producing the expected page response. The corresponding production data was also created, updated or removed as expected.
+
+**Result: Production CRUD operations for posts, comments and voting data completed successfully, with persisted application data remaining available after a dyno restart.**
 
 ## Authentication and Permissions Testing
 
