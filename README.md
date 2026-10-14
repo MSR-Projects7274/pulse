@@ -34,6 +34,7 @@ This approach was taken to maintain a security-conscious and responsible develop
 - [User Story Validation (Screenshots)](#user-story-validation-screenshots)
 - [Wireframes](#wireframes)
 - [Testing](#testing)
+- [Assessment Remediation](#assessment-remediation)
 - [Security](#security)
 - [Development Challenges](#development-challenges)
 - [Lessons Learned](#lessons-learned)
@@ -828,6 +829,31 @@ The existing production testing record already includes live verification of reg
 User-story validation is documented separately in its own section. Its screenshots demonstrate that the planned functionality was implemented, while `TESTING.md` records whether that functionality behaves correctly under specific test conditions.
 
 For the complete testing record, see **[TESTING.md](TESTING.md)**.
+
+---
+
+## Assessment Remediation
+
+The original assessment identified several areas where the submitted Pulse application did not meet the required criteria. The table below maps those findings to the remediation work completed since the assessed submission.
+
+Where several criteria referred to the same underlying problem, they are grouped together to avoid duplicating the same repair evidence.
+
+| Assessment Criterion | Assessment Issue | Remediation | Commit Evidence | Verification / Test Evidence |
+| --- | --- | --- | --- | --- |
+| LO1 1.3; LO3 3.1; Merit feedback 1.2, 3.1 and 3.2 | Core production CRUD behaviour was unreliable. Fresh users encountered server errors, post-detail behaviour could fail, and image creation/editing did not function correctly. | Corrected the malformed post-detail template condition, added the image field to `PostForm`, rendered post images correctly, configured persistent S3 media storage, strengthened form validation, restricted state-changing actions to POST requests, corrected permission handling and added user-facing success/error feedback. | `ef4346f`, `2d1e09a`, `a18f917`, `58f8bc3`, `41937ce`, `74643d7`, `8995f60`, `edf6704`, `d77224a`, `0ec6d90`, `c91ca33`, `9033434` | Automated tests cover fresh-user access, post and comment CRUD, image creation/replacement, permissions and voting. Production CRUD testing is recorded in `TESTING.md`, including persisted database and media behaviour. |
+| LO1 1.5; Merit feedback 1.5 and 1.6 | Testing evidence was insufficient to demonstrate that functionality, validation and production behaviour had been tested comprehensively. Bugs remained undocumented or were only represented through screenshots. | Added a comprehensive automated Django test suite, a production smoke-test checklist, recorded manual production testing, HTML/CSS/Python validation, responsive/browser testing, production CRUD testing, authentication/permission testing, custom error-page testing and documented bug investigation and fixes. | Automated test commits `3c293b3` through `2b28a68`; `0056b35`, `6956ba2`, `2887a0c`, `b56800e`, `fb15673`, `41bcb96`, `bad9246`, `2cb6784`, `5afc6bc`, `18a99c4`, `53978bc` | The Django suite currently contains 32 passing tests. `TESTING.md` records automated results, rendered HTML validation, CSS validation, Python linting, responsive/browser checks, production CRUD checks, authentication/permission checks and custom 403/404/500 verification. |
+| LO4 4.1 | The live Heroku deployment did not reproduce the working behaviour shown in the submitted local testing evidence, creating a production-parity and deployment-reliability problem. | Reworked production configuration around PostgreSQL, persistent Amazon S3 media storage, automatic release-phase migrations, generated static files, the root Python runtime file, current dependencies, environment-controlled settings, HTTPS/proxy configuration and production logging. | Media: `58f8bc3` through `876787c`; database: `e703288` through `bb50845`; migrations: `d8e16b4`; deployment/runtime: `63924af`, `3ef544c`, `f415537`, `a814e70`, `bb8a8c8`, `5c40326`, `c4378b7`, `f441e00`, `ec08859` | Production PostgreSQL and the active S3 storage backend were verified directly. Database records and uploaded media survived a Heroku dyno restart, production migrations were applied and production static-file collection completed successfully. |
+| LO4 4.2 | Invalid or unauthorised routes were not handled cleanly in production and could expose unhandled error responses instead of preserving the application experience. | Added explicit permission handling together with branded custom 403, 404 and 500 responses. | `d77224a`, `3804a40`, `0173a46`, `fbe81b2`, `4e5a9b9`, `2b28a68`, `18a99c4` | Non-owner edit attempts return 403, invalid resources return the custom 404 response, and the custom 500 handler was verified under `DEBUG=False`. Automated tests cover 403 and 404 behaviour and the production checks are recorded in `TESTING.md`. |
+| LO5 5.1; Merit feedback 4.1 | The original repository history contained large/general commits and did not provide a sufficiently granular SDLC audit trail. | The historical development record has not been rewritten or falsified. Instead, remediation work has been carried out incrementally using small, specifically named commits so the repair process itself remains auditable. | Remediation history from `46a466a` onward. The history currently contains 125 focused remediation commits before this assessment-remediation documentation commit. | The Git history itself provides the evidence. Security, CRUD, testing, deployment, accessibility, documentation and validation repairs are recorded as separate logical commits rather than being collapsed into a single repair commit. |
+| LO5 5.2 and 5.3 | The submitted repository contained a hardcoded Django `SECRET_KEY` and did not adequately exclude secret/environment files from source control. | Removed the production secret from source, changed Django to read `SECRET_KEY` from the environment, rotated the exposed production key, added repository-level secret exclusions and an `.env.example`, and documented required environment-variable names without their real values. | `46a466a`, `5a22655` | Current configuration obtains sensitive values from the environment rather than a literal production secret. `.env.example` documents configuration names using non-secret placeholders and the deployment documentation lists required variables without exposing their values. |
+
+### Assessment Clarification
+
+The later assessment clarification confirmed that Cloudinary was not a project requirement and that its mention in the original feedback was an administrative error. Pulse therefore does not claim a Cloudinary remediation. The current application uses Amazon S3 as its verified persistent media-storage backend.
+
+The clarification also confirmed that the deployment finding was not evidence that a different Git commit had been deployed. The remediation work therefore addresses the actual issue identified: the live production application did not reproduce the reliable behaviour demonstrated by the local testing evidence.
+
+This table documents the work carried out in response to the assessment findings. It does not rewrite the historical development record or treat the remediation process itself as a reassessment result.
 
 ---
 
