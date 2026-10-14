@@ -234,7 +234,7 @@ http://127.0.0.1:8000/
 
 ### Engagement-Oriented User
 
-- As a user, I want to like posts so that I can show appreciation for content I enjoy.
+- As a user, I want to upvote or downvote posts so that I can express my reaction to content.
 - As a user, I want posts to support better formatting so that I can structure my thoughts clearly.
 
 ---
@@ -256,7 +256,7 @@ http://127.0.0.1:8000/
 | Profile pages | User-based post filtering |
 | Responsive UI | CSS media queries / flex/grid |
 | Navigation system | Base template navbar |
-| Like system | Many-to-many user-post relation |
+| Voting system | Many-to-many user-post relation |
 
 ---
 
