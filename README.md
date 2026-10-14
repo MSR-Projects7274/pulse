@@ -90,27 +90,35 @@ Pulse follows Django's standard project structure, separating the main project c
 The main areas of the project include:
 
 - **Posts**
+
   Owns the core discussion functionality of Pulse, including posts, comments and voting. It contains the models, forms, validation, views and URL routes used for creating, viewing, editing and deleting discussion content.
 
 - **Departments**
+
   Owns the community structure used to organise posts into distinct discussion areas. Department data is used to group and filter content throughout the platform.
 
 - **Accounts**
+
   Responsible for authentication-related functionality, including user registration, login and logout behaviour.
 
 - **Users**
+
   Contains the project's users application, which is currently separate from the authentication functionality provided by the Accounts app.
 
 - **Pulse**
+
   Contains the main Django project configuration, including settings, project-level URL routing, ASGI and WSGI configuration.
 
 - **Templates**
+
   Contains the shared base template, custom error pages and the HTML templates used to render the application's pages.
 
 - **Static files**
+
   Contains the project's CSS, favicon assets and other front-end resources.
 
 - **Screenshots and wireframes**
+
   Contains the visual documentation used to demonstrate the application's interface, responsive layouts and original design planning.
 
 ---
