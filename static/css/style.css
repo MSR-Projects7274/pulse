@@ -512,6 +512,28 @@ a:hover {
     flex: 1;
 }
 
+/* =========================
+   POST IMAGES
+========================= */
+
+.post-image,
+.post-detail-image {
+    display: block;
+    max-width: 100%;
+    width: auto;
+    height: auto;
+    margin: 18px auto;
+    border-radius: 12px;
+}
+
+.post-image {
+    max-height: 360px;
+}
+
+.post-detail-image {
+    max-height: 600px;
+}
+
 .post-title a {
     color: white;
     font-size: 1.3rem;
