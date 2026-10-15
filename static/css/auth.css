@@ -161,17 +161,10 @@
 /* MOBILE FIXES — applies to screens 600px and below */
 @media (max-width: 600px) {
 
-    /* Ensure the page scales properly */
-    body {
-        font-size: 1rem;
-        padding: 1rem;
-        margin: 0;
-    }
-
     /* Prevent any container from forcing horizontal zoom-out */
-    .container,
-    .form-wrapper,
-    form {
+    .auth-page .container,
+    .auth-page .form-wrapper,
+    .auth-page form {
         width: 100%;
         max-width: 100%;
         padding: 0 1rem;
@@ -179,16 +172,16 @@
     }
 
     /* Make labels readable */
-    label {
+    .auth-page label {
         font-size: 1rem;
         display: block;
         margin-bottom: 0.5rem;
     }
 
     /* Make inputs scale to full width */
-    input,
-    select,
-    textarea {
+    .auth-page input,
+    .auth-page select,
+    .auth-page textarea {
         width: 100%;
         max-width: 100%;
         font-size: 1rem;
@@ -197,8 +190,8 @@
     }
 
     /* Buttons should also scale */
-    button,
-    input[type="submit"] {
+    .auth-page button,
+    .auth-page input[type="submit"] {
         width: 100%;
         padding: 0.9rem;
         font-size: 1.1rem;
@@ -206,9 +199,9 @@
     }
 
     /* Fix long text wrapping (e.g., password rules) */
-    p,
-    .helptext,
-    .errorlist {
+    .auth-page p,
+    .auth-page .helptext,
+    .auth-page .errorlist {
         font-size: 0.95rem;
         line-height: 1.4;
         word-wrap: break-word;
