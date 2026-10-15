@@ -98,6 +98,25 @@
     box-shadow: 0 0 10px rgba(79, 140, 255, 0.2);
 }
 
+.register-card .form-field {
+    margin-bottom: 18px;
+}
+
+.register-card .form-field input {
+    margin-bottom: 8px;
+}
+
+.register-card .helptext {
+    color: #cbd5e1;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.register-card .helptext ul {
+    margin: 8px 0 0;
+    padding-left: 20px;
+}
+
 /* Button */
 .auth-card button {
     width: 100%;

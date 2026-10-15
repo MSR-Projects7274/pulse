@@ -426,6 +426,22 @@ textarea {
     text-align: left;
 }
 
+.form-card .form-field {
+    margin-bottom: 18px;
+}
+
+.form-card .form-field input,
+.form-card .form-field textarea,
+.form-card .form-field select {
+    margin-bottom: 8px;
+}
+
+.form-card .helptext {
+    color: var(--muted);
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
 .create-post-field {
     margin-bottom: 15px;
 }
@@ -804,6 +820,22 @@ a:hover {
 .comment-form textarea {
     margin-top: 10px;
     margin-bottom: 10px;
+}
+
+.login-notice {
+    margin-top: 12px;
+    padding: 14px 16px;
+
+    background: rgba(79, 140, 255, 0.08);
+    border: 1px solid rgba(79, 140, 255, 0.25);
+    border-radius: 10px;
+
+    color: var(--text);
+    text-align: center;
+}
+
+.login-notice a {
+    font-weight: 600;
 }
 
 /* =========================
