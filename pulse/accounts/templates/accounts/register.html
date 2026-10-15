@@ -17,7 +17,7 @@
 
         {% if form.non_field_errors %}
           {% for error in form.non_field_errors %}
-            <div class="error">{{ error }}</div>
+            <div class="error" role="alert">{{ error }}</div>
           {% endfor %}
         {% endif %}
 
@@ -31,7 +31,7 @@
             {% endif %}
 
             {% for error in field.errors %}
-              <div class="error">{{ error }}</div>
+              <div class="error" role="alert">{{ error }}</div>
             {% endfor %}
           </div>
         {% endfor %}

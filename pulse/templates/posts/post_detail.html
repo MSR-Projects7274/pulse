@@ -90,7 +90,7 @@
 
           {% if form.non_field_errors %}
             {% for error in form.non_field_errors %}
-              <div class="error">{{ error }}</div>
+              <div class="error" role="alert">{{ error }}</div>
             {% endfor %}
           {% endif %}
 
@@ -98,7 +98,7 @@
           {{ form.content }}
 
           {% for error in form.content.errors %}
-            <div class="error">{{ error }}</div>
+            <div class="error" role="alert">{{ error }}</div>
           {% endfor %}
 
           <button type="submit" class="button">Comment</button>

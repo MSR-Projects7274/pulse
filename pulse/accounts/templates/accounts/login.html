@@ -14,7 +14,7 @@
 
       {% if form.non_field_errors %}
         {% for error in form.non_field_errors %}
-          <div class="error">{{ error }}</div>
+          <div class="error" role="alert">{{ error }}</div>
         {% endfor %}
       {% endif %}
 
@@ -31,7 +31,7 @@
           placeholder="Username"
         />
         {% for error in form.username.errors %}
-          <div class="error">{{ error }}</div>
+          <div class="error" role="alert">{{ error }}</div>
         {% endfor %}
 
         <label for="id_password">Password</label>
@@ -42,7 +42,7 @@
           placeholder="Password"
         />
         {% for error in form.password.errors %}
-          <div class="error">{{ error }}</div>
+          <div class="error" role="alert">{{ error }}</div>
         {% endfor %}
 
         <button type="submit">Login</button>

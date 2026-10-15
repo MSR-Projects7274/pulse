@@ -16,7 +16,7 @@
 
           {% if form.non_field_errors %}
             {% for error in form.non_field_errors %}
-              <div class="error">{{ error }}</div>
+              <div class="error" role="alert">{{ error }}</div>
             {% endfor %}
           {% endif %}
 
@@ -24,7 +24,7 @@
             {{ form.department.label_tag }}<br />
             {{ form.department }}
             {% for error in form.department.errors %}
-              <div class="error">{{ error }}</div>
+              <div class="error" role="alert">{{ error }}</div>
             {% endfor %}
           </div>
 
@@ -32,7 +32,7 @@
             {{ form.title.label_tag }}<br />
             {{ form.title }}
             {% for error in form.title.errors %}
-              <div class="error">{{ error }}</div>
+              <div class="error" role="alert">{{ error }}</div>
             {% endfor %}
           </div>
 
@@ -40,7 +40,7 @@
             {{ form.content.label_tag }}<br />
             {{ form.content }}
             {% for error in form.content.errors %}
-              <div class="error">{{ error }}</div>
+              <div class="error" role="alert">{{ error }}</div>
             {% endfor %}
           </div>
 
@@ -48,7 +48,7 @@
             {{ form.image.label_tag }}<br />
             {{ form.image }}
             {% for error in form.image.errors %}
-              <div class="error">{{ error }}</div>
+              <div class="error" role="alert">{{ error }}</div>
             {% endfor %}
           </div>
 
