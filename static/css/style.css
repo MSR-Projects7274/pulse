@@ -415,6 +415,17 @@ textarea {
     min-height: 90px;
 }
 
+/* Form validation errors */
+
+.form-card .error,
+.post-card .error,
+.comment-form .error {
+    color: #ef4444;
+    margin: 8px 0 10px;
+    font-size: 0.9rem;
+    text-align: left;
+}
+
 .create-post-field {
     margin-bottom: 15px;
 }
