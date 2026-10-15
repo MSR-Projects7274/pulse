@@ -33,7 +33,7 @@
 
   <body>
     {% block navbar %}
-    <div class="navbar">
+    <nav class="navbar" aria-label="Primary navigation">
       <a href="{% url 'home' %}" class="logo">
         Pulse<span>.</span>
       </a>
@@ -81,7 +81,7 @@
         </a>
         {% endif %}
       </div>
-    </div>
+    </nav>
     {% endblock %}
 
     {% include "includes/messages.html" %}
