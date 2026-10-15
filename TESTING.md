@@ -92,7 +92,6 @@ Pulse includes automated tests built using Django's `TestCase` framework. The te
 The automated tests are located in:
 
 - `pulse/accounts/tests.py`
-- `pulse/departments/tests.py`
 - `pulse/posts/tests.py`
 
 The complete automated test suite is run from the project root with:
