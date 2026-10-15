@@ -1,7 +1,7 @@
 # Pulse – Django Discussion Platform
 
 ![Python](https://img.shields.io/badge/Python-3.14.0-blue)
-![Django](https://img.shields.io/badge/Django-6.0.5-green)
+![Django](https://img.shields.io/badge/Django-6.0.8-green)
 ![Framework](https://img.shields.io/badge/Backend-Django%20MVT-lightgrey)
 ![Status](https://img.shields.io/badge/Status-Remediation-orange)
 ![Website Screenshot](pulse/screenshots/landing.png)
