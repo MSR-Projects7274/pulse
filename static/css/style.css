@@ -15,7 +15,7 @@
 :root {
     --font-main: "Segoe UI", Arial, sans-serif;
 
-    --bg: #808080;
+    --bg: #30363d;
     --card: #151a22;
     --border: #232a35;
 
@@ -33,7 +33,7 @@
 body {
     position: relative;
 
-    background-color: gray;
+    background-color: var(--bg);
 
     /* star layers */
     background-image:
