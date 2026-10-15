@@ -284,7 +284,7 @@ h2 {
 .nav-links a,
 .nav-links button.button {
     text-decoration: none;
-    color: var(--text-muted);
+    color: var(--muted);
 
     font-family: inherit;
     font-size: inherit;
@@ -957,7 +957,7 @@ a:hover {
 .error-kicker {
     margin-top: 18px;
 
-    color: var(--text-muted);
+    color: var(--muted);
 
     font-size: 0.8rem;
     font-weight: 700;
@@ -976,7 +976,7 @@ a:hover {
     margin: 16px auto 28px;
     max-width: 460px;
 
-    color: var(--text-muted);
+    color: var(--muted);
     line-height: 1.6;
 }
 
