@@ -669,7 +669,7 @@ Detailed testing evidence is maintained in `TESTING.md`.
 
 | User Story | Implementation |
 |------------|---------------|
-| User registration | Django auth + custom signup form |
+| User registration | Django UserCreationForm + custom registration template |
 | Login/logout system | Django authentication views |
 | Create post | Post model + create view |
 | Edit post | Function-based edit_post view with author permissions |
