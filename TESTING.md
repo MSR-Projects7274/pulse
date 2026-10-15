@@ -85,6 +85,8 @@ The following manual tests record production verification completed against the 
 | MT-11 | As a user, I receive current production assets rather than stale cached files. | Private browser window with DevTools open and cache disabled. | Navigate through homepage, post detail, create post, profile, community, 403 and 404 pages. | Pages and static assets load correctly with no unexpected errors. | All checked pages loaded normally with no unexpected console or network errors. | Pass | Heroku Production, Private Window, Cache Disabled |
 | MT-12 | As a user, my data survives a Heroku dyno restart. | Production account and persistence-test post already exist. | Restart all Heroku dynos, then reload and inspect existing data and image media. | User data, posts and uploaded media remain available. | Account, existing content and uploaded image all survived the restart. | Pass | Heroku Production |
 
+**Current image-sizing status:** The MT-04 result above records the state of the interface at the time that production persistence testing was performed. Image sizing was subsequently addressed during UI remediation by adding responsive constraints for `.post-image` and `.post-detail-image`, including `max-width: 100%`, automatic dimensions and separate maximum heights for feed and detail views. Final production smoke testing will re-verify the corrected image presentation before submission.
+
 ## Automated Testing
 
 Pulse includes automated tests built using Django's `TestCase` framework. The test suite covers core authentication, content, permissions, voting, validation and error-handling behaviour so that changes to the application can be checked for regressions.
