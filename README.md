@@ -680,7 +680,7 @@ Detailed testing evidence is maintained in `TESTING.md`.
 | Delete comments | Owner-restricted delete logic |
 | Search posts | Query-based filtering (title/content) |
 | Profile pages | User-based post filtering |
-| Responsive UI | CSS media queries / flex/grid |
+| Responsive UI | CSS media queries / flexbox |
 | Navigation system | Base template navbar |
 | Voting system | PostVote and CommentVote models track user votes |
 
