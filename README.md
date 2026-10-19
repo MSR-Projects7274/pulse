@@ -301,15 +301,11 @@ Before running Django commands, configure the required values in the current ter
 ```powershell
 $env:SECRET_KEY="replace-with-a-local-development-secret"
 $env:DEBUG="True"
-$env:AWS_ACCESS_KEY_ID="replace-with-your-access-key-id"
-$env:AWS_SECRET_ACCESS_KEY="replace-with-your-secret-access-key"
-$env:AWS_STORAGE_BUCKET_NAME="replace-with-your-bucket-name"
-$env:AWS_S3_REGION_NAME="replace-with-your-region"
 ```
 
 `ALLOWED_HOSTS` and `CSRF_TRUSTED_ORIGINS` already provide localhost defaults. If `DATABASE_URL` is not set, Pulse uses the local SQLite fallback database.
 
-The AWS values must reference valid credentials and an S3 bucket when testing uploaded media locally. Do not commit real credentials to the repository.
+When `DEBUG=True`, uploaded media is stored locally in the project's `media/` directory, so AWS credentials are not required for normal local development. The production configuration uses Amazon S3 when `DEBUG=False`, where the documented AWS environment variables must be supplied.
 
 Apply Migrations
 
