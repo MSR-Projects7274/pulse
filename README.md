@@ -806,11 +806,19 @@ As a user, I want a responsive interface so that I can use the platform on any d
 
 # Wireframes
 
-Initial layout planning focused on:
+The initial wireframes established the core layout and navigation structure for Pulse before the interface was implemented.
 
-- Clear header branding
-- Controlled UI spacing
-- Minimal navigation
+The design was guided by several UX priorities:
+
+- **Clear visual hierarchy** – branding, navigation, discussion content and primary actions are separated so users can quickly understand where they are and what actions are available.
+- **Consistent navigation** – the shared navigation pattern gives users predictable access to the main areas of the application and supports the user story requiring consistent navigation across the site.
+- **Focused content presentation** – discussion content remains the visual priority, while supporting controls such as voting, editing and profile access are kept secondary to the post or conversation itself.
+- **Controlled spacing and readable layouts** – spacing between interface elements is used to prevent dense discussion content, forms and controls from becoming visually cluttered.
+- **Responsive behaviour** – the interface adapts through CSS media queries and flexbox so navigation, forms and discussion content remain usable across desktop, tablet and mobile layouts.
+- **User control and feedback** – authenticated users retain control over their own posts and comments, destructive actions use confirmation steps, and form validation or system feedback is presented clearly when an action cannot be completed.
+- **Accessibility and consistency** – shared templates and reusable styling help maintain consistent controls, navigation and page structure across the application.
+
+The wireframes were treated as an initial design guide rather than a rigid specification. During implementation and testing, the interface was refined where necessary to improve responsive behaviour, navigation consistency, form usability and clarity. These changes preserve the original goal of a simple discussion-focused interface while adapting the design to the behaviour of the completed application.
 
 [View desktop wireframes](pulse/wireframes/desktop_designs.png)
 
