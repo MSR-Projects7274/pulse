@@ -480,6 +480,8 @@ Real values are supplied through the deployment environment rather than being co
 
 Production infrastructure was also brought into alignment with the repository by using PostgreSQL for persistent relational data, S3 for uploaded media, WhiteNoise for static files and release-phase migrations on Heroku.
 
+Final production verification reported no pending migrations. `python manage.py check --deploy` reported only Django's optional `security.W004` HSTS warning. HSTS was not enabled solely to silence the warning because it should be introduced as a deliberate production security policy rather than as a cosmetic validation change. HTTPS is enforced separately by the application's production configuration, including secure-cookie, proxy and HTTPS redirect handling.
+
 **Result: The major production, template, media, security and deployment-parity defects identified during remediation have been corrected and verified through automated and production testing.**
 
 ## Known Bugs
