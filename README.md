@@ -55,13 +55,11 @@ The project focuses on backend architecture, authentication systems, and full CR
 
 ## Purpose
 
-This project was developed to:
+Pulse is a community discussion platform designed for users who want a focused place to share ideas, create posts and take part in conversations around topics that interest them. It provides a structured alternative to fragmented social-media discussion by bringing posts, comments, voting, search and user profiles together within one consistent application.
 
-- Practise Django MVT architecture
-- Implement full user authentication flows
-- Build a relational database-backed application
-- Develop CRUD-based interaction systems
-- Explore real-world forum-style application design
+The platform is intended to support ongoing participation rather than one-off content consumption. Authenticated users can contribute their own content, respond to other users, discover relevant discussions and retain control over the posts and comments they create.
+
+From a development perspective, Pulse also demonstrates the use of Django's MVT architecture, relational data modelling, authentication, CRUD operations, permissions, search, media handling and production deployment. These technical objectives support the user-facing purpose of the application rather than defining it.
 
 ---
 
