@@ -65,14 +65,19 @@ From a development perspective, Pulse also demonstrates the use of Django's MVT 
 
 ## Features
 
-- User registration and authentication
-- Secure login and logout system
-- Create, edit, and delete posts
-- Commenting system on posts
+- User registration, login and logout
+- Authenticated and permission-protected user actions
+- Create, view, edit and delete posts
+- Optional image uploads for posts
+- Create, edit and delete comments
+- Post and comment voting
+- Search across discussion content
+- Department-based discussion organisation and filtering
+- Public user profile pages
 - User-owned content permissions
-- Timestamp tracking for posts and comments
-- Protected routes for authenticated users only
-- Clean template-based UI structure
+- Edited-state and timestamp tracking for posts and comments
+- Responsive navigation and layouts across desktop, tablet and mobile devices
+- Custom validation feedback and branded error handling
 
 ---
 
