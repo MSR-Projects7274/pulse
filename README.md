@@ -263,7 +263,7 @@ The application does not maintain a separate custom profile database model. User
 Clone Repository
 
 ```bash
-git clone <https://github.com/MSR-Projects7274/pulse>
+git clone https://github.com/MSR-Projects7274/pulse.git
 cd pulse
 ```
 
@@ -459,7 +459,7 @@ The following process can be used to reproduce the Pulse production deployment o
 Clone the repository and move into the project directory.
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/MSR-Projects7274/pulse.git
 cd pulse
 ```
 
