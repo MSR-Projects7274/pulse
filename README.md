@@ -607,20 +607,43 @@ Detailed testing evidence is maintained in `TESTING.md`.
 
 ## User Features
 
-- Accounts
-- Register new users
-- Login and logout system
-- Session-based authentication
-- Posts
-- Create posts
-- Edit and delete own posts
-- View all community posts
-- Individual post detail pages
-- Comments
-- Add comments to posts
-- Edit and delete comments
+- **Accounts**
+  - Register a new account
+  - Log in and log out securely
+  - Session-based authentication
+- **Posts**
+  - Create posts
+  - Optionally upload an image with a post
+  - Edit and delete your own posts
+  - View all posts in the main feed
+  - View individual post detail pages
+  - See edited-state and timestamp information
+- **Comments**
+  - Add comments to posts
+  - Edit and delete your own comments
+  - View comments within post discussions
+  - See edited-state and timestamp information
+- **Voting**
+  - Upvote and downvote posts
+  - Upvote and downvote comments
+  - Change or remove an existing vote
+- **Discovery**
+  - Search posts by title and content
+  - Browse posts by department
+  - View posts ordered by newest first
+- **Profiles**
+  - View your own profile and contributions
+  - View other users' public profiles and posts
+- **Responsive Interface**
+  - Use the application across desktop, tablet and mobile layouts
+  - Navigate through a consistent shared interface
+- **Permissions and Feedback**
+  - Restrict editing and deletion to content owners
+  - Require authentication for protected actions
+  - Provide user-facing feedback for important actions and validation
 
 ---
+
 ## User Stories
 
 ### New User / Visitor
@@ -640,6 +663,7 @@ Detailed testing evidence is maintained in `TESTING.md`.
 ### Content Creator
 
 - As a user, I want to create a post so that I can share my thoughts with others.
+- As a user, I want to optionally add an image to a post so that I can support my written content visually.
 - As a user, I want to edit my posts so that I can correct or update my content.
 - As a user, I want to delete my posts so that I can remove content I no longer want visible.
 
@@ -651,6 +675,7 @@ Detailed testing evidence is maintained in `TESTING.md`.
 - As a user, I want to view a single post so that I can read full discussions in context.
 - As a user, I want to comment on posts so that I can engage with the community.
 - As a user, I want to view comments so that I can follow ongoing conversations.
+- As a user, I want to edit my comments so that I can correct or update my responses.
 - As a user, I want to delete my comments so that I can remove content I no longer want displayed.
 
 ---
@@ -658,6 +683,7 @@ Detailed testing evidence is maintained in `TESTING.md`.
 ### Explorer / Discovery User
 
 - As a user, I want to search posts so that I can find specific discussions quickly.
+- As a user, I want to browse posts by department so that I can focus on relevant topics.
 - As a user, I want posts ordered by newest first so that I can see the latest activity.
 - As a user, I want to browse content easily so that I can discover interesting discussions.
 
@@ -666,7 +692,7 @@ Detailed testing evidence is maintained in `TESTING.md`.
 ### Profile-Focused User
 
 - As a user, I want to view my profile so that I can see my activity and contributions.
-- As a user, I want to view other users’ profiles so that I can explore their posts.
+- As a user, I want to view other users' profiles so that I can explore their posts.
 
 ---
 
@@ -680,6 +706,8 @@ Detailed testing evidence is maintained in `TESTING.md`.
 ### Engagement-Oriented User
 
 - As a user, I want to upvote or downvote posts so that I can express my reaction to content.
+- As a user, I want to upvote or downvote comments so that I can react to individual contributions.
+- As a user, I want to change or remove my vote so that I remain in control of my reaction.
 
 ---
 
@@ -687,20 +715,25 @@ Detailed testing evidence is maintained in `TESTING.md`.
 
 | User Story | Implementation |
 |------------|---------------|
-| User registration | Django UserCreationForm + custom registration template |
-| Login/logout system | Django authentication views |
-| Create post | Post model + create view |
-| Edit post | Function-based edit_post view with author permissions |
-| Delete post | Function-based delete_post view with confirmation |
-| Post feed | Function-based home view ordered by newest |
-| Single post view | Function-based post_detail view with comments |
-| Comments system | Comment model linked to Post |
-| Delete comments | Owner-restricted delete logic |
-| Search posts | Query-based filtering (title/content) |
-| Profile pages | User-based post filtering |
-| Responsive UI | CSS media queries / flexbox |
-| Navigation system | Base template navbar |
-| Voting system | PostVote and CommentVote models track user votes |
+| User registration | Django `UserCreationForm` with custom registration template |
+| Login/logout system | Django authentication with custom login/logout views |
+| Create post | `Post` model, `PostForm` and `create_post` view |
+| Upload post image | Optional `Post.image` field with validated media handling |
+| Edit post | `edit_post` view with author permissions |
+| Delete post | `delete_post` view with owner restriction and confirmation |
+| Post feed | `home` view ordered by newest first |
+| Single post view | `post_detail` view with comments and voting |
+| Create comments | `Comment` model and post-detail comment form |
+| Edit comments | Owner-restricted `edit_comment` view |
+| Delete comments | Owner-restricted `delete_comment` view |
+| Search posts | Query-based filtering of post title and content |
+| Browse departments | Department filtering through department-specific post views |
+| Profile pages | User-based post filtering on public profile pages |
+| Post voting | `PostVote` model and authenticated voting views |
+| Comment voting | `CommentVote` model and authenticated voting views |
+| Responsive UI | CSS media queries and flexible layouts |
+| Navigation system | Shared base-template navigation |
+| Content ownership | Permission checks restrict post/comment changes to their authors |
 
 ---
 
