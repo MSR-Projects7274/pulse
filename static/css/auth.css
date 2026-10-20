@@ -123,30 +123,10 @@
     text-align: center;
 }
 
-/* Button */
-.auth-card button {
+/* Auth submit buttons reuse the shared Pulse button styling. */
+.auth-card .auth-submit {
     width: 100%;
-
-    padding: 14px;
-
-    border: none;
-    border-radius: 999px;
-
-    background: #4f8cff;
-    color: white;
-
-    font-size: 1rem;
-    font-weight: 600;
-
-    cursor: pointer;
-
-    transition: 0.25s ease;
-}
-
-.auth-card button:hover {
-    transform: translateY(-2px);
-
-    box-shadow: 0 0 20px rgba(79, 140, 255, 0.25);
+    justify-content: center;
 }
 
 /* Error message */
