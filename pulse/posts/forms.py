@@ -11,7 +11,7 @@ class PostForm(forms.ModelForm):
         fields = ["department", "title", "content", "image"]
 
         labels = {
-            "department": "Channel",
+            "department": "Community",
             "title": "Title",
             "content": "Post",
             "image": "Image",

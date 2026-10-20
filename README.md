@@ -308,7 +308,7 @@ $env:DEBUG="True"
 
 `ALLOWED_HOSTS` and `CSRF_TRUSTED_ORIGINS` already provide localhost defaults. If `DATABASE_URL` is not set, Pulse uses the local SQLite fallback database.
 
-When `DEBUG=True`, uploaded media is stored locally in the project's `media/` directory, so AWS credentials are not required for normal local development. The production configuration uses Amazon S3 when `DEBUG=False`, where the documented AWS environment variables must be supplied.
+When `DEBUG=True`, uploaded media is stored locally in the project's `media/` directory, so AWS credentials are not required for normal local development. In production, when `DEBUG=False`, uploaded media is stored using Amazon S3 and the documented AWS environment variables must be supplied.
 
 Apply Migrations
 

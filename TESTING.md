@@ -74,9 +74,9 @@ The following manual tests record production verification completed against the 
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | MT-01 | As a new user, I can register and access Pulse. | No existing account with the test username. | Register a completely new account. | Account is created and Pulse loads normally. | New production account created successfully and application loaded normally. | Pass | Heroku Production |
 | MT-02 | As a user, I can log out and log back in. | Registered production test account. | Log out, then log back in with the same credentials. | Authentication succeeds without errors. | Logout and subsequent login both succeeded. | Pass | Heroku Production |
-| MT-03 | As a user, I can create, edit and delete my posts. | Logged-in production test account. | Create a post, edit it, then delete it through the UI while checking Django Admin after each action. | Backend row is created, updated and removed correctly. | Post appeared in Admin, reflected edits, and disappeared after deletion. | Pass | Heroku Production |
+| MT-03 | As a user, I can create, edit and delete my posts. | Logged-in production test account. | Create a post, edit it, then delete it through the UI while checking Django Admin after each action. | Database row is created, updated and removed correctly. | Post appeared in Admin, reflected edits, and disappeared after deletion. | Pass | Heroku Production |
 | MT-04 | As a user, I can create a post containing an image. | Logged-in production test account. | Create an image post and view it before and after a dyno restart. | Post and image remain available after restart. | Post and image persisted successfully after restart. Image display sizing requires later UI polish. | Pass | Heroku Production |
-| MT-05 | As a user, I can create, edit and delete my comments. | Logged-in production test account and existing post. | Create a comment, edit it, then delete it while checking Django Admin after each action. | Backend row is created, updated and removed correctly. | Comment appeared in Admin, reflected edits, and disappeared after deletion. | Pass | Heroku Production |
+| MT-05 | As a user, I can create, edit and delete my comments. | Logged-in production test account and existing post. | Create a comment, edit it, then delete it while checking Django Admin after each action. | Database row is created, updated and removed correctly. | Comment appeared in Admin, reflected edits, and disappeared after deletion. | Pass | Heroku Production |
 | MT-06 | As a user, I can change and remove my post vote. | Logged-in production test account and existing post. | Upvote, switch to downvote, then remove the vote while inspecting PostVote through the production Django shell. | One vote row changes from 1 to -1 and is removed when toggled off. | Existing vote row changed correctly and was removed completely. | Pass | Heroku Production |
 | MT-07 | As a user, I can change and remove my comment vote. | Logged-in production test account and existing comment. | Upvote, switch to downvote, then remove the vote while inspecting CommentVote through the production Django shell. | One vote row changes state and is removed when toggled off. | Comment vote changed and was removed correctly. | Pass | Heroku Production |
 | MT-08 | As a user, I can view my profile. | Logged-in production test account. | Open the user's profile from the homepage. | Profile displays correctly with the user's activity. | Profile loaded correctly. Navigation currently requires returning to the homepage because post-detail pages do not provide a profile link. | Pass | Heroku Production |
@@ -106,7 +106,7 @@ python manage.py test
 
 ### Test Result
 
-The final automated test run completed successfully:
+The recorded automated test run completed successfully:
 
 ```text
 Found 32 test(s).
@@ -138,7 +138,7 @@ The automated suite includes coverage for:
 - custom 403 and 404 responses;
 - search across posts and communities.
 
-Automated testing complements the manual production checks documented elsewhere in this file. The automated suite verifies repeatable application behaviour in Django's isolated test environment, while production testing confirms the same broader application behaves correctly after deployment.
+Automated testing complements the manual production checks documented elsewhere in this file. The automated suite verifies repeatable application behaviour in Django's isolated test environment, while production testing confirms that the deployed application behaves correctly in its production environment.
 
 ## Validation
 
@@ -324,7 +324,7 @@ Production permission testing was carried out using content owned by a different
 | Attempt to edit another user's post | Access is denied. | Pass |
 | Attempt to edit another user's comment | Access is denied. | Pass |
 
-Both unauthorized edit attempts were rejected using Pulse's branded **403 Forbidden** response rather than allowing modification of another user's content.
+Both unauthorised edit attempts were rejected using Pulse's branded **403 Forbidden** response rather than allowing modification of another user's content.
 
 ### Automated Authentication and Permission Coverage
 
@@ -350,7 +350,7 @@ Automated permission tests also cover:
 
 These tests form part of the **32-test Django suite**, which completed successfully with no failures.
 
-**Result: Authentication flows and ownership restrictions are verified through production testing and automated regression coverage, with unauthorized modification of another user's content correctly denied.**
+**Result: Authentication flows and ownership restrictions are verified through production testing and automated regression coverage, with unauthorised modification of another user's content correctly denied.**
 
 ## Error Page Testing
 
@@ -362,7 +362,7 @@ Error handling was tested with `DEBUG=False`, because Django only uses the custo
 
 Ownership permission failures were tested both automatically and against the live Heroku deployment.
 
-An authenticated user attempted to edit a post and comment owned by another user. Both requests were rejected and displayed Pulse's branded `403.html` page rather than permitting the unauthorized modification.
+An authenticated user attempted to edit a post and comment owned by another user. Both requests were rejected and displayed Pulse's branded `403.html` page rather than permitting the unauthorised modification.
 
 The automated test suite also verifies that a real non-owner post-edit permission failure:
 
@@ -480,7 +480,7 @@ Real values are supplied through the deployment environment rather than being co
 
 Production infrastructure was also brought into alignment with the repository by using PostgreSQL for persistent relational data, S3 for uploaded media, WhiteNoise for static files and release-phase migrations on Heroku.
 
-Final production verification reported no pending migrations. `python manage.py check --deploy` reported only Django's optional `security.W004` HSTS warning. HSTS was not enabled solely to silence the warning because it should be introduced as a deliberate production security policy rather than as a cosmetic validation change. HTTPS is enforced separately by the application's production configuration, including secure-cookie, proxy and HTTPS redirect handling.
+Production verification during remediation reported no pending migrations. `python manage.py check --deploy` reported only Django's optional `security.W004` HSTS warning. HSTS was not enabled solely to silence the warning because it should be introduced as a deliberate production security policy rather than as a cosmetic validation change. HTTPS is enforced separately by the application's production configuration, including secure-cookie, proxy and HTTPS redirect handling.
 
 **Result: The major production, template, media, security and deployment-parity defects identified during remediation have been corrected and verified through automated and production testing.**
 
