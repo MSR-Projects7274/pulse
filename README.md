@@ -621,7 +621,7 @@ Detailed testing evidence is maintained in `TESTING.md`.
 - Edit and delete comments
 
 ---
-# User Stories
+## User Stories
 
 ### New User / Visitor
 
@@ -683,7 +683,7 @@ Detailed testing evidence is maintained in `TESTING.md`.
 
 ---
 
-# User Story Mapping
+## User Story Mapping
 
 | User Story | Implementation |
 |------------|---------------|
@@ -704,7 +704,7 @@ Detailed testing evidence is maintained in `TESTING.md`.
 
 ---
 
-# User Story Validation (Screenshots)
+## User Story Validation (Screenshots)
 
 The following screenshots provide visual evidence that the key user stories identified for this project have been implemented successfully. The system is designed to support structured discussion, easy navigation, and clear user interaction flows.
 
@@ -809,7 +809,7 @@ As a user, I want a responsive interface so that I can use the platform on any d
 
 ---
 
-# Wireframes
+## Wireframes
 
 The initial wireframes established the core layout and navigation structure for Pulse before the interface was implemented.
 
