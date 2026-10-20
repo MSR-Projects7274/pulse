@@ -698,6 +698,34 @@ class FreshUserViewTests(TestCase):
         )
         self.assertEqual(post.score, 0)
 
+        # Anonymous vote controls should lead to login, not POST-only URLs.
+        self.client.logout()
+
+        home_url = reverse("home")
+        login_url = reverse("login")
+
+        response = self.client.get(home_url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(
+            response,
+            f'action="{login_url}"',
+            count=2,
+        )
+        self.assertContains(
+            response,
+            f'name="next" value="{home_url}"',
+            count=2,
+        )
+        self.assertNotContains(
+            response,
+            f'action="{reverse("post_upvote", args=[post.pk])}"',
+        )
+        self.assertNotContains(
+            response,
+            f'action="{reverse("post_downvote", args=[post.pk])}"',
+        )
+
     def test_comment_vote_upvote_downvote_switch_and_remove(self):
         user = User.objects.create_user(
             username="commentvoter",
@@ -791,6 +819,47 @@ class FreshUserViewTests(TestCase):
             ).exists()
         )
         self.assertEqual(comment.score, 0)
+
+        # Anonymous post/comment actions should return through login safely.
+        self.client.logout()
+
+        detail_url = reverse("post_detail", args=[post.pk])
+        login_url = reverse("login")
+
+        response = self.client.get(detail_url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(
+            response,
+            f'action="{login_url}"',
+            count=4,
+        )
+        self.assertContains(
+            response,
+            f'name="next" value="{detail_url}"',
+            count=4,
+        )
+        self.assertContains(
+            response,
+            f'href="{login_url}?next=',
+            count=1,
+        )
+        self.assertNotContains(
+            response,
+            f'action="{reverse("post_upvote", args=[post.pk])}"',
+        )
+        self.assertNotContains(
+            response,
+            f'action="{reverse("post_downvote", args=[post.pk])}"',
+        )
+        self.assertNotContains(
+            response,
+            f'action="{reverse("comment_upvote", args=[comment.pk])}"',
+        )
+        self.assertNotContains(
+            response,
+            f'action="{reverse("comment_downvote", args=[comment.pk])}"',
+        )
 
     def test_post_vote_rejects_value_outside_allowed_range(self):
         user = User.objects.create_user(

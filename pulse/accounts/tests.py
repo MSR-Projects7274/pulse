@@ -111,6 +111,16 @@ class LoginTests(TestCase):
     def test_login_honours_next_redirect(self):
         destination = reverse("create_post")
 
+        login_response = self.client.get(
+            reverse("login"),
+            {"next": destination},
+        )
+
+        self.assertContains(
+            login_response,
+            f'name="next" value="{destination}"',
+        )
+
         response = self.client.post(
             reverse("login"),
             {

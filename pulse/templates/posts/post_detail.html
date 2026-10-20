@@ -8,6 +8,7 @@
       <div class="post-detail-card">
         <!-- LEFT VOTE COLUMN -->
         <div class="vote-column">
+          {% if user.is_authenticated %}
           <form method="post" action="{% url 'post_upvote' post.pk %}">
             {% csrf_token %}
             <input type="hidden" name="next" value="{{ request.get_full_path }}">
@@ -19,9 +20,22 @@
               ▲
             </button>
           </form>
+          {% else %}
+          <form method="get" action="{% url 'login' %}">
+            <input type="hidden" name="next" value="{{ request.get_full_path }}">
+            <button
+              type="submit"
+              aria-label="Log in to upvote post {{ post.title }}"
+              class="vote-arrow up"
+            >
+              ▲
+            </button>
+          </form>
+          {% endif %}
 
           <div class="score">{{ post.score }}</div>
 
+          {% if user.is_authenticated %}
           <form method="post" action="{% url 'post_downvote' post.pk %}">
             {% csrf_token %}
             <input type="hidden" name="next" value="{{ request.get_full_path }}">
@@ -33,6 +47,18 @@
               ▼
             </button>
           </form>
+          {% else %}
+          <form method="get" action="{% url 'login' %}">
+            <input type="hidden" name="next" value="{{ request.get_full_path }}">
+            <button
+              type="submit"
+              aria-label="Log in to downvote post {{ post.title }}"
+              class="vote-arrow down"
+            >
+              ▼
+            </button>
+          </form>
+          {% endif %}
         </div>
 
         <!-- RIGHT CONTENT -->
@@ -108,7 +134,9 @@
 
         <div class="login-notice">
           Please
-          <a href="{% url 'login' %}"> log in </a>
+          <a href="{% url 'login' %}?next={{ request.get_full_path|urlencode }}">
+            log in
+          </a>
           to comment.
         </div>
 
@@ -119,6 +147,7 @@
 
         <div class="comment">
           <div class="comment-vote">
+            {% if user.is_authenticated %}
             <form method="post" action="{% url 'comment_upvote' comment.pk %}">
               {% csrf_token %}
               <input type="hidden" name="next" value="{{ request.get_full_path }}">
@@ -130,9 +159,22 @@
                 ▲
               </button>
             </form>
+            {% else %}
+            <form method="get" action="{% url 'login' %}">
+              <input type="hidden" name="next" value="{{ request.get_full_path }}">
+              <button
+                type="submit"
+                aria-label="Log in to upvote comment by {{ comment.author.username }}"
+                class="vote-arrow up"
+              >
+                ▲
+              </button>
+            </form>
+            {% endif %}
 
             <div class="score">{{ comment.score }}</div>
 
+            {% if user.is_authenticated %}
             <form method="post" action="{% url 'comment_downvote' comment.pk %}">
               {% csrf_token %}
               <input type="hidden" name="next" value="{{ request.get_full_path }}">
@@ -144,6 +186,18 @@
                 ▼
               </button>
             </form>
+            {% else %}
+            <form method="get" action="{% url 'login' %}">
+              <input type="hidden" name="next" value="{{ request.get_full_path }}">
+              <button
+                type="submit"
+                aria-label="Log in to downvote comment by {{ comment.author.username }}"
+                class="vote-arrow down"
+              >
+                ▼
+              </button>
+            </form>
+            {% endif %}
           </div>
 
           <div class="comment-body-wrap">

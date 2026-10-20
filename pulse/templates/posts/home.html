@@ -24,6 +24,7 @@
       <div class="post-card">
         <!-- VOTE COLUMN -->
         <div class="vote-column">
+          {% if user.is_authenticated %}
           <form method="post" action="{% url 'post_upvote' post.pk %}">
             {% csrf_token %}
             <input type="hidden" name="next" value="{{ request.get_full_path }}">
@@ -35,9 +36,22 @@
               ▲
             </button>
           </form>
+          {% else %}
+          <form method="get" action="{% url 'login' %}">
+            <input type="hidden" name="next" value="{{ request.get_full_path }}">
+            <button
+              type="submit"
+              aria-label="Log in to upvote post {{ post.title }}"
+              class="vote-arrow up"
+            >
+              ▲
+            </button>
+          </form>
+          {% endif %}
 
           <div class="score">{{ post.score }}</div>
 
+          {% if user.is_authenticated %}
           <form method="post" action="{% url 'post_downvote' post.pk %}">
             {% csrf_token %}
             <input type="hidden" name="next" value="{{ request.get_full_path }}">
@@ -49,6 +63,18 @@
               ▼
             </button>
           </form>
+          {% else %}
+          <form method="get" action="{% url 'login' %}">
+            <input type="hidden" name="next" value="{{ request.get_full_path }}">
+            <button
+              type="submit"
+              aria-label="Log in to downvote post {{ post.title }}"
+              class="vote-arrow down"
+            >
+              ▼
+            </button>
+          </form>
+          {% endif %}
         </div>
 
         <!-- POST CONTENT -->
