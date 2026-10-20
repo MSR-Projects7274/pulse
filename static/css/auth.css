@@ -186,7 +186,6 @@
 
     /* Prevent any container from forcing horizontal zoom-out */
     .auth-page .container,
-    .auth-page .form-wrapper,
     .auth-page form {
         width: 100%;
         max-width: 100%;

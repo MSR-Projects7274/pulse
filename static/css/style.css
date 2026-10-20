@@ -16,7 +16,6 @@
     --font-main: "Segoe UI", Arial, sans-serif;
 
     --bg: #30363d;
-    --card: #151a22;
     --border: #232a35;
 
     --text: #e6edf3;
@@ -359,6 +358,10 @@ h2 {
     margin-bottom: 10px;
 }
 
+.hero h1 span {
+    color: var(--accent);
+}
+
 .hero p {
     color: var(--muted);
     font-size: 1.2rem;
@@ -368,7 +371,7 @@ h2 {
    FORMS
 ========================= */
 
-input,
+input:not([type="checkbox"]),
 textarea,
 select {
     width: 100%;
@@ -381,6 +384,33 @@ select {
 
     background: #0f141b;
     color: var(--text);
+}
+
+input[type="checkbox"] {
+    width: auto;
+    margin-right: 6px;
+    accent-color: var(--accent);
+    vertical-align: middle;
+}
+
+input[type="file"]::file-selector-button {
+    margin-right: 10px;
+    padding: 8px 12px;
+
+    background: rgba(79, 140, 255, 0.08);
+    border: 1px solid rgba(79, 140, 255, 0.25);
+    border-radius: 8px;
+
+    color: #dbe8ff;
+    font: inherit;
+    cursor: pointer;
+
+    transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+input[type="file"]::file-selector-button:hover {
+    background: rgba(79, 140, 255, 0.15);
+    border-color: rgba(79, 140, 255, 0.45);
 }
 
 textarea {
@@ -402,7 +432,7 @@ textarea {
     margin-bottom: 18px;
 }
 
-.form-card .form-field input,
+.form-card .form-field input:not([type="checkbox"]),
 .form-card .form-field textarea,
 .form-card .form-field select {
     margin-bottom: 8px;
@@ -871,7 +901,7 @@ a:hover {
     color: #e2e8f0;
 }
 
-.form-card input,
+.form-card input:not([type="checkbox"]),
 .form-card textarea,
 .form-card select {
     padding: 12px;
@@ -1062,6 +1092,13 @@ a:hover {
         font-size: 1.5rem;
     }
 
+    .nav-links {
+        width: 100%;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+    }
+
     /* SEARCH BAR */
     .community-search {
         margin: 0;
@@ -1101,23 +1138,23 @@ a:hover {
 
     /* POST CARDS */
     .post-card {
-    flex-direction: column;
-    gap: 18px;              /* more breathing room */
-    padding: 22px 18px;
-    text-align: center;     /* centers text */
-    align-items: center;    /* centers internal flex items */
+        flex-direction: column;
+        gap: 18px;              /* more breathing room */
+        padding: 22px 18px;
+        text-align: center;     /* centers text */
+        align-items: center;    /* centers internal flex items */
     }
 
     /* POST VOTING */
     .vote-column {
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    width: auto;
-    margin-right: 0;
-    float: none;
-    gap: 18px;            /* bigger spacing */
-    margin-bottom: 8px;   /* separates votes from content */
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        width: auto;
+        margin-right: 0;
+        float: none;
+        gap: 18px;            /* bigger spacing */
+        margin-bottom: 8px;   /* separates votes from content */
     }
 
     .vote-arrow {
@@ -1192,7 +1229,7 @@ a:hover {
         margin-bottom: 14px;
     }
 
-    .form-card input,
+    .form-card input:not([type="checkbox"]),
     .form-card textarea,
     .form-card select {
         font-size: 0.95rem;
