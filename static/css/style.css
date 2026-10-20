@@ -67,28 +67,8 @@ body {
     font-family: var(--font-main);
 }
 
-body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
 
-    background-image:
-        radial-gradient(white 1px, transparent 1px),
-        radial-gradient(rgba(255,255,255,0.5) 1px, transparent 1px);
-
-    background-size:
-        180px 180px,
-        300px 300px;
-
-    animation:
-        twinkle 6s ease-in-out infinite alternate,
-        backgroundDrift 180s linear infinite;
-
-    pointer-events: none;
-    z-index: 0;
-}
-
-/* keep content above star overlay */
+/* Keep main content above the animated background. */
 .navbar,
 .container,
 .hero,
@@ -116,34 +96,6 @@ body::before {
             300px 300px,
             400px 420px,
             100px 100px;
-    }
-}
-
-@keyframes backgroundDrift {
-    from {
-        background-position:
-            0 0,
-            0 0;
-    }
-
-    to {
-        background-position:
-            300px 200px,
-            150px 100px;
-    }
-}
-
-@keyframes twinkle {
-    0% {
-        opacity: 0.35;
-    }
-
-    50% {
-        opacity: 0.65;
-    }
-
-    100% {
-        opacity: 0.45;
     }
 }
 
@@ -259,7 +211,8 @@ h2 {
 }
 
 .community-search input:focus {
-    border-color: var(--accent);
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
     box-shadow: 0 0 12px rgba(79, 140, 255, 0.2);
 }
 
@@ -788,7 +741,7 @@ a:hover {
 
 .comment-meta {
     font-size: 0.75rem;
-    color: var(--faint);
+    color: var(--muted);
     margin-bottom: 6px;
 }
 
@@ -1222,7 +1175,7 @@ a:hover {
     }
 
     .comment-meta {
-        font-size: 0.7rem;
+        font-size: 0.75rem;
     }
 
     /* FORMS */
@@ -1282,5 +1235,16 @@ a:hover {
 
     h2 {
         font-size: 1.3rem;
+    }
+}
+
+/* =========================
+   REDUCED MOTION
+========================= */
+
+@media (prefers-reduced-motion: reduce) {
+    body,
+    .post-card {
+        animation: none;
     }
 }
