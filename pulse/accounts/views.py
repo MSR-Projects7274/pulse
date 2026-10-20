@@ -6,6 +6,7 @@ from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.decorators.http import require_POST
 
 
+# Registration is available only to anonymous visitors.
 def register_view(request):
 
     if request.user.is_authenticated:
@@ -31,6 +32,7 @@ def register_view(request):
     )
 
 
+# Preserve a safe return destination after login.
 def login_view(request):
 
     if request.user.is_authenticated:
@@ -50,6 +52,7 @@ def login_view(request):
                 form.get_user()
             )
 
+            # Only redirect to destinations belonging to the current host.
             if next_url and url_has_allowed_host_and_scheme(
                 url=next_url,
                 allowed_hosts={request.get_host()},
@@ -72,6 +75,7 @@ def login_view(request):
     )
 
 
+# Logout changes session state, so it is intentionally restricted to POST.
 @require_POST
 def logout_view(request):
 

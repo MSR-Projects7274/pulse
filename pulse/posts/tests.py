@@ -17,6 +17,7 @@ User = get_user_model()
 
 
 class FreshUserViewTests(TestCase):
+    # Fresh-user access and post creation
     def test_fresh_user_can_open_homepage(self):
         user = User.objects.create_user(
             username="freshuser",
@@ -161,6 +162,7 @@ class FreshUserViewTests(TestCase):
                     )
                 )
 
+    # Post editing, deletion and ownership permissions
     def test_post_edit_preserves_and_replaces_image(self):
         user = User.objects.create_user(
             username="posteditor",
@@ -397,6 +399,7 @@ class FreshUserViewTests(TestCase):
 
         self.assertEqual(response.status_code, 404)
 
+    # Comment creation, validation and ownership permissions
     def test_authenticated_user_can_create_comment(self):
         user = User.objects.create_user(
             username="commentcreator",
@@ -609,6 +612,7 @@ class FreshUserViewTests(TestCase):
             Comment.objects.filter(pk=comment.pk).exists()
         )
 
+    # Post and comment voting behaviour
     def test_post_vote_upvote_downvote_switch_and_remove(self):
         user = User.objects.create_user(
             username="postvoter",
@@ -861,6 +865,7 @@ class FreshUserViewTests(TestCase):
             f'action="{reverse("comment_downvote", args=[comment.pk])}"',
         )
 
+    # Database constraints protecting valid vote values
     def test_post_vote_rejects_value_outside_allowed_range(self):
         user = User.objects.create_user(
             username="invalidpostvoter",
@@ -922,6 +927,7 @@ class FreshUserViewTests(TestCase):
             ).exists()
         )
 
+    # Department filtering and community-page behaviour
     def test_community_page_displays_its_posts(self):
         user = User.objects.create_user(
             username="communityposter",
@@ -1028,6 +1034,7 @@ class FreshUserViewTests(TestCase):
 
         self.assertEqual(response.status_code, 404)
 
+    # Profile and custom error-page behaviour
     def test_profile_with_zero_posts_and_comments(self):
         user = User.objects.create_user(
             username="emptyprofile",
@@ -1124,6 +1131,7 @@ class FreshUserViewTests(TestCase):
             status_code=403,
         )
 
+    # Search across posts and communities
     def test_search_finds_posts_and_communities(self):
         user = User.objects.create_user(
             username="searchtester",

@@ -6,6 +6,7 @@ from django.urls import reverse
 User = get_user_model()
 
 
+# Registration tests cover successful account creation and validation failures.
 class RegistrationTests(TestCase):
     def test_registration_success(self):
         response = self.client.post(
@@ -61,6 +62,7 @@ class RegistrationTests(TestCase):
         )
 
 
+# Login tests cover authentication, failures and safe return redirects.
 class LoginTests(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(
@@ -140,6 +142,7 @@ class LoginTests(TestCase):
         )
 
 
+# Logout tests verify the POST-only session termination flow.
 class LogoutTests(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(

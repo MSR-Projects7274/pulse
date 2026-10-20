@@ -1,11 +1,13 @@
 from django.urls import path
 from . import views
 
+# Core discussion and content routes.
 urlpatterns = [
     path("", views.home, name="home"),
     path("create/", views.create_post, name="create_post"),
     path("post/<int:pk>/", views.post_detail, name="post_detail"),
 
+    # Post voting
     path(
         "post/<int:pk>/upvote/",
         views.toggle_post_vote,
@@ -19,6 +21,7 @@ urlpatterns = [
         name="post_downvote",
     ),
 
+    # Comment voting
     path(
         "comment/<int:pk>/upvote/",
         views.toggle_comment_vote,
@@ -32,6 +35,7 @@ urlpatterns = [
         name="comment_downvote",
     ),
 
+    # Post ownership actions
     path(
         "post/<int:pk>/edit/",
         views.edit_post,
@@ -43,6 +47,7 @@ urlpatterns = [
         name="delete_post",
     ),
 
+    # Comment ownership actions
     path(
         "comment/<int:pk>/edit/",
         views.edit_comment,
@@ -54,6 +59,7 @@ urlpatterns = [
         name="delete_comment",
     ),
 
+    # Discovery and filtering
     path(
         "department/<int:department_id>/",
         views.department_posts,
@@ -65,6 +71,7 @@ urlpatterns = [
         name="search_communities",
     ),
 
+    # Public user profiles
     path(
         "profile/<str:username>/",
         views.user_profile,
