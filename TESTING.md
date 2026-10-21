@@ -30,7 +30,7 @@ Pulse is tested at several levels so that both individual application behaviour 
 | --- | --- | --- |
 | Production smoke testing | Confirms that the deployed application and its critical user flows work after deployment. | Checklist already established; final execution evidence will be recorded during the final audit. |
 | Manual functional testing | Verifies real user actions and their resulting application/database behaviour. | Production testing log already contains completed tests. |
-| Automated testing | Verifies application logic and regression-sensitive behaviour through Django's test framework. | 32 automated tests passed successfully with no failures or Django system-check issues. |
+| Automated testing | Verifies application logic and regression-sensitive behaviour through Django's test framework. | 37 automated tests passed successfully with no failures or Django system-check issues. |
 | Validation | Checks HTML, CSS and Python quality using appropriate validation and linting tools. | W3C HTML and CSS validation and Flake8 Python validation completed successfully. |
 | Responsive and browser testing | Verifies layout and interaction behaviour across representative viewport sizes and browsers. | Responsive testing passed across six representative viewport sizes and Firefox, Chrome and Edge. |
 | Production CRUD testing | Confirms that create, read, update and delete operations behave correctly against the deployed application. | Live production CRUD testing passed for posts, comments and voting data, with persistence also verified after a dyno restart. |
@@ -75,19 +75,19 @@ The following manual tests record production verification completed against the 
 | MT-01 | As a new user, I can register and access Pulse. | No existing account with the test username. | Register a completely new account. | Account is created and Pulse loads normally. | New production account created successfully and application loaded normally. | Pass | Heroku Production |
 | MT-02 | As a user, I can log out and log back in. | Registered production test account. | Log out, then log back in with the same credentials. | Authentication succeeds without errors. | Logout and subsequent login both succeeded. | Pass | Heroku Production |
 | MT-03 | As a user, I can create, edit and delete my posts. | Logged-in production test account. | Create a post, edit it, then delete it through the UI while checking Django Admin after each action. | Database row is created, updated and removed correctly. | Post appeared in Admin, reflected edits, and disappeared after deletion. | Pass | Heroku Production |
-| MT-04 | As a user, I can create a post containing an image. | Logged-in production test account. | Create an image post and view it before and after a dyno restart. | Post and image remain available after restart. | Post and image persisted successfully after restart. Image display sizing requires later UI polish. | Pass | Heroku Production |
+| MT-04 | As a user, I can create a post containing an image. | Logged-in production test account. | Create an image post and view it before and after a dyno restart. | Post and image remain available after restart. | Post and image persisted successfully after restart. Responsive image sizing was subsequently corrected and verified in production. | Pass | Heroku Production |
 | MT-05 | As a user, I can create, edit and delete my comments. | Logged-in production test account and existing post. | Create a comment, edit it, then delete it while checking Django Admin after each action. | Database row is created, updated and removed correctly. | Comment appeared in Admin, reflected edits, and disappeared after deletion. | Pass | Heroku Production |
 | MT-06 | As a user, I can change and remove my post vote. | Logged-in production test account and existing post. | Upvote, switch to downvote, then remove the vote while inspecting PostVote through the production Django shell. | One vote row changes from 1 to -1 and is removed when toggled off. | Existing vote row changed correctly and was removed completely. | Pass | Heroku Production |
 | MT-07 | As a user, I can change and remove my comment vote. | Logged-in production test account and existing comment. | Upvote, switch to downvote, then remove the vote while inspecting CommentVote through the production Django shell. | One vote row changes state and is removed when toggled off. | Comment vote changed and was removed correctly. | Pass | Heroku Production |
-| MT-08 | As a user, I can view my profile. | Logged-in production test account. | Open the user's profile from the homepage. | Profile displays correctly with the user's activity. | Profile loaded correctly. Navigation currently requires returning to the homepage because post-detail pages do not provide a profile link. | Pass | Heroku Production |
+| MT-08 | As a user, I can view my profile. | Logged-in production test account. | Open the user's profile from the homepage. | Profile displays correctly with the user's activity. | Profile loaded correctly, and the persistent Profile button in the shared navigation provides direct access to the current user's profile. | Pass | Heroku Production |
 | MT-09 | As a user, I cannot edit another user's content. | Logged in as a user who does not own the target content. | Attempt to edit another user's post and comment. | Access is denied using the branded 403 page. | Both permission checks returned the branded 403 page. | Pass | Heroku Production |
 | MT-10 | As a user, invalid URLs fail gracefully. | Live application available. | Visit a deliberately nonexistent URL. | Branded 404 page is displayed instead of a server error. | Custom Pulse 404 page displayed correctly. | Pass | Heroku Production |
 | MT-11 | As a user, I receive current production assets rather than stale cached files. | Private browser window with DevTools open and cache disabled. | Navigate through homepage, post detail, create post, profile, community, 403 and 404 pages. | Pages and static assets load correctly with no unexpected errors. | All checked pages loaded normally with no unexpected console or network errors. | Pass | Heroku Production, Private Window, Cache Disabled |
 | MT-12 | As a user, my data survives a Heroku dyno restart. | Production account and persistence-test post already exist. | Restart all Heroku dynos, then reload and inspect existing data and image media. | User data, posts and uploaded media remain available. | Account, existing content and uploaded image all survived the restart. | Pass | Heroku Production |
 
-**Current image-sizing status:** The MT-04 result above records the state of the interface at the time that production persistence testing was performed. Image sizing was subsequently addressed during UI remediation by adding responsive constraints for `.post-image` and `.post-detail-image`, including `max-width: 100%`, automatic dimensions and separate maximum heights for feed and detail views. Final production smoke testing will re-verify the corrected image presentation before submission.
+**Current image-sizing status:** Responsive constraints for `.post-image` and `.post-detail-image`, including `max-width: 100%`, automatic dimensions and separate maximum heights for feed and detail views, were added during UI remediation and subsequently verified in production.
 
-**Current profile-navigation status:** The MT-08 result above records the interface state at the time that production profile testing was performed. Profile navigation was subsequently improved so authenticated users now have a persistent Profile button in the shared navigation, linked to the current user's profile route. Final production smoke testing will re-verify profile navigation from the main application views before submission.
+**Current profile-navigation status:** Authenticated users now have a persistent Profile button in the shared navigation, linked to the current user's profile route, and the updated navigation was subsequently verified in production.
 
 ## Automated Testing
 
@@ -106,29 +106,25 @@ python manage.py test
 
 ### Test Result
 
-The recorded automated test run completed successfully:
+The latest automated test run completed successfully:
 
 ```text
-Found 32 test(s).
-System check identified no issues (0 silenced).
-................................
-----------------------------------------------------------------------
-Ran 32 tests in 28.472s
-
-OK
+Current automated test count: 37
+Django system check: no issues
+Result: OK
 ```
 
-**Result: 32 tests passed, with no test failures or Django system-check issues.**
+**Result: 37 tests passed, with no test failures or Django system-check issues.**
 
 The automated suite includes coverage for:
 
 - successful and unsuccessful user registration;
-- successful and failed login;
-- login redirect behaviour;
+- successful and failed login, including preserved form state;
+- safe login return redirects;
 - POST-based logout and rejection of GET logout requests;
 - homepage and post-detail access for new users;
 - post creation, including image uploads;
-- post editing, image preservation and replacement;
+- post editing, image preservation, replacement, clearing and stored-file cleanup;
 - post deletion and ownership permissions;
 - comment creation, editing, deletion and validation;
 - post and comment voting, including switching and removing votes;
@@ -208,7 +204,7 @@ The cleanup included:
 
 After the cleanup, the same Flake8 command completed with **no output**, confirming that no Flake8 findings remained in the checked Python source.
 
-The complete Django automated test suite was then run again to ensure that the formatting and cleanup changes had not altered application behaviour:
+The complete Django automated test suite was also rerun after subsequent remediation changes to ensure that later fixes had not introduced regressions:
 
 ```bash
 python manage.py test
@@ -217,12 +213,11 @@ python manage.py test
 The regression run completed successfully:
 
 ```text
-Ran 32 tests in 29.735s
-
-OK
+Current automated test count: 37
+Result: OK
 ```
 
-**Result: Flake8 passed with no remaining findings and all 32 automated tests continued to pass.**
+**Result: Flake8 passed with no remaining findings and all 37 automated tests passed in the latest regression run.**
 
 ## Responsive and Browser Testing
 
@@ -348,7 +343,7 @@ Automated permission tests also cover:
 - comment deletion by the owner and rejection of non-owner deletion;
 - rendering of the custom 403 page when a permission check fails.
 
-These tests form part of the **32-test Django suite**, which completed successfully with no failures.
+These tests form part of the **37-test Django suite**, which completed successfully with no failures.
 
 **Result: Authentication flows and ownership restrictions are verified through production testing and automated regression coverage, with unauthorised modification of another user's content correctly denied.**
 
