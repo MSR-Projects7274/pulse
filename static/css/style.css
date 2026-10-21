@@ -543,6 +543,8 @@ a:hover {
 
 .post-content {
     flex: 1;
+    min-width: 0;
+    overflow-wrap: anywhere;
 }
 
 /* =========================
@@ -705,6 +707,7 @@ a:hover {
 .post-content-wrap {
     flex: 1;
     min-width: 0;
+    overflow-wrap: anywhere;
 }
 
 /* title */
@@ -767,6 +770,8 @@ a:hover {
 
 .comment-body-wrap {
     flex: 1;
+    min-width: 0;
+    overflow-wrap: anywhere;
 }
 
 .comment-meta {

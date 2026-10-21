@@ -78,7 +78,12 @@
             </span>
             {% endif %}
 
-            <span class="department-tag"> {{ post.department.name }} </span>
+            <a
+              href="{% url 'department_posts' post.department.id %}"
+              class="department-tag"
+            >
+              {{ post.department.name }}
+            </a>
           </div>
 
           {% if post.image %}
@@ -89,7 +94,7 @@
             />
           {% endif %}
 
-          <div class="post-detail-content">{{ post.content }}</div>
+          <div class="post-detail-content">{{ post.content|linebreaksbr }}</div>
 
           {% if user == post.author %}
           <div class="post-actions">
@@ -216,7 +221,7 @@
               {% endif %}
             </div>
 
-            <div class="comment-text">{{ comment.content }}</div>
+            <div class="comment-text">{{ comment.content|linebreaksbr }}</div>
 
             {% if user == comment.author %}
             <div class="comment-actions">
