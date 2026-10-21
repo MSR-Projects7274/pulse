@@ -221,6 +221,13 @@ class FreshUserViewTests(TestCase):
                 )
 
                 original_image_name = post.image.name
+                original_storage = post.image.storage
+
+                self.assertTrue(
+                    original_storage.exists(
+                        original_image_name
+                    )
+                )
 
                 response = self.client.post(
                     reverse("edit_post", args=[post.pk]),
@@ -246,16 +253,22 @@ class FreshUserViewTests(TestCase):
                 )
                 self.assertTrue(post.is_edited)
                 self.assertEqual(post.author, user)
-
-                response = self.client.post(
-                    reverse("edit_post", args=[post.pk]),
-                    {
-                        "department": department.pk,
-                        "title": "Edited title again",
-                        "content": "Edited again with a new image.",
-                        "image": replacement_image,
-                    },
+                self.assertTrue(
+                    original_storage.exists(
+                        original_image_name
+                    )
                 )
+
+                with self.captureOnCommitCallbacks(execute=True):
+                    response = self.client.post(
+                        reverse("edit_post", args=[post.pk]),
+                        {
+                            "department": department.pk,
+                            "title": "Edited title again",
+                            "content": "Edited again with a new image.",
+                            "image": replacement_image,
+                        },
+                    )
 
                 self.assertRedirects(
                     response,
@@ -286,6 +299,202 @@ class FreshUserViewTests(TestCase):
                         post.image.name
                     )
                 )
+                self.assertFalse(
+                    original_storage.exists(
+                        original_image_name
+                    )
+                )
+
+    def test_post_edit_clears_image_and_deletes_stored_file(self):
+        user = User.objects.create_user(
+            username="imageclearer",
+            password="TestPass123!",
+        )
+        department = Department.objects.get(name="General")
+
+        image_buffer = BytesIO()
+        Image.new("RGB", (10, 10)).save(
+            image_buffer,
+            format="PNG",
+        )
+        uploaded_image = SimpleUploadedFile(
+            "clear-me.png",
+            image_buffer.getvalue(),
+            content_type="image/png",
+        )
+
+        self.client.force_login(user)
+
+        with tempfile.TemporaryDirectory() as media_root:
+            with self.settings(
+                MEDIA_ROOT=media_root,
+                STORAGES={
+                    "default": {
+                        "BACKEND": (
+                            "django.core.files.storage."
+                            "FileSystemStorage"
+                        ),
+                    },
+                    "staticfiles": {
+                        "BACKEND": (
+                            "django.contrib.staticfiles.storage."
+                            "StaticFilesStorage"
+                        ),
+                    },
+                },
+            ):
+                post = Post.objects.create(
+                    author=user,
+                    department=department,
+                    title="Clear image test",
+                    content="This image should be cleared.",
+                    image=uploaded_image,
+                )
+                image_name = post.image.name
+                storage = post.image.storage
+
+                self.assertTrue(storage.exists(image_name))
+
+                with self.captureOnCommitCallbacks(execute=True):
+                    response = self.client.post(
+                        reverse("edit_post", args=[post.pk]),
+                        {
+                            "department": department.pk,
+                            "title": "Clear image test",
+                            "content": "The image has been cleared.",
+                            "image-clear": "on",
+                        },
+                    )
+
+                self.assertRedirects(
+                    response,
+                    reverse("post_detail", args=[post.pk]),
+                )
+
+                post.refresh_from_db()
+
+                self.assertFalse(post.image)
+                self.assertTrue(post.is_edited)
+                self.assertFalse(storage.exists(image_name))
+
+    def test_post_delete_removes_stored_image(self):
+        user = User.objects.create_user(
+            username="imagedeleter",
+            password="TestPass123!",
+        )
+        department = Department.objects.get(name="General")
+
+        image_buffer = BytesIO()
+        Image.new("RGB", (10, 10)).save(
+            image_buffer,
+            format="PNG",
+        )
+        uploaded_image = SimpleUploadedFile(
+            "delete-me.png",
+            image_buffer.getvalue(),
+            content_type="image/png",
+        )
+
+        self.client.force_login(user)
+
+        with tempfile.TemporaryDirectory() as media_root:
+            with self.settings(
+                MEDIA_ROOT=media_root,
+                STORAGES={
+                    "default": {
+                        "BACKEND": (
+                            "django.core.files.storage."
+                            "FileSystemStorage"
+                        ),
+                    },
+                    "staticfiles": {
+                        "BACKEND": (
+                            "django.contrib.staticfiles.storage."
+                            "StaticFilesStorage"
+                        ),
+                    },
+                },
+            ):
+                post = Post.objects.create(
+                    author=user,
+                    department=department,
+                    title="Delete image test",
+                    content="This post and image should be deleted.",
+                    image=uploaded_image,
+                )
+                post_pk = post.pk
+                image_name = post.image.name
+                storage = post.image.storage
+
+                self.assertTrue(storage.exists(image_name))
+
+                with self.captureOnCommitCallbacks(execute=True):
+                    response = self.client.post(
+                        reverse("delete_post", args=[post_pk])
+                    )
+
+                self.assertRedirects(response, reverse("home"))
+                self.assertFalse(
+                    Post.objects.filter(pk=post_pk).exists()
+                )
+                self.assertFalse(storage.exists(image_name))
+
+    def test_author_delete_cascade_removes_post_image(self):
+        user = User.objects.create_user(
+            username="cascadeimagedeleter",
+            password="TestPass123!",
+        )
+        department = Department.objects.get(name="General")
+
+        image_buffer = BytesIO()
+        Image.new("RGB", (10, 10)).save(
+            image_buffer,
+            format="PNG",
+        )
+        uploaded_image = SimpleUploadedFile(
+            "cascade-delete.png",
+            image_buffer.getvalue(),
+            content_type="image/png",
+        )
+
+        with tempfile.TemporaryDirectory() as media_root:
+            with self.settings(
+                MEDIA_ROOT=media_root,
+                STORAGES={
+                    "default": {
+                        "BACKEND": (
+                            "django.core.files.storage."
+                            "FileSystemStorage"
+                        ),
+                    },
+                    "staticfiles": {
+                        "BACKEND": (
+                            "django.contrib.staticfiles.storage."
+                            "StaticFilesStorage"
+                        ),
+                    },
+                },
+            ):
+                post = Post.objects.create(
+                    author=user,
+                    department=department,
+                    title="Cascade image test",
+                    content="Cascade deletion should remove this image.",
+                    image=uploaded_image,
+                )
+                post_pk = post.pk
+                image_name = post.image.name
+                storage = post.image.storage
+
+                self.assertTrue(storage.exists(image_name))
+
+                with self.captureOnCommitCallbacks(execute=True):
+                    user.delete()
+
+                self.assertFalse(
+                    Post.objects.filter(pk=post_pk).exists()
+                )
+                self.assertFalse(storage.exists(image_name))
 
     def test_post_can_be_deleted(self):
         user = User.objects.create_user(

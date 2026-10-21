@@ -1,8 +1,12 @@
-from django.db import models
+from functools import partial
+
+from django.db import models, transaction
 from django.contrib.auth.models import User
 from pulse.departments.models import Department
 from django.core.validators import RegexValidator
 from django.db.models import Sum
+from django.db.models.signals import post_delete, post_save, pre_save
+from django.dispatch import receiver
 from django.core.validators import FileExtensionValidator
 from pulse.posts.validators import validate_image_size
 
@@ -162,3 +166,59 @@ class CommentVote(models.Model):
             f"{self.user.username} voted "
             f"{self.value} on comment {self.comment.id}"
         )
+
+
+# =========================
+# POST IMAGE LIFECYCLE
+# =========================
+@receiver(pre_save, sender=Post)
+def remember_previous_post_image(sender, instance, using, **kwargs):
+    if kwargs.get("raw") or not instance.pk:
+        return
+
+    update_fields = kwargs.get("update_fields")
+    if update_fields is not None and "image" not in update_fields:
+        return
+
+    try:
+        previous = (
+            sender.objects.using(using)
+            .only("image")
+            .get(pk=instance.pk)
+        )
+    except sender.DoesNotExist:
+        return
+
+    old_image = previous.image
+    new_image = instance.image
+
+    old_name = old_image.name if old_image else ""
+    new_name = new_image.name if new_image else ""
+
+    if old_name and old_name != new_name:
+        instance._previous_post_image = old_image
+
+
+@receiver(post_save, sender=Post)
+def delete_replaced_post_image(sender, instance, using, **kwargs):
+    old_image = getattr(instance, "_previous_post_image", None)
+    if not old_image:
+        return
+
+    del instance._previous_post_image
+
+    transaction.on_commit(
+        partial(old_image.delete, save=False),
+        using=using,
+    )
+
+
+@receiver(post_delete, sender=Post)
+def delete_removed_post_image(sender, instance, using, **kwargs):
+    if not instance.image:
+        return
+
+    transaction.on_commit(
+        partial(instance.image.delete, save=False),
+        using=using,
+    )
