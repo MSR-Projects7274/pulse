@@ -140,18 +140,18 @@ Pulse uses Django's built-in authentication `User` model rather than defining a 
 ### Model Relationships
 
 ```mermaid
-erDiagram
-    USER ||--o{ POST : authors
-    USER ||--o{ COMMENT : authors
-    USER ||--o{ POST_VOTE : casts
-    USER ||--o{ COMMENT_VOTE : casts
+graph TD
+    USER[User] -->|authors| POST[Post]
+    USER -->|authors| COMMENT[Comment]
+    USER -->|casts| POST_VOTE[Post Vote]
+    USER -->|casts| COMMENT_VOTE[Comment Vote]
 
-    DEPARTMENT ||--o{ POST : contains
+    DEPARTMENT[Department] -->|contains| POST
 
-    POST ||--o{ COMMENT : receives
-    POST ||--o{ POST_VOTE : receives
+    POST -->|receives| COMMENT
+    POST -->|receives| POST_VOTE
 
-    COMMENT ||--o{ COMMENT_VOTE : receives
+    COMMENT -->|receives| COMMENT_VOTE
 ```
 
 The principal relationships are:
