@@ -435,6 +435,48 @@ class FreshUserViewTests(TestCase):
         self.assertEqual(comment.post, post)
         self.assertFalse(comment.is_edited)
 
+    def test_expired_session_comment_post_preserves_login_next(self):
+        user = User.objects.create_user(
+            username="expiredcommenter",
+            password="TestPass123!",
+        )
+        department = Department.objects.get(name="General")
+        post = Post.objects.create(
+            author=user,
+            department=department,
+            title="Expired session comment test",
+            content="A post waiting for a comment.",
+        )
+
+        detail_url = reverse(
+            "post_detail",
+            args=[post.pk],
+        )
+
+        self.client.force_login(user)
+
+        # Simulate the authenticated session disappearing before submission.
+        self.client.logout()
+
+        response = self.client.post(
+            detail_url,
+            {
+                "content": "This comment should not be saved.",
+            },
+        )
+
+        self.assertRedirects(
+            response,
+            f"{reverse('login')}?next={detail_url}",
+            fetch_redirect_response=False,
+        )
+
+        self.assertFalse(
+            Comment.objects.filter(
+                content="This comment should not be saved."
+            ).exists()
+        )
+
     def test_blank_comment_is_rejected(self):
         user = User.objects.create_user(
             username="blankcommenter",

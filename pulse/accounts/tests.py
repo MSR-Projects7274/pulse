@@ -110,6 +110,51 @@ class LoginTests(TestCase):
             response.context["form"].non_field_errors()
         )
 
+    def test_failed_login_preserves_authentication_form_behaviour(self):
+        response = self.client.post(
+            reverse("login"),
+            {
+                "username": "loginuser",
+                "password": "WrongPassword123!",
+            },
+        )
+
+        self.assertEqual(response.status_code, 200)
+
+        form = response.context["form"]
+
+        self.assertEqual(
+            form["username"].value(),
+            "loginuser",
+        )
+        self.assertTrue(form.fields["username"].required)
+        self.assertTrue(form.fields["password"].required)
+
+        self.assertContains(
+            response,
+            'value="loginuser"',
+        )
+        self.assertContains(
+            response,
+            "autofocus",
+        )
+        self.assertContains(
+            response,
+            'autocomplete="username"',
+        )
+        self.assertContains(
+            response,
+            'autocomplete="current-password"',
+        )
+        self.assertContains(
+            response,
+            'placeholder="Username"',
+        )
+        self.assertContains(
+            response,
+            'placeholder="Password"',
+        )
+
     def test_login_honours_next_redirect(self):
         destination = reverse("create_post")
 

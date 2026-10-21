@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import redirect_to_login
 from django.contrib import messages
 
 from .models import Post, Comment, PostVote, CommentVote
@@ -200,7 +201,10 @@ def post_detail(request, pk):
     if request.method == "POST":
 
         if not user.is_authenticated:
-            return redirect("login")
+            return redirect_to_login(
+                request.get_full_path(),
+                login_url="login",
+            )
 
         form = CommentForm(request.POST)
 

@@ -65,6 +65,9 @@ def login_view(request):
     else:
         form = AuthenticationForm(request)
 
+    form.fields["username"].widget.attrs["placeholder"] = "Username"
+    form.fields["password"].widget.attrs["placeholder"] = "Password"
+
     return render(
         request,
         "accounts/login.html",
