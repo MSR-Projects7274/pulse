@@ -908,7 +908,7 @@ Where several criteria referred to the same underlying problem, they are grouped
 
 ### Assessment Clarification
 
-The later assessment clarification confirmed that Cloudinary was not a project requirement and that its mention in the original feedback was an administrative error. Pulse therefore does not claim a Cloudinary remediation. The current application uses Amazon S3 as its verified persistent media-storage backend.
+The later assessment clarification confirmed that Cloudinary was not a project requirement and that its mention in the original feedback was an administrative error by the assessor. Pulse therefore does not claim a Cloudinary remediation. The current application uses Amazon S3 as its verified persistent media-storage backend.
 
 The clarification also confirmed that the deployment finding was not evidence that a different Git commit had been deployed. The remediation work therefore addresses the actual issue identified: the live production application did not reproduce the reliable behaviour demonstrated by the local testing evidence.
 
@@ -918,11 +918,54 @@ This table documents the work carried out in response to the assessment findings
 
 ## Security
 
-- Django authentication system
-- CSRF protection enabled
-- Permission-based access control
-- Secure form validation
-- Route protection for authenticated users
+Pulse applies security controls across authentication, permissions, data validation, configuration and production deployment.
+
+### Authentication and Access Control
+
+- User registration, login and logout are handled through Django's authentication system.
+- Routes and actions that require authentication are protected so anonymous users cannot perform authenticated operations.
+- Authenticated users can edit or delete only content that they own. Attempts to modify another user's content are rejected with Pulse's custom `403 Forbidden` response.
+- State-changing actions use POST requests rather than GET requests where appropriate, reducing the risk of actions being triggered unintentionally.
+- Login return destinations are validated before redirecting so an unsafe external `next` URL cannot be used as an open redirect.
+
+### CSRF Protection
+
+Django's CSRF protection is enabled throughout the application. Forms that submit data include CSRF tokens so requests are validated before state-changing operations are processed.
+
+### Secrets and Environment Configuration
+
+Sensitive production configuration is not stored directly in the current source code. Values such as the Django secret key, production database connection and Amazon S3 credentials are supplied through environment variables.
+
+An `.env.example` file documents the required configuration names using non-secret placeholder values, while environment files and other local secret files are excluded through `.gitignore`.
+
+The production `SECRET_KEY` that had originally been exposed during earlier development was removed from the source and rotated as part of the assessment remediation work.
+
+### Production Security
+
+Production runs with Django `DEBUG` mode disabled.
+
+Production configuration also includes HTTPS/proxy-aware security settings so Django correctly recognises secure requests when deployed behind Heroku's proxy infrastructure.
+
+The application uses PostgreSQL for production data and Amazon S3 for persistent uploaded media. S3 media is served using private signed URLs rather than exposing the bucket as unrestricted public storage.
+
+### Input and Upload Validation
+
+Pulse validates data at both form and model level.
+
+- Required form fields are validated before records are saved.
+- Post titles, post content and comments reject whitespace-only values.
+- Uploaded post images are restricted to supported image formats.
+- Uploaded images are subject to a file-size limit.
+- Voting values are protected by database constraints as well as application logic.
+- Django's built-in authentication forms provide validation for usernames and passwords.
+
+Uploaded-image lifecycle handling also removes replaced, cleared and deleted post images from storage so obsolete media is not left behind by normal application operations.
+
+### Error Handling
+
+Pulse uses custom `403`, `404` and `500` responses so permission failures, missing resources and unexpected server errors fail cleanly without exposing debug information to users.
+
+Validation errors are returned through the relevant forms, while successful data-changing operations use application feedback and redirects to make the result of the action clear to the user.
 
 ---
 
