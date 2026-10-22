@@ -46,25 +46,33 @@ This checklist is used to verify the deployed Pulse application on Heroku after 
 
 The production smoke test must be performed against the live Heroku application rather than localhost.
 
+The final smoke test was completed against the live Heroku deployment using a private browser session with browser DevTools open, network logging preserved and browser caching disabled.
+
 | ID | Test | Expected Result | Result |
 | --- | --- | --- | --- |
-| PS-01 | Open the deployed homepage. | Homepage loads successfully without a 500 error. | Pending |
-| PS-02 | Register a new account. | Account is created and the user can access Pulse. | Pending |
-| PS-03 | Log out and log back in. | Authentication succeeds and the user is returned to the expected page. | Pending |
-| PS-04 | Open an existing post. | Post detail page loads successfully. | Pending |
-| PS-05 | Create a text-only post. | Post is created and appears in the feed. | Pending |
-| PS-06 | Create a post with an image. | Post and uploaded image appear correctly. | Pending |
-| PS-07 | Edit an owned post. | Updated post content is displayed correctly. | Pending |
-| PS-08 | Add a comment. | Comment appears on the post. | Pending |
-| PS-09 | Edit an owned comment. | Updated comment appears correctly. | Pending |
-| PS-10 | Delete an owned comment. | Comment is removed. | Pending |
-| PS-11 | Upvote, downvote, switch and remove a vote. | Vote state and score update correctly. | Pending |
-| PS-12 | Open the user's profile. | Profile loads with the correct posts and comments. | Pending |
-| PS-13 | Attempt to edit another user's post. | Request is denied with the branded 403 page. | Pending |
-| PS-14 | Attempt to edit another user's comment. | Request is denied with the branded 403 page. | Pending |
-| PS-15 | Visit a nonexistent URL. | Branded 404 page is displayed. | Pending |
-| PS-16 | Delete an owned post. | Post is removed successfully. | Pending |
-| PS-17 | Check browser DevTools during the smoke test. | No unexpected console errors or 500 network responses occur. | Pending |
+| PS-01 | Open the deployed homepage. | Homepage loads successfully without a 500 error. | Pass |
+| PS-02 | Register a new account. | Account is created and the user can access Pulse. | Pass |
+| PS-03 | Log out and log back in. | Authentication succeeds and the user is returned to the expected page. | Pass |
+| PS-04 | Open an existing post. | Post detail page loads successfully. | Pass |
+| PS-05 | Create a text-only post. | Post is created and appears in the feed. | Pass |
+| PS-06 | Create a post with an image. | Post and uploaded image appear correctly. | Pass |
+| PS-07 | Edit an owned post. | Updated post content is displayed correctly. | Pass |
+| PS-08 | Add a comment. | Comment appears on the post. | Pass |
+| PS-09 | Edit an owned comment. | Updated comment appears correctly. | Pass |
+| PS-10 | Delete an owned comment. | Comment is removed. | Pass |
+| PS-11 | Upvote, downvote, switch and remove a vote. | Vote state and score update correctly. | Pass |
+| PS-12 | Open the user's profile. | Profile loads with the user's account information and posts. | Pass |
+| PS-13 | Attempt to edit another user's post. | Request is denied with the branded 403 page. | Pass |
+| PS-14 | Attempt to edit another user's comment. | Request is denied with the branded 403 page. | Pass |
+| PS-15 | Visit a nonexistent URL. | Branded 404 page is displayed. | Pass |
+| PS-16 | Delete an owned post. | Post is removed successfully. | Pass |
+| PS-17 | Check browser DevTools during the smoke test. | No unexpected console errors or 500 network responses occur. | Pass |
+
+The permission checks for another user's post and comment both returned the expected branded `403 Forbidden` response. A deliberately nonexistent URL returned the custom Pulse `404` page, and no unexpected HTTP `500` responses occurred during the smoke test.
+
+Firefox emitted one browser rendering message stating that layout was forced before the page had fully loaded while navigating through the delete-post flow. This was a browser rendering/timing notice rather than an application error, and the page and deletion flow continued to operate correctly.
+
+**Result: All 17 final production smoke tests passed.**
 
 ## Manual Testing Log
 
@@ -106,15 +114,23 @@ python manage.py test
 
 ### Test Result
 
-The latest automated test run completed successfully:
+The final automated test run completed successfully:
 
 ```text
-Current automated test count: 37
-Django system check: no issues
-Result: OK
+Found 37 test(s).
+System check identified no issues (0 silenced).
+Ran 37 tests in 29.900s
+
+OK
 ```
 
-**Result: 37 tests passed, with no test failures or Django system-check issues.**
+A separate Django system check also completed successfully:
+
+```text
+System check identified no issues (0 silenced).
+```
+
+**Result: All 37 automated tests passed with no failures or Django system-check issues.**
 
 The automated suite includes coverage for:
 
@@ -142,44 +158,59 @@ Automated testing complements the manual production checks documented elsewhere 
 
 Rendered HTML was checked using the **W3C Nu HTML Checker**.
 
-Public pages were validated using the deployed Heroku application. Pages requiring authentication were checked using their rendered page source so that the validator received the final HTML generated by Django rather than Django template syntax.
+Django templates themselves contain template syntax that is not present in the final response sent to a browser. Validation was therefore performed against the rendered HTML generated by the application rather than against raw Django template files.
 
-Representative pages validated included:
+Earlier validation during remediation covered a broader range of application views and identified one heading-level warning on the Create Post page. Its primary page heading used an `<h2>` and was corrected to `<h1>` before successful revalidation.
 
-- homepage / post feed;
-- login;
-- registration;
-- community search;
-- post detail;
-- user profile;
-- department / community pages;
-- create post;
-- edit post;
-- delete post;
-- delete comment;
-- custom 404 page.
+After the final UI and documentation remediation work was completed, a fresh validation pass was performed against the finished production interface.
 
-The validation pass identified one heading-level warning on the Create Post page. The page used an `<h2>` as its primary heading, which was corrected to `<h1>`. The rendered page was then validated again successfully.
+The final rendered pages checked were:
 
-The custom 404 page was validated using its rendered source because validating the deployed URL directly correctly returns an HTTP 404 status before the validator can treat it as a normal successful page response.
+- logged-out homepage;
+- registration page;
+- login page;
+- logged-in homepage;
+- create-post page;
+- post-detail page;
+- user-profile page;
+- search-results page.
 
-Following the correction and revalidation, the representative rendered HTML pages completed validation with **no remaining HTML errors or warnings**.
+Every page in the final validation set returned **0 HTML errors**.
+
+The Nu checker produced informational notices for trailing `/` characters on HTML void elements such as `<meta />`, `<link />`, `<input />`, `<img />` and `<br />`. These notices state that the trailing slash has no effect in HTML and were not reported as markup errors.
+
+**Result: All final representative rendered pages passed with 0 HTML errors.**
 
 ### CSS - W3C CSS Validation Service
 
-Both custom Pulse stylesheets were checked using the **W3C CSS Validation Service**:
+Both custom Pulse stylesheets were checked again using the **W3C CSS Validation Service** after the final UI remediation work:
 
 - `static/css/style.css`
 - `static/css/auth.css`
 
-Both stylesheets completed validation successfully with **no CSS errors**.
+Both stylesheets returned **0 CSS errors**.
+
+The validator reported one warning for `auth.css`:
+
+- `-webkit-backdrop-filter` is a vendor extension.
+
+The validator reported four warnings for `style.css`:
+
+- CSS custom properties cannot currently be statically checked by the validator;
+- the `clip` property is deprecated;
+- `.danger` uses the same colour for its background and border;
+- `.danger:hover` uses the same colour for its background and border.
+
+These warnings were reviewed and do not represent CSS syntax errors. The vendor-prefixed property provides browser compatibility, the CSS-variable message is a validator limitation, and the remaining notices concern supported styling choices rather than invalid CSS.
 
 **Result:**
 
 ```text
-static/css/style.css: No errors
-static/css/auth.css: No errors
+static/css/style.css: 0 errors
+static/css/auth.css: 0 errors
 ```
+
+**Result: Both custom stylesheets passed final CSS validation with no errors.**
 
 ### Python - Flake8
 
@@ -210,14 +241,19 @@ The complete Django automated test suite was also rerun after subsequent remedia
 python manage.py test
 ```
 
-The regression run completed successfully:
+The final regression run completed successfully:
 
 ```text
-Current automated test count: 37
-Result: OK
+Found 37 test(s).
+System check identified no issues (0 silenced).
+Ran 37 tests in 29.900s
+
+OK
 ```
 
-**Result: Flake8 passed with no remaining findings and all 37 automated tests passed in the latest regression run.**
+The final Flake8 command also completed with **no output** using Flake8 `7.4.1`, confirming that no linting findings remained in the checked Python source.
+
+**Result: Flake8 passed with no remaining findings and all 37 automated tests passed in the final regression run.**
 
 ## Responsive and Browser Testing
 
@@ -480,3 +516,20 @@ Production verification during remediation reported no pending migrations. `pyth
 **Result: The major production, template, media, security and deployment-parity defects identified during remediation have been corrected and verified through automated and production testing.**
 
 ## Known Bugs
+
+No unresolved functional bugs were identified during final validation and production smoke testing.
+
+The final verification included:
+
+- a project-wide Flake8 validation pass;
+- W3C validation of both custom CSS stylesheets;
+- W3C Nu validation of representative rendered production pages;
+- Django's system check;
+- all 37 automated Django tests;
+- all 17 production smoke tests against the live Heroku deployment.
+
+All completed without application failures.
+
+The HTML validator produced informational notices concerning trailing slashes on HTML void elements, and the CSS validator produced the documented compatibility and styling warnings described in the Validation section. These are not current functional defects.
+
+Some historical test-image objects created in Amazon S3 before the uploaded-image lifecycle cleanup may remain as legacy test data. Current application behaviour correctly removes replaced, cleared and deleted post images from storage, so these historical objects do not represent an ongoing application bug and do not affect normal use.
