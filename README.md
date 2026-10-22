@@ -32,7 +32,7 @@ This approach was taken to maintain a security-conscious and responsible develop
 - [User Features](#user-features)
 - [User Stories](#user-stories)
 - [User Story Mapping](#user-story-mapping)
-- [User Story Validation (Screenshots)](#user-story-validation-screenshots)
+- [User Story Validation](#user-story-validation)
 - [Wireframes](#wireframes)
 - [Testing](#testing)
 - [Assessment Remediation](#assessment-remediation)
@@ -738,104 +738,108 @@ Detailed testing evidence is maintained in `TESTING.md`.
 
 ---
 
-## User Story Validation (Screenshots)
+## User Story Validation
 
-The following screenshots provide visual evidence that the key user stories identified for this project have been implemented successfully. The system is designed to support structured discussion, easy navigation, and clear user interaction flows.
+The user stories identified during planning were validated against the finished
+application using the final production interface and supporting screenshots.
+Rather than repeating each user story as a checklist, this section groups the
+main user journeys and shows how Pulse satisfies them in practice.
 
 <details>
 <summary>Click to expand user story validation</summary>
 
 ---
 
-### New User / Visitor
+### Visitor Onboarding and Account Access
 
-**User Need:**  
-As a visitor, I want to register an account and understand the platform so that I can decide to join the community.
+Pulse supports new visitors with a clear landing page, straightforward
+registration flow, and secure authentication process. New users can understand
+the purpose of the platform before joining, create an account, and log in using
+Django's authentication system.
 
-**Evidence:**  
-- Registration form enforces username and password validation rules.  
-- Clean landing page introduces platform purpose and navigation options.
+**Validation highlights**
+- The landing page introduces the platform clearly and provides obvious
+  navigation.
+- Registration enforces username and password validation rules.
+- Login validates credentials and returns users to the appropriate destination.
 
 ![Registration page](pulse/screenshots/register.png)
 ![Landing page](pulse/screenshots/landing.png)
-
----
-
-### Authenticated User
-
-**User Need:**  
-As a user, I want to log in and log out so that I can securely manage my account access.
-
-**Evidence:**  
-- Login system validates credentials and redirects users appropriately.  
-- Logout clears session securely.
-
 ![Login page](pulse/screenshots/login.png)
 
 ---
 
-### Content Creator
+### Creating and Managing Content
 
-**User Need:**  
-As a user, I want to create, edit, and delete posts so that I can manage my content freely.
+Authenticated users can create discussion posts, upload an optional image,
+edit their own content, and remove it when no longer needed. Ownership
+restrictions ensure that editing and deletion controls are only available to
+the correct author.
 
-**Evidence:**  
-- Post creation form allows structured input for title and content.  
-- Edit and delete options are restricted to the post author only.
+**Validation highlights**
+- The create-post form supports structured content creation.
+- Post management controls are visible on owned content.
+- Edit and delete actions are restricted to the post author.
 
 ![Create post page](pulse/screenshots/create-post.png)
 ![Post detail view](pulse/screenshots/post-detail.png)
 
 ---
 
-### Reader / Community Member
+### Reading, Discussion and Community Interaction
 
-**User Need:**  
-As a user, I want to browse posts and engage with comments so that I can participate in discussions.
+Pulse allows users to browse recent discussions, open full post details,
+interact with comments, and participate in community discussion through a clear
+thread structure.
 
-**Evidence:**  
-- Posts are displayed in reverse chronological order.  
-- Comment system is visible under each post with timestamps and user attribution.
+**Validation highlights**
+- The post feed presents content in reverse chronological order.
+- Individual posts display comments, metadata and interaction controls.
+- Comment activity remains visible and easy to follow within the discussion.
 
 ![Post feed](pulse/screenshots/post-feed.png)
 ![Comments section](pulse/screenshots/comments.png)
 
 ---
 
-### Explorer / Discovery User
+### Search and Discovery
 
-**User Need:**  
-As a user, I want to search and filter posts so that I can find relevant discussions quickly.
+Users can find relevant discussions quickly through keyword search and
+department-based browsing. Search results preserve the current query in the
+navigation search field, helping users refine or repeat searches easily.
 
-**Evidence:**  
-- Search functionality filters posts by keywords in title and content.  
-- Empty state messaging is displayed when no results are found.
+**Validation highlights**
+- Search filters posts by title and content.
+- The interface supports exploration across discussions and communities.
+- Search results handle both populated and empty-result states appropriately.
 
 ![Search results](pulse/screenshots/search.png)
 
 ---
 
-### Profile-Focused User
+### Profiles and User Activity
 
-**User Need:**  
-As a user, I want to view profiles so that I can explore user activity and contributions.
+Pulse includes public profile pages so users can explore another member's
+activity without exposing private data. This helps users understand who is
+contributing to the discussion platform.
 
-**Evidence:**  
-- Profile pages display user posts and basic account information.  
-- Users can view other public profiles without accessing private data.
+**Validation highlights**
+- Profile pages display a user's posts and account information.
+- Public profile access supports exploration without exposing sensitive data.
 
 ![Profile page](pulse/screenshots/profile.png)
 
 ---
 
-### Mobile / Multi-Device User
+### Responsive Multi-Device Experience
 
-**User Need:**  
-As a user, I want a responsive interface so that I can use the platform on any device.
+The interface remains usable across different screen sizes, with layouts,
+navigation and interaction controls adapting appropriately for smaller devices.
 
-**Evidence:**  
-- Layout adapts dynamically to screen size.  
-- Navigation remains usable across desktop and mobile views.
+**Validation highlights**
+- The layout adapts cleanly across desktop and mobile screen sizes.
+- Navigation remains accessible and usable on smaller viewports.
+- Core user journeys remain available on mobile without feature loss.
 
 ![Mobile view](pulse/screenshots/mobile-view.png)
 
