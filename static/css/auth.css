@@ -1,6 +1,4 @@
-/* =========================
-   AUTH PAGE
-========================= */
+/* Auth Page */
 
 /* Centering wrapper */
 .auth-page {
@@ -13,9 +11,7 @@
     padding: 40px 20px;
 }
 
-/* =========================
-   AUTH CARD
-========================= */
+/* Auth Card */
 
 .auth-card {
     width: 500px;
@@ -129,7 +125,7 @@
     justify-content: center;
 }
 
-/* Error message */
+/* Error Message */
 .error {
     color: #ef4444;
     text-align: center;
@@ -172,7 +168,7 @@
     }
 }
 
-/* extra small phones */
+/* Extra Small Phones */
 @media (max-width: 400px) {
     .auth-card {
         width: 94vw;
@@ -181,7 +177,7 @@
 }
 
 
-/* MOBILE FIXES — applies to screens 600px and below */
+/* Mobile - applies to screens 600px and below */
 @media (max-width: 600px) {
 
     /* Prevent any container from forcing horizontal zoom-out */
@@ -220,7 +216,7 @@
         margin-top: 1rem;
     }
 
-    /* Fix long text wrapping (e.g., password rules) */
+    /* Long text wrapping (e.g., password rules) */
     .auth-page p,
     .auth-page .helptext,
     .auth-page .errorlist {

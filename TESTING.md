@@ -28,7 +28,7 @@ Pulse is tested at several levels so that both individual application behaviour 
 
 | Testing Area | Purpose | Evidence Status |
 | --- | --- | --- |
-| Production smoke testing | Confirms that the deployed application and its critical user flows work after deployment. | Checklist already established; final execution evidence will be recorded during the final audit. |
+| Production smoke testing | Confirms that the deployed application and its critical user flows work after deployment. | All 17 final production smoke tests passed against the live Heroku deployment. |
 | Manual functional testing | Verifies real user actions and their resulting application/database behaviour. | Production testing log already contains completed tests. |
 | Automated testing | Verifies application logic and regression-sensitive behaviour through Django's test framework. | 37 automated tests passed successfully with no failures or Django system-check issues. |
 | Validation | Checks HTML, CSS and Python quality using appropriate validation and linting tools. | W3C HTML and CSS validation and Flake8 Python validation completed successfully. |

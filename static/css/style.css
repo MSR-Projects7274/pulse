@@ -1,6 +1,4 @@
-/* =========================
-   GLOBAL RESET
-========================= */
+/* Global Reset */
 
 * {
     margin: 0;
@@ -8,9 +6,7 @@
     box-sizing: border-box;
 }
 
-/* =========================
-   GLOBAL VARIABLES
-========================= */
+/* Global Variables */
 
 :root {
     --font-main: "Segoe UI", Arial, sans-serif;
@@ -25,9 +21,7 @@
     --accent: #4f8cff;
 }
 
-/* =========================
-   BACKGROUND + ANIMATIONS
-========================= */
+/* Background + Animations */
 
 body {
     position: relative;
@@ -98,9 +92,7 @@ body {
     }
 }
 
-/* =========================
-   TYPOGRAPHY
-========================= */
+/* Typography */
 
 h1, h2, h3 {
     line-height: 1.2;
@@ -115,9 +107,7 @@ h2 {
     font-size: 1.6rem;
 }
 
-/* =========================
-   NAVBAR
-========================= */
+/* Navbar */
 
 .navbar {
     position: sticky;
@@ -146,10 +136,7 @@ h2 {
     flex: 1;
 }
 
-
-/* =========================
-   LOGO
-========================= */
+/* Logo */
 
 .logo {
     display: inline-flex;
@@ -179,9 +166,7 @@ h2 {
 }
 
 
-/* =========================
-   SEARCH BAR
-========================= */
+/* Search Bar */
 
 .community-search {
     display: flex;
@@ -227,9 +212,7 @@ h2 {
     border: 0;
 }
 
-/* =========================
-   NAV LINKS
-========================= */
+/* Nav Links */
 
 .nav-links {
     display: flex;
@@ -256,9 +239,7 @@ h2 {
 }
 
 
-/* =========================
-   BUTTONS
-========================= */
+/* Buttons */
 
 .button {
     display: inline-flex;
@@ -305,7 +286,7 @@ h2 {
     transform: scale(0.97);
 }
 
-/* danger button */
+/* Danger Button */
 
 .danger {
     background: #dc2626;
@@ -333,9 +314,7 @@ h2 {
     text-decoration: none;
 }
 
-/* =========================
-   CONTAINER
-========================= */
+/* Container */
 
 .container {
     width: 90%;
@@ -344,9 +323,7 @@ h2 {
     margin: 40px auto;
 }
 
-/* =========================
-   HERO SECTION
-========================= */
+/* Hero Section */
 
 .hero {
     text-align: center;
@@ -367,9 +344,7 @@ h2 {
     font-size: 1.2rem;
 }
 
-/* =========================
-   FORMS
-========================= */
+/* Forms */
 
 input:not([type="checkbox"]),
 textarea,
@@ -417,7 +392,7 @@ textarea {
     min-height: 90px;
 }
 
-/* Form validation errors */
+/* Form Validation Errors */
 
 .form-card .error,
 .post-card .error,
@@ -452,9 +427,7 @@ textarea {
     color: #cbd5e1;
 }
 
-/* =========================
-   GLOBAL LINKS
-========================= */
+/* Global Links */
 
 a {
     color: #60a5fa;
@@ -468,9 +441,7 @@ a:hover {
     text-decoration: underline;
 }
 
-/* =========================
-   POST CARDS
-========================= */
+/* Post Cards */
 
 .post-card {
     display: flex;
@@ -537,9 +508,7 @@ a:hover {
     }
 }
 
-/* =========================
-   POST CONTENT
-========================= */
+/* Post Content */
 
 .post-content {
     flex: 1;
@@ -547,9 +516,7 @@ a:hover {
     overflow-wrap: anywhere;
 }
 
-/* =========================
-   POST IMAGES
-========================= */
+/* Post Images */
 
 .post-image,
 .post-detail-image {
@@ -591,9 +558,7 @@ a:hover {
     margin-top: 12px;
 }
 
-/* =========================
-   DEPARTMENT TAGS
-========================= */
+/* Department Tags */
 
 .department-tag {
     display: inline-flex;
@@ -620,9 +585,7 @@ a:hover {
     text-decoration: none;
 }
 
-/* =========================
-   VOTING SYSTEM
-========================= */
+/* Voting System */
 
 .vote-column {
     display: flex;
@@ -680,9 +643,7 @@ a:hover {
     text-shadow: 0 0 10px rgba(255,107,107,0.4);
 }
 
-/* =========================
-   POST DETAIL PAGE
-========================= */
+/* Post Detail Page */
 
 .post-detail-card {
     display: flex;
@@ -710,20 +671,20 @@ a:hover {
     overflow-wrap: anywhere;
 }
 
-/* title */
+/* Title */
 .post-detail-title {
     font-size: 2rem;
     margin-bottom: 18px;
     line-height: 1.3;
 }
 
-/* meta under title */
+/* Meta Under Title */
 .post-meta {
     margin-bottom: 20px;
     color: #94a3b8;
 }
 
-/* main body */
+/* Main Body */
 .post-detail-content {
     margin-top: 20px;
     margin-bottom: 28px;
@@ -731,16 +692,14 @@ a:hover {
     line-height: 1.8;
 }
 
-/* if buttons under post */
+/* If Buttons Under Post */
 .post-actions {
     margin-top: 20px;
     display: flex;
     gap: 12px;
 }
 
-/* =========================
-   COMMENTS
-========================= */
+/* Comments */
 
 .comments-section {
     margin-top: 20px;
@@ -791,9 +750,7 @@ a:hover {
     font-style: italic;
 }
 
-/* =========================
-   COMMENT VOTING
-========================= */
+/* Comment Voting */
 
 .comment-vote {
     display: flex;
@@ -821,9 +778,7 @@ a:hover {
     color: #ff6b6b !important;
 }
 
-/* =========================
-   COMMENT FORM
-========================= */
+/* Comment Form */
 
 .comment-form textarea {
     margin-top: 10px;
@@ -846,9 +801,7 @@ a:hover {
     font-weight: 600;
 }
 
-/* =========================
-   COMMENT ACTIONS
-========================= */
+/* Comment Actions */
 
 .comment-actions {
     margin-top: 10px;
@@ -872,9 +825,7 @@ a:hover {
     font-style: italic;
 }
 
-/* =========================
-   EDIT / DELETE PAGES
-========================= */
+/* Edit / Delete Pages */
 
 .form-page {
     display: flex;
@@ -938,9 +889,7 @@ a:hover {
     color: #fca5a5;
 }
 
-/* =========================
-   DEPARTMENT + SEARCH
-========================= */
+/* Department + Search */
 
 .department-banner {
     width: 900px;
@@ -959,9 +908,7 @@ a:hover {
     margin-left: 15px;
 }
 
-/* =========================
-   ERROR PAGES
-========================= */
+/* Error Pages */
 
 .error-page {
     min-height: 100vh;
@@ -1032,9 +979,7 @@ a:hover {
     justify-content: center;
 }
 
-/* =========================
-   DJANGO MESSAGES
-========================= */
+/* Django Messages */
 
 .messages {
     width: calc(100% - 40px);
@@ -1073,19 +1018,17 @@ a:hover {
     border-color: var(--accent);
 }
 
-/* =========================
-   RESPONSIVE DESIGN
-========================= */
+/* Responsive Design */
 
 @media (max-width: 768px) {
 
-    /* Prevent weird sideways scrolling */
+    /* Prevent sideways scrolling */
     html,
     body {
         overflow-x: hidden;
     }
 
-    /* NAVBAR */
+    /* Navbar */
     .navbar {
         flex-direction: column;
         gap: 15px;
@@ -1104,7 +1047,7 @@ a:hover {
         gap: 10px;
     }
 
-    /* SEARCH BAR */
+    /* Search Bar */
     .community-search {
         margin: 0;
         width: 100%;
@@ -1116,13 +1059,13 @@ a:hover {
         font-size: 0.9rem;
     }
 
-    /* MAIN CONTAINER */
+    /* Main Container */
     .container {
         width: 95%;
         margin: 20px auto;
     }
 
-    /* HERO SECTION */
+    /* Hero Section */
     .hero {
         padding: 40px 15px;
     }
@@ -1135,22 +1078,22 @@ a:hover {
         font-size: 1rem;
     }
 
-    /* GENERAL BUTTONS */
+    /* General Buttons */
     .button {
         padding: 10px 18px;
         font-size: 0.9rem;
     }
 
-    /* POST CARDS */
+    /* Post Cards */
     .post-card {
         flex-direction: column;
-        gap: 18px;              /* more breathing room */
+        gap: 18px;              /* More breathing room */
         padding: 22px 18px;
-        text-align: center;     /* centers text */
-        align-items: center;    /* centers internal flex items */
+        text-align: center;     /* Centers text */
+        align-items: center;    /* Centers internal flex items */
     }
 
-    /* POST VOTING */
+    /* Post Voting */
     .vote-column {
         flex-direction: row;
         justify-content: center;
@@ -1158,8 +1101,8 @@ a:hover {
         width: auto;
         margin-right: 0;
         float: none;
-        gap: 18px;            /* bigger spacing */
-        margin-bottom: 8px;   /* separates votes from content */
+        gap: 18px;            /* More spacing */
+        margin-bottom: 8px;   /* Separates votes from content */
     }
 
     .vote-arrow {
@@ -1170,12 +1113,12 @@ a:hover {
         font-size: 0.9rem;
     }
 
-    /* POST TITLES */
+    /* Post Titles */
     .post-title a {
         font-size: 1.1rem;
     }
 
-    /* POST DETAIL PAGE */
+    /* Post Detail Page */
     .post-detail-card {
         flex-direction: column;
         align-items: stretch;
@@ -1191,14 +1134,14 @@ a:hover {
         line-height: 1.5;
     }
 
-    /* COMMENTS */
+    /* Comments */
     .comment {
         flex-direction: column;
         gap: 10px;
         padding: 10px;
     }
 
-    /* COMMENT VOTING */
+    /* Comment Voting */
     .comment-vote {
         flex-direction: row;
         width: auto;
@@ -1210,7 +1153,7 @@ a:hover {
         font-size: 1rem;
     }
 
-    /* COMMENT TEXT */
+    /* Comment Text */
     .comment-text,
     .comment-body {
         font-size: 0.9rem;
@@ -1220,7 +1163,7 @@ a:hover {
         font-size: 0.75rem;
     }
 
-    /* FORMS */
+    /* Forms */
     .form-card {
         width: 95%;
         max-width: 95%;
@@ -1246,13 +1189,13 @@ a:hover {
         min-height: 140px;
     }
 
-    /* FORM BUTTONS */
+    /* Form Buttons */
     .form-actions {
         flex-direction: column;
         gap: 10px;
     }
 
-    /* DEPARTMENT BANNER */
+    /* Department Banner */
     .department-banner {
         width: 95%;
         max-width: 95%;
@@ -1260,7 +1203,7 @@ a:hover {
         font-size: 0.9rem;
     }
 
-    /* COMMENT ACTION LINKS */
+    /* Comment Action Links */
     .comment-actions {
         flex-wrap: wrap;
         gap: 8px;
@@ -1270,7 +1213,7 @@ a:hover {
         font-size: 0.85rem;
     }
 
-    /* HEADINGS */
+    /* Headings */
     h1 {
         font-size: 2rem;
     }
@@ -1280,9 +1223,7 @@ a:hover {
     }
 }
 
-/* =========================
-   REDUCED MOTION
-========================= */
+/* Reduced Motion */
 
 @media (prefers-reduced-motion: reduce) {
     body,
