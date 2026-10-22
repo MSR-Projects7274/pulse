@@ -3,8 +3,9 @@
 ![Python](https://img.shields.io/badge/Python-3.14-blue)
 ![Django](https://img.shields.io/badge/Django-6.0.8-green)
 ![Framework](https://img.shields.io/badge/Backend-Django%20MVT-lightgrey)
-![Status](https://img.shields.io/badge/Status-Remediation-orange)
-![Website Screenshot](pulse/screenshots/landing.png)
+![Status](https://img.shields.io/badge/Status-Complete-brightgreen)
+
+![Pulse responsive website shown on mobile, tablet and desktop](pulse/screenshots/responsive-showcase.png)
 
 ---
 
