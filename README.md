@@ -982,7 +982,7 @@ Validation errors are returned through the relevant forms, while successful data
 | Challenge | Issue | Resolution |
 |-----------|-------|------------|
 | Multi-app URL routing conflicts | Overlapping `urls.py` patterns between apps caused incorrect route matching and occasional 404 errors | Separated URL configurations per app using `include()` and kept route names distinct across the project |
-| URL naming and reverse lookup issues | `reverse()` and `{% url %}` required consistent route names across multiple app URL configurations | Standardised route names and refactored reverse lookups across the app URL configurations |
+| URL naming and reverse lookup issues | `reverse()` and <code>{&#37; url %}</code> required consistent route names across multiple app URL configurations | Standardised route names and refactored reverse lookups across the app URL configurations |
 | Shell / model import issues | Django shell could not reliably import models due to incorrect import paths or early app loading issues | Fixed import paths, ensured proper app registration, and used fully qualified model references where needed |
 | App registration and load order problems | Certain apps/models were unavailable during migrations or shell sessions due to incorrect `INSTALLED_APPS` ordering | Reordered `INSTALLED_APPS` and validated inter-app dependencies before migration |
 | Migration dependency conflicts | Cross-app foreign keys caused migrations to fail or apply in incorrect order | Rebuilt migration chain where necessary and explicitly defined migration `dependencies` |
